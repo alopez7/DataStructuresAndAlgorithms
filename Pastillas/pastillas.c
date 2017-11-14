@@ -12,10 +12,10 @@ double pastillas(int e, int m, int dias)
 
 	double probabilidad = 0;
 
-	if(tabla[e][m][dias] > 0)
-	{
-		return tabla[e][m][dias];
-	}
+	// if(tabla[e][m][dias] > 0)
+	// {
+	// 	return tabla[e][m][dias];
+	// }
 	if(dias == 0)
 	{
 		probabilidad = mitades / (enteras + mitades);
@@ -25,13 +25,18 @@ double pastillas(int e, int m, int dias)
 		probabilidad += (enteras / (enteras + mitades)) * pastillas(enteras - 1, mitades + 1, dias - 1);
 		probabilidad += (mitades / (enteras + mitades)) * pastillas(enteras, mitades - 1, dias - 1);
 	}
-	tabla[e][m][dias] = probabilidad;
+	// tabla[e][m][dias] = probabilidad;
 
 	return probabilidad;
 }
 
 int main(int argc, char const *argv[])
 {
+	if (argc != 4)
+	{
+		printf("Modo de uso: ./pastillas <enteras> <mitades> <dias>\n");
+		return 0;
+	}
 	int enteras = atoi(argv[1]);
 	int mitades = atoi(argv[2]);
 	int dias = atoi(argv[3]);

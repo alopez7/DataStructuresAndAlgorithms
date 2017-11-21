@@ -19,46 +19,40 @@
 //   return a;
 // }
 
-int subString(char* word1, char* word2, int i, int j, int** tabla){
-  int resp;
+int subString(char* word1, char* word2, int i, int j, int** tabla)
+{
+  if (tabla[i][j] != -1)
+  {
+      return tabla[i][j];
+  }
+
   if (i == strlen(word1) || j == strlen(word2)){
-    return 0;
+    tabla[i][j] = 0;
+    return tabla[i][j];
   }
-  if (word1[i] == word2[j]){
-    if (tabla[i + 1][j + 1] != -1){
-      return 1 + tabla[i + 1][j + 1];
-    }
-    resp = subString(word1, word2, i + 1, j + 1, tabla);
-    tabla[i+1][j+1] = resp;
-    return 1 + resp;
+
+  if (word1[i] == word2[j])
+  {
+    tabla[i][j] = 1 + subString(word1, word2, i + 1, j + 1, tabla);
+    return tabla[i][j];
   }
-  int a;
-  if (tabla[i+1][j] != -1){
-    a = tabla[i+1][j];
+
+  int a = subString(word1, word2, i + 1, j, tabla);
+  int b = subString(word1, word2, i, j + 1, tabla);
+  if (a < b)
+  {
+    tabla[i][j] = b;
   }
-  else {
-    a = subString(word1, word2, i + 1, j, tabla);
-    tabla[i+1][j] = a;
+  else
+  {
+    tabla[i][j] = a;
   }
-  int b;
-  if (tabla[i][j+1] != -1){
-    b = tabla[i][j+1];
-  }
-  else {
-    b = subString(word1, word2, i, j + 1, tabla);
-    tabla[i][j+1] = b;
-  }
-  if (a < b){
-    return b;
-  }
-  return a;
+  return tabla[i][j];
 }
 
 int main(int argc, char *argv[]) {
   char* word1 = argv[1];
   char* word2 = argv[2];
-
-  // printf("Tamaño del input: %i\n", len);
 
   //Parte exponencial
   // printf("Tamaño del substring: %i\n", subString(word1, word2, 0, 0));

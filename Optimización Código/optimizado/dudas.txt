@@ -1,0 +1,12 @@
+* Optimizar pesos:
+  * El problema de descartar las rutas con pesos infactibles es que inicialmente
+    hay rutas con pesos infactibles
+
+
+* Cálculo de probabilidades:
+  * La métrica se comporta raro con valores negativos
+  * Los valores iniciales de los pesos pueden ser muy malos
+  * Está bien lo de iterar 35 veces?
+
+* El costo de penalización por cancelación aplica si un vuelo cambia de horario?
+  Por ejemplo cuando se mueve una subruta truncada (Asumo que no, pero igual mejor preguntar)

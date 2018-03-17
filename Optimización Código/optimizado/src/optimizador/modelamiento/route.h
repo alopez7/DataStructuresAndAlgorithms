@@ -22,6 +22,8 @@ struct l_node
   double delta_weight;
   /** Tarifa - costo dual - costo del ultimo viaje */
   double utility;
+  /** Indice del nodo dentro de la ruta (se usa al optimizar con gurobi) */
+  int route_index;
 };
 /** Nodo de la lista */
 typedef struct l_node LNode;

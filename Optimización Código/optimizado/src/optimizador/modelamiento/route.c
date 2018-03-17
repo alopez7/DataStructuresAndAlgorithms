@@ -364,8 +364,6 @@ void bp_destroy(BP* bp_destroy)
   printf("DOING NOTHIG\n");
 }
 
-
-
 // FUNCIONES QUE ALTERAN LAS RUTAS Y CAMBIAN LA FUNCION OBJETIVO RAPIDA
 
 /** Inserta un nodo en la posicion siguiente al lnodo dado */

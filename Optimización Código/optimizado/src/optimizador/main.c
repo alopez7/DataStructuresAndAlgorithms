@@ -29,10 +29,7 @@ int main(int argc, char *argv[])
   //                                Tests                                   //
   ////////////////////////////////////////////////////////////////////////////
 
-  // Inicializo una ruta de la planificacion base
-  Route* copy = run(ans, ans -> bp -> routes[0]);
-  route_print(copy);
-
+  
 
   ////////////////////////////////////////////////////////////////////////////
   //                           fin de los tests                             //

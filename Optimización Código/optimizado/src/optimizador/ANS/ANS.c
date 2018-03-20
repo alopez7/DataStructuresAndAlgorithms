@@ -903,14 +903,6 @@ Route* run(ANS* ans, Route* original_route)
       }
     }
 
-    for (int i = 0; i < 7; i++)
-    {
-      printf("%lf\n", ans -> prob_weights[i]);
-    }
-    printf("Total: %lf\n", ans -> total_weight);
-    printf("Aleatorio: %lf\n", random_value);
-    printf("Operacion: %d\n", operation_id);
-
     // Si la operacion no esta bloqueada
     if (bloq[operation_id] == 0)
     {
@@ -935,7 +927,7 @@ Route* run(ANS* ans, Route* original_route)
       else
       {
         best_of = route -> objective_function;
-        printf("Mejora\n\n");
+        printf("Mejora a %lf\n\n", route -> objective_function);
       }
     }
     else

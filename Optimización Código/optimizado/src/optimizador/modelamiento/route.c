@@ -950,8 +950,6 @@ void l_node_order_fill(LNode* pickup, Order* order)
 /** Calcula la funcion objetivo de la ruta iterando sobre ella */
 double objective_function(Route* route, Map* map)
 {
-  assign_weights(route);
-
   // Partes de la funcion objetivo
   double fees = 0;
   double distances = 0;
@@ -1145,8 +1143,7 @@ bool assign_weights(Route* route)
         else
         {
           optimize_weight(route);
-          route -> valid = false;
-          return false;
+          return route -> valid;
         }
       }
     }

@@ -1,4 +1,5 @@
 #include "ANS/ANS.h"
+#include "gurobi/gurobi.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include "random/pcg_basic.h"
@@ -13,10 +14,19 @@ void random_seed()
 
 int main(int argc, char *argv[])
 {
-  if (argc != 4)
+  if (argc == 4)
+  {
+    optimizing_weights = false;
+  }
+  else if (argc == 5)
+  {
+    optimizing_weights = true;
+  }
+  else
   {
     printf("Modo de uso:\n");
-    printf("[./optimizador] [map_file] [airplanes_file] [BP_file]\n");
+    printf("[./optimizador] [map_file] [airplanes_file] [BP_file] (-ow)\n");
+    exit(0);
   }
 
   // Pongo una seed aleatoria al random del programa
@@ -29,7 +39,11 @@ int main(int argc, char *argv[])
   //                                Tests                                   //
   ////////////////////////////////////////////////////////////////////////////
 
-  
+  Route* copy = initialize(ans, ans -> bp -> routes[0]);
+
+  run(ans, copy);
+
+  route_print(copy);
 
   ////////////////////////////////////////////////////////////////////////////
   //                           fin de los tests                             //

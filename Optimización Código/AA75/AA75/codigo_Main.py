@@ -147,13 +147,6 @@ class Main_AA75():
 			U2 = r2.CostoRuta
 			r2 = sp.Drop_and_Add_v(r2) #Variante de la original, que solo cambia la funcion que evalua la ruta (Utilidad en vez de FO)
 
-		'''
-		r2.NumRuta = len(sp.rutas)+1
-		r2 = sp.GuardarCargas(r2)
-		sp.rutas.append(r2)
-		'''
-
-		##################################
 		if U2 != U1:
 			#print "ruta 2"
 			#print r2.nodos
@@ -162,21 +155,13 @@ class Main_AA75():
 			r2 = sp.GuardarCargas(r2)
 			sp.rutas.append(r2)
 
-		##################################
-		#Ruta o Columna 3 : PB + Swap
 		r3 = sp.Copiar(r2)
 		r3 = sp.Swap_v(r3)
 		U3 = 0
 		while U3 != r3.CostoRuta:
 			U3 = r3.CostoRuta
 			r3 = sp.Swap_v(r3)
-		'''
-		r3.NumRuta = len(sp.rutas)+1
-		r3 = sp.GuardarCargas(r3)
-		sp.rutas.append(r3)
-		'''
 
-		##################################
 		if U3 != U1 and U3 != U2:
 			#print "ruta 3"
 			#print r3.nodos
@@ -185,8 +170,6 @@ class Main_AA75():
 			r3 = sp.GuardarCargas(r3)
 			sp.rutas.append(r3)
 
-		##################################
-		#Ruta o Columna 4 : Posibilidad de no utilizar el avion
 		r4 = Ruta()
 		aux = self.PB[sp.k]
 		#print "columna inicial", aux
@@ -196,13 +179,7 @@ class Main_AA75():
 		r4.Q = [0,0]
 		r4.B = [0,0]
 		U4 = sp.Utilidad(r4)
-		'''
-		r4.NumRuta = len(sp.rutas)+1
-		r4.CostoRuta = U4
-		r4 = sp.GuardarCargas(r4)#REVISAR QUE NO SE ESTE CAYENDO POR LA FALTA DE "GUARDARCARGAS"
-		sp.rutas.append(r4)
-		'''
-		##################################
+
 		if U4 != U1 and U4 != U2 and U4 != U3:
 			#print "ruta 4"
 			#print r4.nodos
@@ -212,18 +189,9 @@ class Main_AA75():
 			r4 = sp.GuardarCargas(r4)#REVISAR QUE NO SE ESTE CAYENDO POR LA FALTA DE "GUARDARCARGAS"
 			sp.rutas.append(r4)
 
-		##################################
-		#Nueva Columna Base
-		#Ruta o Columna 5 : Columna Base (CB)
 		r5 = self.R[sp.k-1]
 		U5 = sp.Utilidad(r5) #Los costos de cancelacion van a ser respecto a la PB porque asi esta formulado el problema
-		'''
-		r5.NumRuta = len(sp.rutas)+1
-		r5.CostoRuta = U5
-		r5 = sp.GuardarCargas(r5)
-		sp.rutas.append(r5)
-		'''
-		##################################
+
 		if U5 != U1 and U5 != U2 and U5 != U3 and U5 != U4:
 			#print "ruta 5"
 			#print r5.nodos
@@ -232,20 +200,13 @@ class Main_AA75():
 			r5 = sp.GuardarCargas(r5)
 			sp.rutas.append(r5)
 
-		##################################
-		#Ruta o Columna 6 : CB + DropAndAdd
 		r6 = sp.Copiar(r5)
 		r6 = sp.Drop_and_Add_v(r5)
 		U6 = 0
 		while U6 != r6.CostoRuta:
 			U6 = r6.CostoRuta
 			r6 = sp.Drop_and_Add_v(r6)
-		'''
-		r6.NumRuta = len(sp.rutas)+1
-		r6 = sp.GuardarCargas(r6)
-		sp.rutas.append(r6)
-		'''
-		##################################
+
 		if U6 != U1 and U6 != U2 and U6 != U3 and U6 != U4 and U6 != U5:
 			#print "ruta 6"
 			#print r6.nodos
@@ -253,20 +214,13 @@ class Main_AA75():
 			r6 = sp.GuardarCargas(r6)
 			sp.rutas.append(r6)
 
-		##################################
-		#Ruta o Columna 7 : CB + Swap
 		r7 = sp.Copiar(r6)
 		r7 = sp.Swap_v(r6)
 		U7 = 0
 		while U7 != r7.CostoRuta:
 			U7 = r7.CostoRuta
 			r7 = sp.Swap_v(r7)
-		'''
-		r7.NumRuta = len(sp.rutas)+1
-		r7 = sp.GuardarCargas(r7)
-		sp.rutas.append(r7)
-		'''
-		##################################
+
 		if U7 != U1 and U7 != U2 and U7 != U3 and U7 != U4 and U7 != U5 and U7 != U6:
 			#print "ruta 7"
 			#print r7.nodos
@@ -274,9 +228,6 @@ class Main_AA75():
 			r7 = sp.GuardarCargas(r7)
 			sp.rutas.append(r7)
 
-		##################################
-		#t_final=time.time()-tiempo
-		#print "tiempo columnas iniciales :", t_final
 		return sp
 
 	def Construir_CB(self):
@@ -346,27 +297,7 @@ class Main_AA75():
 					N_global.remove(R_k[0][2])#Eliminamos el pedido respectivo de la lista de nodos pendientes en la red
 				else:
 					aux += 1
-		'''
-		#print "SALIR"
-		#print K
-		for k in K:
-			#print "k :",k
-			sp.k=k
-			aux_exit=0
-			while (len(N_global)) != 0 and aux_exit==0:
-				N_aux=[i for i in N_global]
-				#print "N_global_aux", N_aux
-				print "N_global", N_global
-				R[k-1],N_global=sp.Insercion_inicial(R[k-1],N_global)
-				#print "N_global1", N_global
-				#print "N_global_aux", N_aux
-				#print "len(N_global_aux", len(N_aux), "len(N_global)",len(N_global)
-				if len(N_aux)==len(N_global):
-					aux_exit=1
-					print "aux_exit :", aux_exit
-				#print "R"+str([k]), R[k-1].nodos
-				#print "N_global2", N_global
-		'''
+
 		aux_exit=0
 		while (len(N_global)) != 0 and aux_exit==0:
 			for k in K:
@@ -385,6 +316,7 @@ class Main_AA75():
 				#print "N_global2", N_global
 		return R
 
+	''' Imprime el resultado en un archivo '''
 	def ImprimirResultado(self, It, k, r, CostoReducido):
 		nombre_archivo = "Iteracion " + str(It) + " Ruta " + str(r.NumRuta) + " Subproblema_" + str(k)+".txt"
 
@@ -403,6 +335,7 @@ class Main_AA75():
 
 		f.close()
 
+	''' Metodo para escribir archivo '''
 	def write_table(self, file_route, table):
 		f = open(str(file_route),"w")
 		for item in table:

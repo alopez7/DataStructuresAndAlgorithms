@@ -1,5 +1,0 @@
-* ¿Por qué tienen que estar ordenados los pedidos por gancia unitaria en drop_and_add y en swap si los voy a provar todos?
-
-* ¿Qué es el costo dual y como se calcula?
-
-* 

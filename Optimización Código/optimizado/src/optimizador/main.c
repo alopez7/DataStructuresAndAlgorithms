@@ -39,11 +39,49 @@ int main(int argc, char *argv[])
   //                                Tests                                   //
   ////////////////////////////////////////////////////////////////////////////
 
-  Route* copy = initialize(ans, ans -> bp -> routes[0]);
+  // Creo un arreglo donde quepan rpa rutas de cada avion
+  int rpa = 3;
+  int count = rpa * airplanes_count;
+  Route** routes = malloc(sizeof(Route*) * count);
 
-  run(ans, copy);
+  // itero sobre las aviones
+  for (int k = 0; k < airplanes_count; k++)
+  {
+    printf("Avion %d\n", k);
+    // 20 veces por avion
+    for (int i = 0; i < rpa; i++)
+    {
+      printf("\tRuta %d\n", i);
+      // Inicializo la ruta de esa avion y le aplico ANS
+      printf("RUTA ORIGINAL\n");
+      route_print(ans -> bp -> routes[k]);
 
-  route_print(copy);
+      Route* copy = run(ans, ans -> bp -> routes[k]);
+      printf("RUTA mejorada\n");
+      assign_weights(copy);
+      copy -> objective_function = objective_function(copy, ans -> map);
+      route_print(copy);
+
+      // Agrego esta ruta al arreglo
+      routes[k * rpa + i] = copy;
+    }
+  }
+
+  printf("///////// IMPRIMIENDO DENUEVO ///////////\n");
+  for (int i = 0; i < count; i++)
+  {
+    route_print(routes[i]);
+  }
+
+  double* solution = optimize_routes(routes, count, ans -> map);
+
+  if (solution)
+  {
+    for (int i = 0; i < count; i++)
+    {
+      printf("x_%d = %lf\n", i, solution[i]);
+    }
+  }
 
   ////////////////////////////////////////////////////////////////////////////
   //                           fin de los tests                             //

@@ -52,8 +52,6 @@ struct route
   bool valid;
   /** Avion que realiza esta ruta */
   Airplane* airplane;
-  /** Costo dual de la ruta */
-  double dual_gamma;
   /** Variable que determina si la ruta es de la planificacion base o no */
   bool is_bp;
   /** Diccionario que contiene los vuelos de la PB de este avion (para calcular costos de cancelacion eficientemente) */
@@ -145,6 +143,9 @@ double objective_function(Route* route, Map* map);
 
 /** Calcula la funcion objetivo de manera optimista (sin costos duales pi y asumiendo carga completa) */
 double fast_of(Route* route, Map* map);
+
+/** Calcula la utilidad de la ruta */
+double utility(Route* route);
 
 /** Ajusta los tiempos de una ruta y determina si es factible */
 bool assign_time(Route* route);

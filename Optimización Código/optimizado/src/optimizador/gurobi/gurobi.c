@@ -50,10 +50,10 @@ void optimize_weight(Route* route)
     // El segundo argumento de la funcion es el archivo donde se guarda el log (puede ser NULL)
     error = GRBloadenv(&env, NULL);
     // Si retorna un error, no sigo
-    if (error) goto QUIT;
+    if (error) goto QUIT1;
     error = GRBsetintparam(env, "LogToConsole", 0);
     // Si retorna un error, no sigo
-    if (error) goto QUIT;
+    if (error) goto QUIT1;
 
     ///////////////////////////////////////////////////////////////////////////
     //                        Creo el modelo vacío                           //
@@ -65,7 +65,7 @@ void optimize_weight(Route* route)
     // más adelante voy a inicializar (por ahora tiene 0 variables)
     error = GRBnewmodel(env, &model, "Weights", 0, NULL, NULL, NULL, NULL, NULL);
     // Si da error, termino
-    if (error) goto QUIT;
+    if (error) goto QUIT1;
 
     ///////////////////////////////////////////////////////////////////////////
     //                    Hago que el modelo maximize                        //
@@ -74,7 +74,7 @@ void optimize_weight(Route* route)
     // Le paso al modelo, la variable a cambiar y el valor nuevo (min a max)
     error = GRBsetintattr(model, GRB_INT_ATTR_MODELSENSE, GRB_MAXIMIZE);
     // Si da error, termino
-    if (error) goto QUIT;
+    if (error) goto QUIT1;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -106,7 +106,7 @@ void optimize_weight(Route* route)
     // pasamos fo_const y vtype
     error = GRBaddvars(model, count * 2, 0, NULL, NULL, NULL, fo_ponderators, NULL, NULL, vtype, var_names);
     // Si tenemos un error, terminamos
-    if (error) goto QUIT;
+    if (error) goto QUIT1;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -132,10 +132,10 @@ void optimize_weight(Route* route)
 
     error = GRBaddconstr(model, 1, r00_ind, r00_val, GRB_EQUAL, 0.0, "R00");
     // Si da error, termino
-    if (error) goto QUIT;
+    if (error) goto QUIT1;
     error = GRBaddconstr(model, 1, r01_ind, r01_val, GRB_EQUAL, 0.0, "R01");
     // Si da error, termino
-    if (error) goto QUIT;
+    if (error) goto QUIT1;
 
     //////// R1: q_i - q_j = 0, para i, j pickup y delivery ////////
 
@@ -163,7 +163,7 @@ void optimize_weight(Route* route)
         // Creo la restriccion
         error = GRBaddconstr(model, 2, r1_ind, r1_val, GRB_EQUAL, 0.0, r_name);
         // Si da error, termino
-        if (error) goto QUIT;
+        if (error) goto QUIT1;
         // Le sumo 1 al numero de restriccion
         r_count++;
       }
@@ -188,7 +188,7 @@ void optimize_weight(Route* route)
       // Creo la restriccion
       error = GRBaddconstr(model, 1, r2_ind, r2_val, GRB_GREATER_EQUAL, 0.0, r_name);
       // Si da error, termino
-      if (error) goto QUIT;
+      if (error) goto QUIT1;
       // Le sumo 1 al numero de restriccion
       r_count++;
     }
@@ -215,7 +215,7 @@ void optimize_weight(Route* route)
         // Creo la restriccion
         error = GRBaddconstr(model, 1, r3_ind, r3_val, GRB_LESS_EQUAL, ln -> node -> total_weight, r_name);
         // Si da error, termino
-        if (error) goto QUIT;
+        if (error) goto QUIT1;
         // Le sumo 1 al numero de restriccion
         r_count++;
       }
@@ -248,7 +248,7 @@ void optimize_weight(Route* route)
       // Creo la restriccion
       error = GRBaddconstr(model, 3, r4_ind, r4_val, GRB_EQUAL, 0, r_name);
       // Si da error, termino
-      if (error) goto QUIT;
+      if (error) goto QUIT1;
       // Le sumo 1 al numero de restriccion
       r_count++;
     }
@@ -259,7 +259,7 @@ void optimize_weight(Route* route)
     double r5_val[1] = { 1.0 }; //le asigno constante 1
     error = GRBaddconstr(model, 1, r5_ind, r5_val, GRB_EQUAL, 0.0, "R5");
     // Si da error, termino
-    if (error) goto QUIT;
+    if (error) goto QUIT1;
 
     //////// R6: Q_i <= CAP  ////////
 
@@ -280,7 +280,7 @@ void optimize_weight(Route* route)
       // Creo la restriccion
       error = GRBaddconstr(model, 1, r6_ind, r6_val, GRB_LESS_EQUAL, route -> airplane -> total_capacity, r_name);
       // Si da error, termino
-      if (error) goto QUIT;
+      if (error) goto QUIT1;
       // Le sumo 1 al numero de restriccion
       r_count++;
     }
@@ -304,7 +304,7 @@ void optimize_weight(Route* route)
       // Creo la restriccion
       error = GRBaddconstr(model, 1, r7_ind, r7_val, GRB_GREATER_EQUAL, 0, r_name);
       // Si da error, termino
-      if (error) goto QUIT;
+      if (error) goto QUIT1;
       // Le sumo 1 al numero de restriccion
       r_count++;
     }
@@ -317,7 +317,7 @@ void optimize_weight(Route* route)
     // Despues de que termine puedo preguntar por los resultados
     error = GRBoptimize(model);
     // Si da error, termino
-    if (error) goto QUIT;
+    if (error) goto QUIT1;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -325,7 +325,7 @@ void optimize_weight(Route* route)
     ///////////////////////////////////////////////////////////////////////////
 
     error = GRBwrite(model, "model.lp");
-    if (error) goto QUIT;
+    if (error) goto QUIT1;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -337,20 +337,20 @@ void optimize_weight(Route* route)
     int optimstatus;
     error = GRBgetintattr(model, GRB_INT_ATTR_STATUS, &optimstatus);
     // Si hay un error, termino
-    if (error) goto QUIT;
+    if (error) goto QUIT1;
 
     // Obtengo el valor de la funcion objetivo final
     double fo_val;
     error = GRBgetdblattr(model, GRB_DBL_ATTR_OBJVAL, &fo_val);
     // Si hay error, termino
-    if (error) goto QUIT;
+    if (error) goto QUIT1;
 
     // Obtengo la solucion:
     // le paso un rango de las variables cullos resultados quiero y el arreglo
     // donde los quiero guardar
     error = GRBgetdblattrarray(model, GRB_DBL_ATTR_X, 0, count * 2, solution);
     // Si hay error, termino
-    if (error) goto QUIT;
+    if (error) goto QUIT1;
 
     // Si llego hasta aca, es que funciono bien
     if (optimstatus == GRB_OPTIMAL)
@@ -374,7 +374,7 @@ void optimize_weight(Route* route)
       printf("Hubo un error\n");
     }
 
-    QUIT:
+    QUIT1:
 
     // Si hubo un error imprimo su descripcion
     if (error)
@@ -406,4 +406,676 @@ void optimize_weight(Route* route)
     // La ruta se deja como no valida
     route -> valid = false;
   }
+}
+
+/** Codigo que optimiza las rutas de manera binaria */
+double* optimize_routes(Route** routes, int count, Map* map)
+{
+  // Input:
+  // routes: Arrelgo con todas las rutas a optimizar
+  // route_count: Cantidad de rutas
+
+  // Existe una variable x_i para cada ruta_i
+
+  // La funcion objetivo es la utilidad de cada ruta ponderada por el x_i
+
+  // La primera restriccion es con respecto a los pedidos:
+  // No se puede llevar mas de un pedido de lo que tiene
+
+  // La segunda restriccion es con respecto a las rutas:
+  // Existe una ruta para cada avion
+
+  /////////////////////////////////////////////////////////////////////////
+
+  // Variable donde guardo los outputs de las funciones de gurobi (errores)
+  int error = 0;
+
+  // Notacion:
+  // Las rutas estan numeradas del 0 al count - 1
+
+
+  // Arreglo donde guardo la solución (un valor por cada ruta)
+  double* solution = malloc(sizeof(double) * count);
+  // Creo el arreglo con los tipos de las variables
+  char* vtype = malloc(sizeof(char) * count);
+  // Creo el arreglo con las utilidades
+  double* fo_ponderators = malloc(sizeof(double) * count);
+  // Completo los ponderadores con la utilidad de cada ruta y los tipos como continua
+  for (int i = 0; i < count; i++)
+  {
+    // Hago continua a x_i
+    vtype[i] = GRB_BINARY;
+    assign_weights(routes[i]);
+    // Calculo la utilidad de las rutas y escribo la funcion objetivo:
+    // x_i * U_i
+    fo_ponderators[i] = utility(routes[i]);
+  }
+  // Arreglo con los nombres de las variables
+  char** var_names = malloc(sizeof(char*) * count);
+  for (int i = 0; i < count; i++)
+  {
+    // Creo los nombres de las variables
+    var_names[i] = calloc(8, sizeof(char));
+    sprintf(var_names[i], "x_%d", i);
+  }
+
+  ///////////////////////////////////////////////////////////////////////////
+  //            Crear el ambiente del modelo de optimizacion               //
+  ///////////////////////////////////////////////////////////////////////////
+
+  // Creo la variable de ambiente de gurobi y la completo con la funcion GRBloadenv
+  GRBenv *env = NULL;
+  // El segundo argumento de la funcion es el archivo donde se guarda el log (puede ser NULL)
+  error = GRBloadenv(&env, "ERRORES.txt");
+  // Si retorna un error, no sigo
+  if (error) goto QUIT2;
+  error = GRBsetintparam(env, "LogToConsole", 0);
+  // Si retorna un error, no sigo
+  if (error) goto QUIT2;
+
+  ///////////////////////////////////////////////////////////////////////////
+  //                        Creo el modelo vacío                           //
+  ///////////////////////////////////////////////////////////////////////////
+
+  // Variable que guarda al modelo
+  GRBmodel *model = NULL;
+  // Le paso a la funcion el ambiente, el modelo, el nombre y otros datos que
+  // más adelante voy a inicializar (por ahora tiene 0 variables)
+  error = GRBnewmodel(env, &model, "Routes", 0, NULL, NULL, NULL, NULL, NULL);
+  // Si da error, termino
+  if (error) goto QUIT2;
+
+  ///////////////////////////////////////////////////////////////////////////
+  //                    Hago que el modelo maximize                        //
+  ///////////////////////////////////////////////////////////////////////////
+
+  // Le paso al modelo, la variable a cambiar y el valor nuevo (min a max)
+  error = GRBsetintattr(model, GRB_INT_ATTR_MODELSENSE, GRB_MAXIMIZE);
+  // Si da error, termino
+  if (error) goto QUIT2;
+
+
+  ///////////////////////////////////////////////////////////////////////////
+  //                         Agregar variables                             //
+  ///////////////////////////////////////////////////////////////////////////
+
+  // Le paso el modelo, la cantidad de variables de la FO y sus tipos
+  // Por ahora dejaremos todo en 0 o NULL
+  // pasamos fo_const y vtype
+  error = GRBaddvars(model, count, 0, NULL, NULL, NULL, fo_ponderators, NULL, NULL, vtype, var_names);
+  // Si tenemos un error, terminamos
+  if (error) goto QUIT2;
+
+
+  ///////////////////////////////////////////////////////////////////////////
+  //                            Restricciones                              //
+  ///////////////////////////////////////////////////////////////////////////
+
+  // Argumentos de una restriccion:
+  // Le paso el modelo, el numero de variables de la restriccion, los indices y
+  // las constantes, el tipo de ecuacion (=, <, >, <=, >=), y la constante del
+  // otro lado de la ecuacion
+  // al final le doy nombre a la restriccion
+
+  //////// R1: suma x_i_k <= 1, para todo k en aviones ////////
+
+  // Creo un arreglo que indica cuantas rutas hay para cada avion
+  int* count_array = calloc(airplanes_count, sizeof(int));
+  // Cuento cuantas rutas hay por avion
+  for (int i = 0; i < count; i++)
+  {
+    count_array[routes[i] -> airplane -> id]++;
+  }
+
+  char r_name[32];
+
+  // Para cada avion
+  for (int k = 0; k < airplanes_count; k++)
+  {
+    // Creo los arreglos para las restricciones
+    int* r1_ind = malloc(sizeof(int) * count_array[k]);
+    double* r1_val = malloc(sizeof(double) * count_array[k]);
+
+    // Itero sobre las rutas agregando las variables de las rutas de esta avion
+    int index = 0;
+    for (int i = 0; i < count; i++)
+    {
+      // Si la ruta es del avion actual
+      if (routes[i] -> airplane -> id == k)
+      {
+        // Agrego la variable y su ponderador
+        r1_ind[index] = i;
+        r1_val[index] = 1.0;
+        // Sumo 1 al index
+        index++;
+      }
+    }
+    // Creo el nombre de la restriccion
+    sprintf(r_name, "R1_%d", k);
+    // Creo la restriccion
+    error = GRBaddconstr(model, count_array[k], r1_ind, r1_val, GRB_LESS_EQUAL, 1.0, r_name);
+    // Si da error, termino
+    if (error) goto QUIT2;
+    // Libero la memoria usada
+    free(r1_ind);
+    free(r1_val);
+  }
+
+  // Libero el count array
+  free(count_array);
+
+
+  //////// R2: suma para cada avion k q_i * x_k <= D_i para i pickup ////////
+
+
+  // Creo un arreglo para contar cuantas rutas contienen cada pedido
+  int* order_count_array = calloc(order_count, sizeof(int));
+
+  // itero sobre las rutas contando pedidos
+  for (int i = 0; i < count; i++)
+  {
+    // Esta es la ruta actual
+    Route* route = routes[i];
+
+    // Itero sobre la ruta actual
+    for (LNode* ln = route -> nodes -> start; ln; ln = ln -> next)
+    {
+      // Si el nodo es de pickup
+      if (ln -> node -> node_type == PICKUP)
+      {
+        // Agrego 1 al contador de rutas que contienen a este nodo
+        order_count_array[ln -> node -> id]++;
+      }
+    }
+  }
+
+  // Para cada pedido
+  for (int p = 0; p < order_count; p++)
+  {
+    double total_weight = map -> orders[p] -> pickup -> total_weight;
+    // Si hay al menos una ruta que lleva de este pedido
+    if (order_count_array[p] > 0)
+    {
+      // Variable donde guardo el peso total del pedido
+      // Creo los arreglos para las restricciones
+      int* r2_ind = malloc(sizeof(int) * order_count_array[p]);
+      double* r2_val = malloc(sizeof(double) * order_count_array[p]);
+
+      // Itero sobre las rutas agregando las variables de las rutas de esta avion
+      int index = 0;
+      for (int i = 0; i < count; i++)
+      {
+        // Ruta actual
+        Route* route = routes[i];
+        // Itero sobre la ruta
+        for (LNode* ln = route -> nodes -> start; ln; ln = ln -> next)
+        {
+          // Si el nodo es el actual
+          if (ln -> node -> id == p)
+          {
+            // Agrego la variable de la ruta y el peso recogido
+            r2_ind[index] = i;
+            r2_val[index] = ln -> delta_weight;
+            // Sumo 1 al index
+            index++;
+          }
+        }
+      }
+      // Creo el nombre de la restriccion
+      sprintf(r_name, "R2_%d", p);
+      error = GRBaddconstr(model, order_count_array[p], r2_ind, r2_val, GRB_LESS_EQUAL, total_weight, r_name);
+      // Si da error, termino
+      if (error) goto QUIT2;
+      // Libero la memoria usada
+      free(r2_ind);
+      free(r2_val);
+    }
+    // Sino, creo una restriccion sin variables para mantener el orden de los duales
+    else
+    {
+      // Variable donde guardo el peso total del pedido
+      // Creo los arreglos para las restricciones
+      int r2_ind[1] = {0};
+      double r2_val[1] = {0};
+      // Creo el nombre de la restriccion
+      sprintf(r_name, "R2_%d", p);
+      error = GRBaddconstr(model, order_count_array[p], r2_ind, r2_val, GRB_LESS_EQUAL, 0, r_name);
+      // Si da error, termino
+      if (error) goto QUIT2;
+    }
+  }
+
+  // Libero la memoria usada por el arreglo que cuenta
+  free(order_count_array);
+
+  ///////////////////////////////////////////////////////////////////////////
+  //                             Optimizo                                  //
+  ///////////////////////////////////////////////////////////////////////////
+
+  // Le paso el modelo y llamo a optimizar
+  // Despues de que termine puedo preguntar por los resultados
+  error = GRBoptimize(model);
+  // Si da error, termino
+  if (error) goto QUIT2;
+
+
+  ///////////////////////////////////////////////////////////////////////////
+  //                     Escribir modelo en archivo                        //
+  ///////////////////////////////////////////////////////////////////////////
+
+  error = GRBwrite(model, "maestro_restringido.lp");
+  if (error) goto QUIT2;
+
+
+  ///////////////////////////////////////////////////////////////////////////
+  //                 Obtengo resultados del problema                       //
+  ///////////////////////////////////////////////////////////////////////////
+
+  // Obtengo el status (optimizado, no solucion, timeout, etc...)
+  // guardo el valor en la variable optimstatus
+  int optimstatus;
+  error = GRBgetintattr(model, GRB_INT_ATTR_STATUS, &optimstatus);
+  // Si hay un error, termino
+  if (error) goto QUIT2;
+
+  // Obtengo el valor de la funcion objetivo final
+  double fo_val;
+  error = GRBgetdblattr(model, GRB_DBL_ATTR_OBJVAL, &fo_val);
+  // Si hay error, termino
+  if (error) goto QUIT2;
+
+  // Obtengo la solucion:
+  // le paso un rango de las variables cullos resultados quiero y el arreglo
+  // donde los quiero guardar
+  error = GRBgetdblattrarray(model, GRB_DBL_ATTR_X, 0, count, solution);
+  // Si hay error, termino
+  if (error) goto QUIT2;
+
+  // Si llegue hasta aca, estoy listo
+  if (optimstatus == GRB_INF_OR_UNBD)
+  {
+    printf("El modelo no tiene solucion o no esta acotado\n");
+    return NULL;
+  }
+
+  QUIT2:
+
+  // Si hubo un error imprimo su descripcion
+  if (error)
+  {
+    printf("error: %s\n", GRBgeterrormsg(env));
+    return NULL;
+  }
+
+  // Libero la memoria usada
+  GRBfreemodel(model);
+  GRBfreeenv(env);
+  free(vtype);
+  free(fo_ponderators);
+  for (int i = 0; i < count; i++)
+  {
+    free(var_names[i]);
+  }
+  free(var_names);
+
+  return solution;
+}
+
+/** Codigo que optimiza las rutas de manera relajada y da los duales */
+double* optimize_routes_relaxed(Route** routes, int count, Map* map)
+{
+  // Input:
+  // routes: Arrelgo con todas las rutas a optimizar
+  // route_count: Cantidad de rutas
+
+  // Existe una variable x_i para cada ruta_i
+
+  // La funcion objetivo es la utilidad de cada ruta ponderada por el x_i
+
+  // La primera restriccion es con respecto a los pedidos:
+  // No se puede llevar mas de un pedido de lo que tiene
+
+  // La segunda restriccion es con respecto a las rutas:
+  // Existe una ruta para cada avion
+
+  /////////////////////////////////////////////////////////////////////////
+
+  // Variable donde guardo los outputs de las funciones de gurobi (errores)
+  int error = 0;
+
+  // Notacion:
+  // Las rutas estan numeradas del 0 al count - 1
+
+
+  // Arreglo donde guardo la solución (un valor por cada ruta)
+  double* solution = malloc(sizeof(double) * count);
+  // Creo el arreglo con los tipos de las variables
+  char* vtype = malloc(sizeof(char) * count);
+  // Creo el arreglo con las utilidades
+  double* fo_ponderators = malloc(sizeof(double) * count);
+  // Completo los ponderadores con la utilidad de cada ruta y los tipos como continua
+  for (int i = 0; i < count; i++)
+  {
+    // Hago continua a x_i
+    vtype[i] = GRB_CONTINUOUS;
+    assign_weights(routes[i]);
+    // Calculo la utilidad de las rutas y escribo la funcion objetivo:
+    // x_i * U_i
+    fo_ponderators[i] = utility(routes[i]);
+  }
+  // Arreglo con los nombres de las variables
+  char** var_names = malloc(sizeof(char*) * count);
+  for (int i = 0; i < count; i++)
+  {
+    // Creo los nombres de las variables
+    var_names[i] = calloc(8, sizeof(char));
+    sprintf(var_names[i], "x%d", i);
+  }
+  int constrain_count = airplanes_count + count + order_count;
+
+  ///////////////////////////////////////////////////////////////////////////
+  //            Crear el ambiente del modelo de optimizacion               //
+  ///////////////////////////////////////////////////////////////////////////
+
+  // Creo la variable de ambiente de gurobi y la completo con la funcion GRBloadenv
+  GRBenv *env = NULL;
+  // El segundo argumento de la funcion es el archivo donde se guarda el log (puede ser NULL)
+  error = GRBloadenv(&env, "ERRORES.txt");
+  // Si retorna un error, no sigo
+  if (error) goto QUIT3;
+  error = GRBsetintparam(env, "LogToConsole", 0);
+  // Si retorna un error, no sigo
+  if (error) goto QUIT3;
+
+  ///////////////////////////////////////////////////////////////////////////
+  //                        Creo el modelo vacío                           //
+  ///////////////////////////////////////////////////////////////////////////
+
+  // Variable que guarda al modelo
+  GRBmodel *model = NULL;
+  // Le paso a la funcion el ambiente, el modelo, el nombre y otros datos que
+  // más adelante voy a inicializar (por ahora tiene 0 variables)
+  error = GRBnewmodel(env, &model, "Routes", 0, NULL, NULL, NULL, NULL, NULL);
+  // Si da error, termino
+  if (error) goto QUIT3;
+
+  ///////////////////////////////////////////////////////////////////////////
+  //                    Hago que el modelo maximize                        //
+  ///////////////////////////////////////////////////////////////////////////
+
+  // Le paso al modelo, la variable a cambiar y el valor nuevo (min a max)
+  error = GRBsetintattr(model, GRB_INT_ATTR_MODELSENSE, GRB_MAXIMIZE);
+  // Si da error, termino
+  if (error) goto QUIT3;
+
+
+  ///////////////////////////////////////////////////////////////////////////
+  //                         Agregar variables                             //
+  ///////////////////////////////////////////////////////////////////////////
+
+  // Le paso el modelo, la cantidad de variables de la FO y sus tipos
+  // Por ahora dejaremos todo en 0 o NULL
+  // pasamos fo_const y vtype
+  error = GRBaddvars(model, count, 0, NULL, NULL, NULL, fo_ponderators, NULL, NULL, vtype, var_names);
+  // Si tenemos un error, terminamos
+  if (error) goto QUIT3;
+
+
+  ///////////////////////////////////////////////////////////////////////////
+  //                            Restricciones                              //
+  ///////////////////////////////////////////////////////////////////////////
+
+  // Argumentos de una restriccion:
+  // Le paso el modelo, el numero de variables de la restriccion, los indices y
+  // las constantes, el tipo de ecuacion (=, <, >, <=, >=), y la constante del
+  // otro lado de la ecuacion
+  // al final le doy nombre a la restriccion
+
+  ////////  R0: x_i <= 1 (las x_i son de 0 a 1) ////////
+
+  // Creo un arreglo con los indices de las variables a usar
+  int r0_ind[1];
+  // Cre un arreglo con las constantes que acompañan a las variables
+  double r0_val[1];
+  // Creo un char con el nombre de la restriccion
+  char r_name[32];
+  // Itero sobre las rutas
+  for (int i = 0; i < count; i++)
+  {
+    // Tomo la variable i y le pongo constante 1
+    r0_ind[0] = i;
+    r0_val[0] = 1;
+    // Creo el nombre de la restriccion
+    sprintf(r_name, "R0%d", i);
+    // Creo la restriccion
+    error = GRBaddconstr(model, 1, r0_ind, r0_val, GRB_LESS_EQUAL, 1.0, r_name);
+    // Si da error, termino
+    if (error) goto QUIT3;
+    // Le sumo 1 al numero de restriccion
+  }
+
+  //////// R1: suma x_i_k <= 1, para todo k en aviones ////////
+
+  // Creo un arreglo que indica cuantas rutas hay para cada avion
+  int* count_array = calloc(airplanes_count, sizeof(int));
+  // Cuento cuantas rutas hay por avion
+  for (int i = 0; i < count; i++)
+  {
+    count_array[routes[i] -> airplane -> id]++;
+  }
+
+  // Para cada avion
+  for (int k = 0; k < airplanes_count; k++)
+  {
+    // Creo los arreglos para las restricciones
+    int* r1_ind = malloc(sizeof(int) * count_array[k]);
+    double* r1_val = malloc(sizeof(double) * count_array[k]);
+
+    // Itero sobre las rutas agregando las variables de las rutas de esta avion
+    int index = 0;
+    for (int i = 0; i < count; i++)
+    {
+      // Si la ruta es del avion actual
+      if (routes[i] -> airplane -> id == k)
+      {
+        // Agrego la variable y su ponderador
+        r1_ind[index] = i;
+        r1_val[index] = 1.0;
+        // Sumo 1 al index
+        index++;
+      }
+    }
+    // Creo el nombre de la restriccion
+    sprintf(r_name, "R1_%d", k);
+    // Creo la restriccion
+    error = GRBaddconstr(model, count_array[k], r1_ind, r1_val, GRB_LESS_EQUAL, 1.0, r_name);
+    // Si da error, termino
+    if (error) goto QUIT3;
+    // Libero la memoria usada
+    free(r1_ind);
+    free(r1_val);
+  }
+
+  // Libero el count array
+  free(count_array);
+
+
+  //////// R2: suma para cada avion k q_i * x_k <= D_i para i pickup ////////
+
+
+  // Creo un arreglo para contar cuantas rutas contienen cada pedido
+  int* order_count_array = calloc(order_count, sizeof(int));
+
+  // itero sobre las rutas contando pedidos
+  for (int i = 0; i < count; i++)
+  {
+    // Esta es la ruta actual
+    Route* route = routes[i];
+
+    // Itero sobre la ruta actual
+    for (LNode* ln = route -> nodes -> start; ln; ln = ln -> next)
+    {
+      // Si el nodo es de pickup
+      if (ln -> node -> node_type == PICKUP)
+      {
+        // Agrego 1 al contador de rutas que contienen a este nodo
+        order_count_array[ln -> node -> id]++;
+      }
+    }
+  }
+
+  // Para cada pedido
+  for (int p = 0; p < order_count; p++)
+  {
+    double total_weight = map -> orders[p] -> pickup -> total_weight;
+    // Si hay al menos una ruta que lleva de este pedido
+    if (order_count_array[p] > 0)
+    {
+      // Variable donde guardo el peso total del pedido
+      // Creo los arreglos para las restricciones
+      int* r2_ind = malloc(sizeof(int) * order_count_array[p]);
+      double* r2_val = malloc(sizeof(double) * order_count_array[p]);
+
+      // Itero sobre las rutas agregando las variables de las rutas de esta avion
+      int index = 0;
+      for (int i = 0; i < count; i++)
+      {
+        // Ruta actual
+        Route* route = routes[i];
+        // Itero sobre la ruta
+        for (LNode* ln = route -> nodes -> start; ln; ln = ln -> next)
+        {
+          // Si el nodo es el actual
+          if (ln -> node -> id == p)
+          {
+            // Agrego la variable de la ruta y el peso recogido
+            r2_ind[index] = i;
+            r2_val[index] = ln -> delta_weight;
+            // Sumo 1 al index
+            index++;
+          }
+        }
+      }
+      // Creo el nombre de la restriccion
+      sprintf(r_name, "R2_%d", p);
+      error = GRBaddconstr(model, order_count_array[p], r2_ind, r2_val, GRB_LESS_EQUAL, total_weight, r_name);
+      // Si da error, termino
+      if (error) goto QUIT3;
+      // Libero la memoria usada
+      free(r2_ind);
+      free(r2_val);
+    }
+    // Sino, creo una restriccion sin variables para mantener el orden de los duales
+    else
+    {
+      // Variable donde guardo el peso total del pedido
+      // Creo los arreglos para las restricciones
+      int r2_ind[1] = {0};
+      double r2_val[1] = {0};
+      // Creo el nombre de la restriccion
+      sprintf(r_name, "R2_%d", p);
+      error = GRBaddconstr(model, order_count_array[p], r2_ind, r2_val, GRB_LESS_EQUAL, 0, r_name);
+      // Si da error, termino
+      if (error) goto QUIT3;
+    }
+  }
+
+  // Libero la memoria usada por el arreglo que cuenta
+  free(order_count_array);
+
+  ///////////////////////////////////////////////////////////////////////////
+  //                             Optimizo                                  //
+  ///////////////////////////////////////////////////////////////////////////
+
+  // Le paso el modelo y llamo a optimizar
+  // Despues de que termine puedo preguntar por los resultados
+  error = GRBoptimize(model);
+  // Si da error, termino
+  if (error) goto QUIT3;
+
+
+  ///////////////////////////////////////////////////////////////////////////
+  //                     Escribir modelo en archivo                        //
+  ///////////////////////////////////////////////////////////////////////////
+
+  error = GRBwrite(model, "maestro.lp");
+  if (error) goto QUIT3;
+
+
+  ///////////////////////////////////////////////////////////////////////////
+  //                 Obtengo resultados del problema                       //
+  ///////////////////////////////////////////////////////////////////////////
+
+  // Obtengo el status (optimizado, no solucion, timeout, etc...)
+  // guardo el valor en la variable optimstatus
+  int optimstatus;
+  error = GRBgetintattr(model, GRB_INT_ATTR_STATUS, &optimstatus);
+  // Si hay un error, termino
+  if (error) goto QUIT3;
+
+  // Obtengo el valor de la funcion objetivo final
+  double fo_val;
+  error = GRBgetdblattr(model, GRB_DBL_ATTR_OBJVAL, &fo_val);
+  // Si hay error, termino
+  if (error) goto QUIT3;
+
+  // Obtengo la solucion:
+  // le paso un rango de las variables cullos resultados quiero y el arreglo
+  // donde los quiero guardar
+  error = GRBgetdblattrarray(model, GRB_DBL_ATTR_X, 0, count, solution);
+  // Si hay error, termino
+  if (error) goto QUIT3;
+
+  // Si llego hasta aca, es que funciono bien
+  double* duals = malloc(sizeof(double) * constrain_count);
+  error = GRBgetdblattrarray(model, GRB_DBL_ATTR_PI, 0, constrain_count, duals);
+
+  printf("Duales\n");
+  for (int i = 0; i < constrain_count; i++)
+  {
+    if (i < count)
+    {
+      continue;
+    }
+    else if (i - count < airplanes_count)
+    {
+      int air_id = i - count;
+      map -> airplanes[air_id] -> dual_gamma = duals[i];
+      printf("Dual gamma avion %d: %lf\n", air_id, duals[i]);
+    }
+    else
+    {
+      int order_id = i - count - airplanes_count;
+      map -> orders[order_id] -> pickup -> dual_pi = duals[i];
+      printf("Dual pi pedido %d: %lf\n", order_id, duals[i]);
+    }
+  }
+
+  if (optimstatus == GRB_INF_OR_UNBD)
+  {
+    printf("El modelo no tiene solucion o no esta acotado\n");
+    return NULL;
+  }
+
+  QUIT3:
+
+  // Si hubo un error imprimo su descripcion
+  if (error)
+  {
+    printf("error: %s\n", GRBgeterrormsg(env));
+    return NULL;
+  }
+
+  // Libero la memoria usada
+  GRBfreemodel(model);
+  GRBfreeenv(env);
+  free(vtype);
+  free(fo_ponderators);
+  for (int i = 0; i < count; i++)
+  {
+    free(var_names[i]);
+  }
+  free(var_names);
+
+  return solution;
 }

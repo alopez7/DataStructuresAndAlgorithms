@@ -1,0 +1,2 @@
+Optimizar drop and add con poda
+Rutas pueden ser invalidas luego de inicializar

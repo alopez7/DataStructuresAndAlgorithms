@@ -70,13 +70,13 @@ void ans_destroy(ANS* ans)
 /** Imprime el nombre de la operacion */
 void operation_print(int i)
 {
-  if (i == 0) printf("DROP AND ADD:\n");
-  else if (i == 1) printf("SWAP:\n");
-  else if (i == 2) printf("IRRE:\n");
-  else if (i == 3) printf("IRRR:\n");
-  else if (i == 4) printf("IRMRE:\n");
-  else if (i == 5) printf("IRMRR:\n");
-  else printf("DELETE:\n");
+  if (i == 0) printf("DROP AND ADD: ");
+  else if (i == 1) printf("SWAP: ");
+  else if (i == 2) printf("IRRE: ");
+  else if (i == 3) printf("IRRR: ");
+  else if (i == 4) printf("IRMRE: ");
+  else if (i == 5) printf("IRMRR: ");
+  else printf("DELETE: ");
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -765,7 +765,7 @@ void op_delete(Route* route, ANS* ans)
 void refresh_probabilities(ANS* ans, int operation_id, double old_of, double new_of, double op_time)
 {
   // Epsilon de peso
-  double epsilon = 0.00001;
+  double epsilon = 0.001;
 
   // Peso de la nueva mejora con respecto a la vieja
   double prob_weight = 0.7;
@@ -874,6 +874,7 @@ Route* run(ANS* ans, Route* original_route)
   // Hago las operaciones iniciales sobre la ruta
   Route* route = initialize(ans, original_route);
 
+  printf("Inicializada:\n");
   route_print(route);
 
 
@@ -902,11 +903,11 @@ Route* run(ANS* ans, Route* original_route)
         break;
       }
     }
+    operation_print(operation_id);
 
     // Si la operacion no esta bloqueada
     if (bloq[operation_id] == 0)
     {
-      operation_print(operation_id);
       // Hago la operacion calculando su tiempo
       double start_clock = clock();
       ans -> operations[operation_id](route, ans);
@@ -922,17 +923,18 @@ Route* run(ANS* ans, Route* original_route)
       if (route -> objective_function <= best_of)
       {
         bloq[operation_id] = 1;
-        printf("No mejora\n\n");
+        printf("No mejora\n");
       }
       else
       {
         best_of = route -> objective_function;
-        printf("Mejora a %lf\n\n", route -> objective_function);
+        printf("Mejora a %lf\n", route -> objective_function);
+        route -> valid = true;
       }
     }
     else
     {
-      printf("No se ejecuta\n\n");
+      printf("No se ejecuta\n");
     }
   }
 

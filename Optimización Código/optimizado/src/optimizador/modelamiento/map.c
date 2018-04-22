@@ -124,6 +124,7 @@ static void map_nodes_init(Map* map, char* map_path, char* airplanes_path)
     // Relleno sus variables
     fscanf(airplanes_file, "%lf", &map -> airplanes[i] -> total_capacity);
     map -> airplanes[i] -> id = i;
+    map -> airplanes[i] -> dual_gamma = 0;
   }
 
   // cierro los archivos

@@ -224,7 +224,6 @@ Route* route_init(Airplane* airplane)
   List* list = route -> nodes;
 
   // Inicializo los valores de la ruta
-  route -> dual_gamma = 0;
   route -> valid = true;
 
   // Creo los Lnodos inicial y final vacios
@@ -270,7 +269,6 @@ Route* route_copy(Route* route, Map* map)
 
   // Copio las variables simples de copiar
   copy -> airplane = route -> airplane;
-  copy -> dual_gamma = route -> dual_gamma;
   copy -> objective_function = route -> objective_function;
   copy -> valid = route -> valid;
 
@@ -971,7 +969,7 @@ double objective_function(Route* route, Map* map)
     distances += distance(ln -> node -> father, ln -> next -> node -> father);
   }
   // agrego el dual gamma
-  duals += route -> dual_gamma;
+  duals += route -> airplane -> dual_gamma;
 
 
   // Costo de cancelacion
@@ -984,7 +982,7 @@ double objective_function(Route* route, Map* map)
   // printf("Fees: %lf\n", fees);
   // printf("Distances: %lf\n", distances);
   // printf("Duals: %lf\n", duals);
-  // printf("DualGamma: %lf\n", route -> dual_gamma);
+  // printf("DualGamma: %lf\n", route -> airplane -> dual_gamma);
   // printf("Costo de cancelacion: %lf\n", cancellation_cost);
   // printf("Total: %lf\n\n", total);
 
@@ -1016,7 +1014,7 @@ double fast_of(Route* route, Map* map)
     distances += distance(ln -> node -> father, ln -> next -> node -> father);
   }
   // agrego el dual gamma
-  duals += route -> dual_gamma;
+  duals += route -> airplane -> dual_gamma;
 
   // Costo de cancelacion
   cancellation_cost = get_cancellation_cost(route);
@@ -1028,10 +1026,40 @@ double fast_of(Route* route, Map* map)
   // printf("Fees: %lf\n", fees);
   // printf("Distances: %lf\n", distances);
   // printf("Duals: %lf\n", duals);
-  // printf("DualGamma: %lf\n", route -> dual_gamma);
+  // printf("DualGamma: %lf\n", route -> airplane -> dual_gamma);
   // printf("Costo de cancelacion: %lf\n", cancellation_cost);
   // printf("Total: %lf\n\n", total);
 
+  return total;
+}
+
+/** Calcula la utilidad de la ruta */
+double utility(Route* route)
+{
+  // Partes de la utilidad
+  double fees = 0;
+  double distances = 0;
+  double cancellation_cost = 0;
+
+  // Sumo las tarifas y resto los costos de viaje
+  for (LNode* ln = route -> nodes -> start; ln -> next; ln = ln -> next)
+  {
+    // Si es pickup
+    if (ln -> node -> node_type == PICKUP)
+    {
+      // sumo la parte de la carga que se cargo
+      fees += ln -> node -> fee * ln -> delta_weight;
+    }
+
+    // Resto distancias
+    distances += distance(ln -> node -> father, ln -> next -> node -> father);
+  }
+
+  // Costo de cancelacion
+  cancellation_cost = get_cancellation_cost(route);
+
+  // Calculo el total y lo retorno
+  double total = fees - distances - cancellation_cost;
   return total;
 }
 

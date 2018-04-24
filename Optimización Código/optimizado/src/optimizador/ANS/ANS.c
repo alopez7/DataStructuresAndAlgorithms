@@ -50,6 +50,18 @@ ANS* ans_init(char* orders_filepath, char* airplanes_filepath, char* bp_filepath
   }
   ans -> total_weight = 7;
 
+  // Creo los arreglos con las rutas para cada avion
+  ans -> route_array_size = malloc(sizeof(int) * airplanes_count);
+  ans -> route_count = malloc(sizeof(int) * airplanes_count);
+  ans -> routes = malloc(sizeof(Route**) * airplanes_count);
+  int initial_size = 16;
+  for (int i = 0; i < airplanes_count; i++)
+  {
+    ans -> route_array_size[i] = initial_size;
+    ans -> route_count[i] = 0;
+    ans -> routes[i] = malloc(sizeof(Route*) * initial_size);
+  }
+
   // Retorno el ans
   return ans;
 }
@@ -65,6 +77,31 @@ void ans_destroy(ANS* ans)
 
   // Libera el ans
   free(ans);
+}
+
+/** Agrega una ruta al avion k */
+void insert_route(ANS* ans, Route* new_route, int k)
+{
+  // Si el arreglo k esta lleno, duplico su tamanio
+  if (ans -> route_count[k] == ans -> route_array_size[k])
+  {
+    // Creo un arreglo nuevo
+    Route** new_array = malloc(sizeof(Route*) * ans -> route_array_size[k] * 2);
+
+    // Traspaso las rutas de un arreglo al otro
+    for (int r = 0; r < ans -> route_array_size[k]; r++)
+    {
+      new_array[r] = ans -> routes[k][r];
+    }
+
+    // Actualizo el tamanio del arreglo
+    ans -> route_array_size[k] *= 2;
+  }
+
+  // Inserto la ruta
+  ans -> routes[k][ans -> route_count[k]] = new_route;
+  // Actualizo la cantidad de rutas actuales
+  ans -> route_count[k]++;
 }
 
 /** Imprime el nombre de la operacion */
@@ -755,6 +792,56 @@ void op_delete(Route* route, ANS* ans)
   route -> objective_function = objective_function(route, ans -> map);
 }
 
+/** Hace drop and add hasta que no puede mejorar */
+Route* initial_drop_and_add(Route* base, ANS* ans)
+{
+  printf("DOING DAA\n");
+
+  // base: es la ruta a copiar y modificar
+  // ans: contiene la informacion del mapa y de la planificacion base
+
+  // Copio la ruta
+  Route* route = route_copy(base, ans -> map);
+
+  // Hago drop_and_add hasta que no mejore
+  double OF = route -> objective_function;
+  while (true)
+  {
+    printf("OF: %lf\n", OF);
+    op_drop_and_add(route, ans);
+    route -> objective_function = objective_function(route, ans -> map);
+    if (route -> objective_function <= OF) break;
+    OF = route -> objective_function;
+  }
+
+  // Retorno la ruta
+  return route;
+}
+
+/** Hace swap hasta que no puede mejorar */
+Route* initial_swap(Route* base, ANS* ans)
+{
+  printf("DOING SWAP\n");
+  // base: es la ruta a copiar y modificar
+  // ans: contiene la informacion del mapa y de la planificacion base
+
+  // Copio la ruta
+  Route* route = route_copy(base, ans -> map);
+
+  // Hago swap hasta que no mejore
+  double OF = route -> objective_function;
+  while (true)
+  {
+    printf("OF: %lf\n", OF);
+    op_swap(route, ans);
+    route -> objective_function = objective_function(route, ans -> map);
+    if (route -> objective_function <= OF) break;
+    OF = route -> objective_function;
+  }
+
+  // Retorno la ruta
+  return route;
+}
 
 /////////////////////////////////////////////////////////////////////////
 //                    Funciones propias del ans                        //

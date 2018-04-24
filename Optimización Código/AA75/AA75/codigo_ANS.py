@@ -196,6 +196,9 @@ class ANS():
 		'''
 		BestSolution.NumRuta = len(self.rutas)+1
 		BestSolution.CostoRuta = self.Utilidad(BestSolution) #Guarda la utilidad de la ruta y no su valor de funcion objetivo
+		'''
+		El valor del costo reducido es el mejor valor de funcion objetivo de la ruta
+		'''
 		self.CostoReducido = BestUtility
 
 		'''

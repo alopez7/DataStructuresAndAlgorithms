@@ -23,6 +23,12 @@ struct ans
   double prob_weights[7];
   /** Peso probabilistico total */
   double total_weight;
+  /** Arreglo con las rutas actuales separado por avion*/
+  Route*** routes;
+  /** Cantidad de rutas que tengo actualmente para cada avion*/
+  int* route_count;
+  /** tamanio del arreglo de rutas actualemnte para cada avion*/
+  int* route_array_size;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -34,6 +40,9 @@ ANS* ans_init(char* orders_filepath, char* airplanes_filepath, char* bp_filepath
 
 /** Libera la memoria asociada */
 void ans_destroy(ANS* ans);
+
+/** Agrega una ruta al avion k */
+void insert_route(ANS* ans, Route* new_route, int k);
 
 /** Imprime el nombre de la operacion */
 void operation_print(int i);
@@ -63,6 +72,11 @@ void op_irmrr(Route* route, ANS* ans);
 /** Elimina pedidos de la ruta hasta que no mejore */
 void op_delete(Route* route, ANS* ans);
 
+/** Version especial de drop and add para rutas iniciales */
+Route* initial_drop_and_add(Route* base, ANS* ans);
+
+/** Version especial de swap para rutas iniciales */
+Route* initial_swap(Route* base, ANS* ans);
 
 /////////////////////////////////////////////////////////////////////////
 //                          Optimizaciones                             //

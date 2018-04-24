@@ -409,10 +409,10 @@ void optimize_weight(Route* route)
 }
 
 /** Codigo que optimiza las rutas de manera binaria */
-double* optimize_routes(Route** routes, int count, Map* map)
+double* optimize_routes(Route*** separated_routes, int* counts, Map* map)
 {
   // Input:
-  // routes: Arrelgo con todas las rutas a optimizar
+  // routes: Arreglo con todas las rutas a optimizar
   // route_count: Cantidad de rutas
 
   // Existe una variable x_i para cada ruta_i
@@ -433,7 +433,24 @@ double* optimize_routes(Route** routes, int count, Map* map)
   // Notacion:
   // Las rutas estan numeradas del 0 al count - 1
 
-
+  // Cuento cuantas rutas hay en total
+  int count = 0;
+  for (int k = 0; k < airplanes_count; k++)
+  {
+    count += counts[k];
+  }
+  // Creo un arreglo con todas las rutas
+  Route** routes = malloc(sizeof(Route*) * count);
+  // Traspaso todas las rutas al arreglo
+  int index = 0;
+  for (int k = 0; k < airplanes_count; k++)
+  {
+    for (int i = 0; i < counts[k]; i++)
+    {
+      routes[index] = separated_routes[k][i];
+      index++;
+    }
+  }
   // Arreglo donde guardo la solución (un valor por cada ruta)
   double* solution = malloc(sizeof(double) * count);
   // Creo el arreglo con los tipos de las variables
@@ -717,12 +734,13 @@ double* optimize_routes(Route** routes, int count, Map* map)
     free(var_names[i]);
   }
   free(var_names);
+  free(routes);
 
   return solution;
 }
 
 /** Codigo que optimiza las rutas de manera relajada y da los duales */
-double* optimize_routes_relaxed(Route** routes, int count, Map* map)
+double* optimize_routes_relaxed(Route*** separated_routes, int* counts, Map* map)
 {
   // Input:
   // routes: Arrelgo con todas las rutas a optimizar
@@ -746,7 +764,24 @@ double* optimize_routes_relaxed(Route** routes, int count, Map* map)
   // Notacion:
   // Las rutas estan numeradas del 0 al count - 1
 
-
+  // Cuento cuantas rutas hay en total
+  int count = 0;
+  for (int k = 0; k < airplanes_count; k++)
+  {
+    count += counts[k];
+  }
+  // Creo un arreglo con todas las rutas
+  Route** routes = malloc(sizeof(Route*) * count);
+  // Traspaso todas las rutas al arreglo
+  int index = 0;
+  for (int k = 0; k < airplanes_count; k++)
+  {
+    for (int i = 0; i < counts[k]; i++)
+    {
+      routes[index] = separated_routes[k][i];
+      index++;
+    }
+  }
   // Arreglo donde guardo la solución (un valor por cada ruta)
   double* solution = malloc(sizeof(double) * count);
   // Creo el arreglo con los tipos de las variables
@@ -1076,6 +1111,7 @@ double* optimize_routes_relaxed(Route** routes, int count, Map* map)
     free(var_names[i]);
   }
   free(var_names);
+  free(routes);
 
   return solution;
 }

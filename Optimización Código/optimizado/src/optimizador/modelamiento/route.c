@@ -979,12 +979,15 @@ double objective_function(Route* route, Map* map)
   double total = fees - distances - duals - cancellation_cost;
 
   // // Imprimo cada uno de los elementos
-  // printf("Fees: %lf\n", fees);
-  // printf("Distances: %lf\n", distances);
-  // printf("Duals: %lf\n", duals);
-  // printf("DualGamma: %lf\n", route -> airplane -> dual_gamma);
-  // printf("Costo de cancelacion: %lf\n", cancellation_cost);
-  // printf("Total: %lf\n\n", total);
+  if (duals > 0 || total == 0)
+  {
+    printf("Fees: %lf\n", fees);
+    printf("Distances: %lf\n", distances);
+    printf("Duals: %lf\n", duals);
+    printf("DualGamma: %lf\n", route -> airplane -> dual_gamma);
+    printf("Costo de cancelacion: %lf\n", cancellation_cost);
+    printf("Total: %lf\n\n", total);
+  }
 
   return total;
 }

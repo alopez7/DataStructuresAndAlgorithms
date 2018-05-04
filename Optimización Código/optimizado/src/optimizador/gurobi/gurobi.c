@@ -406,6 +406,7 @@ void optimize_weight(Route* route)
     // La ruta se deja como no valida
     route -> valid = false;
   }
+  printf("Academic license\n");
 }
 
 /** Codigo que optimiza las rutas de manera binaria */

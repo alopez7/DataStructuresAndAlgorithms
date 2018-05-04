@@ -1,0 +1,526 @@
+
+Gurobi 7.5.2 (linux64) logging started Thu May  3 23:35:18 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 118 rows, 33 columns and 238 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [4e+01, 4e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 90 rows and 10 columns
+Presolve time: 0.00s
+Presolved: 28 rows, 23 columns, 128 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.4718207e+04   1.338750e+02   0.000000e+00      0s
+      24    5.5821033e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 24 iterations and 0.00 seconds
+Optimal objective  5.582103297e+03
+
+Gurobi 7.5.2 (linux64) logging started Thu May  3 23:35:19 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 123 rows, 38 columns and 255 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [4e+01, 4e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 90 rows and 12 columns
+Presolve time: 0.00s
+Presolved: 33 rows, 26 columns, 162 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.7437642e+04   1.120000e+02   0.000000e+00      0s
+      16    5.3390825e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 16 iterations and 0.00 seconds
+Optimal objective  5.339082513e+03
+
+Gurobi 7.5.2 (linux64) logging started Thu May  3 23:35:20 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 129 rows, 44 columns and 293 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [2e+01, 4e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 96 rows and 16 columns
+Presolve time: 0.00s
+Presolved: 33 rows, 28 columns, 184 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.2349427e+04   1.861250e+02   0.000000e+00      0s
+      24    4.1185410e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 24 iterations and 0.00 seconds
+Optimal objective  4.118541046e+03
+
+Gurobi 7.5.2 (linux64) logging started Thu May  3 23:35:20 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 135 rows, 50 columns and 356 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [4e+01, 4e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 96 rows and 12 columns
+Presolve time: 0.00s
+Presolved: 39 rows, 38 columns, 255 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.5240477e+04   9.150000e+01   0.000000e+00      0s
+      33    5.3780173e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 33 iterations and 0.00 seconds
+Optimal objective  5.378017267e+03
+
+Gurobi 7.5.2 (linux64) logging started Thu May  3 23:35:20 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 140 rows, 55 columns and 421 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [4e+01, 4e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 99 rows and 15 columns
+Presolve time: 0.00s
+Presolved: 41 rows, 40 columns, 290 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    3.2319924e+04   2.403750e+02   0.000000e+00      0s
+      34    5.9811084e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 34 iterations and 0.00 seconds
+Optimal objective  5.981108387e+03
+
+Gurobi 7.5.2 (linux64) logging started Thu May  3 23:35:21 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 147 rows, 62 columns and 438 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [4e+01, 4e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 108 rows and 16 columns
+Presolve time: 0.00s
+Presolved: 39 rows, 46 columns, 293 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.7506138e+04   9.325000e+01   0.000000e+00      0s
+      41    5.6594940e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 41 iterations and 0.00 seconds
+Optimal objective  5.659494015e+03
+
+Gurobi 7.5.2 (linux64) logging started Thu May  3 23:35:21 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 153 rows, 68 columns and 507 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [4e+01, 4e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 113 rows and 18 columns
+Presolve time: 0.00s
+Presolved: 40 rows, 50 columns, 338 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.9761448e+04   1.972500e+02   0.000000e+00      0s
+      42    6.1369967e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 42 iterations and 0.00 seconds
+Optimal objective  6.136996707e+03
+
+Gurobi 7.5.2 (linux64) logging started Thu May  3 23:35:21 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 160 rows, 75 columns and 534 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [4e+01, 3e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 121 rows and 19 columns
+Presolve time: 0.00s
+Presolved: 39 rows, 56 columns, 365 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.6470565e+04   2.142500e+02   0.000000e+00      0s
+Extra one simplex iteration after uncrush
+      52    4.9317755e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 52 iterations and 0.00 seconds
+Optimal objective  4.931775508e+03
+
+Gurobi 7.5.2 (linux64) logging started Thu May  3 23:35:21 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 167 rows, 82 columns and 628 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [4e+01, 3e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 122 rows and 20 columns
+Presolve time: 0.00s
+Presolved: 45 rows, 62 columns, 441 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.0099290e+04   1.295000e+02   0.000000e+00      0s
+      57    6.0091279e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 57 iterations and 0.01 seconds
+Optimal objective  6.009127885e+03
+
+Gurobi 7.5.2 (linux64) logging started Thu May  3 23:35:22 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 170 rows, 85 columns and 610 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [2e+01, 3e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 128 rows and 23 columns
+Presolve time: 0.00s
+Presolved: 42 rows, 62 columns, 407 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.8682790e+04   2.131250e+02   0.000000e+00      0s
+      73    6.1746131e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 73 iterations and 0.01 seconds
+Optimal objective  6.174613078e+03
+
+Gurobi 7.5.2 (linux64) logging started Thu May  3 23:35:22 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 177 rows, 92 columns and 663 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [4e+01, 3e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 137 rows and 27 columns
+Presolve time: 0.00s
+Presolved: 40 rows, 65 columns, 429 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.8769076e+04   9.225000e+01   0.000000e+00      0s
+      42    5.0225872e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 42 iterations and 0.00 seconds
+Optimal objective  5.022587229e+03
+
+Gurobi 7.5.2 (linux64) logging started Thu May  3 23:35:22 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 183 rows, 98 columns and 741 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [2e+01, 3e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 138 rows and 22 columns
+Presolve time: 0.00s
+Presolved: 45 rows, 76 columns, 525 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.8622011e+04   2.215000e+02   0.000000e+00      0s
+      66    6.0659655e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 66 iterations and 0.01 seconds
+Optimal objective  6.065965548e+03
+
+Gurobi 7.5.2 (linux64) logging started Thu May  3 23:35:22 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 188 rows, 103 columns and 793 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [3e+01, 3e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 140 rows and 23 columns
+Presolve time: 0.00s
+Presolved: 48 rows, 80 columns, 579 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.8680043e+04   9.075000e+01   0.000000e+00      0s
+      71    6.6924428e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 71 iterations and 0.01 seconds
+Optimal objective  6.692442783e+03
+
+Gurobi 7.5.2 (linux64) logging started Thu May  3 23:35:23 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 194 rows, 109 columns and 799 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [1e+01, 3e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 149 rows and 32 columns
+Presolve time: 0.00s
+Presolved: 45 rows, 77 columns, 558 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.5699924e+04   1.152500e+02   0.000000e+00      0s
+      47    5.1610240e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 47 iterations and 0.00 seconds
+Optimal objective  5.161024047e+03
+
+Gurobi 7.5.2 (linux64) logging started Thu May  3 23:35:23 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 199 rows, 114 columns and 883 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [7e+00, 4e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 151 rows and 24 columns
+Presolve time: 0.00s
+Presolved: 48 rows, 90 columns, 668 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.9609029e+04   8.212500e+01   0.000000e+00      0s
+      70    6.0888136e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 70 iterations and 0.01 seconds
+Optimal objective  6.088813590e+03
+
+Gurobi 7.5.2 (linux64) logging started Thu May  3 23:35:24 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 203 rows, 118 columns and 925 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [7e+00, 3e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 154 rows and 25 columns
+Presolve time: 0.00s
+Presolved: 49 rows, 93 columns, 687 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.7212953e+04   1.207500e+02   0.000000e+00      0s
+      74    6.4897965e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 74 iterations and 0.01 seconds
+Optimal objective  6.489796466e+03
+
+Gurobi 7.5.2 (linux64) logging started Thu May  3 23:35:24 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 210 rows, 125 columns and 921 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [7e+00, 3e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 164 rows and 32 columns
+Presolve time: 0.00s
+Presolved: 46 rows, 93 columns, 630 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.6969999e+04   5.512500e+01   0.000000e+00      0s
+      45    6.7517272e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 45 iterations and 0.01 seconds
+Optimal objective  6.751727175e+03
+
+Gurobi 7.5.2 (linux64) logging started Fri May  4 00:19:26 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 116 rows, 31 columns and 249 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [6e+01, 4e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 78 rows and 8 columns
+Presolve time: 0.00s
+Presolved: 38 rows, 23 columns, 166 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.3114108e+04   1.638750e+02   0.000000e+00      0s
+      17    6.3523191e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 17 iterations and 0.00 seconds
+Optimal objective  6.352319141e+03
+
+Gurobi 7.5.2 (linux64) logging started Fri May  4 00:19:38 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 119 rows, 34 columns and 220 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [2e+01, 2e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 89 rows and 12 columns
+Presolve time: 0.00s
+Presolved: 30 rows, 22 columns, 122 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.3107148e+04   4.775000e+01   0.000000e+00      0s
+      17    4.5568618e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 17 iterations and 0.00 seconds
+Optimal objective  4.556861811e+03
+
+Gurobi 7.5.2 (linux64) logging started Fri May  4 00:24:07 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 124 rows, 39 columns and 312 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [2e+01, 3e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 86 rows and 15 columns
+Presolve time: 0.00s
+Presolved: 38 rows, 24 columns, 170 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.6249621e+04   9.200000e+01   0.000000e+00      0s
+      16    5.5415676e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 16 iterations and 0.00 seconds
+Optimal objective  5.541567581e+03
+
+Gurobi 7.5.2 (linux64) logging started Fri May  4 00:24:53 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 129 rows, 44 columns and 316 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [2e+01, 3e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 95 rows and 17 columns
+Presolve time: 0.00s
+Presolved: 34 rows, 27 columns, 169 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.6289776e+04   1.142500e+02   0.000000e+00      0s
+      30    4.9353334e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 30 iterations and 0.00 seconds
+Optimal objective  4.935333355e+03
+
+Gurobi 7.5.2 (linux64) logging started Fri May  4 02:06:29 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 111 rows, 26 columns and 219 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [2e+01, 3e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 78 rows and 9 columns
+Presolve time: 0.00s
+Presolved: 33 rows, 17 columns, 129 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.1263436e+04   1.040000e+02   0.000000e+00      0s
+       9    4.9160587e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 9 iterations and 0.00 seconds
+Optimal objective  4.916058692e+03
+
+Gurobi 7.5.2 (linux64) logging started Fri May  4 02:10:14 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 116 rows, 31 columns and 229 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [2e+01, 3e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 84 rows and 12 columns
+Presolve time: 0.00s
+Presolved: 32 rows, 19 columns, 125 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.0548177e+04   6.175000e+01   0.000000e+00      0s
+      18    4.6636296e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 18 iterations and 0.00 seconds
+Optimal objective  4.663629638e+03
+
+Gurobi 7.5.2 (linux64) logging started Fri May  4 02:10:27 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 120 rows, 35 columns and 274 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [2e+01, 2e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 86 rows and 12 columns
+Presolve time: 0.00s
+Presolved: 34 rows, 23 columns, 156 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.2235565e+04   1.056833e+02   0.000000e+00      0s
+      20    4.9928384e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 20 iterations and 0.00 seconds
+Optimal objective  4.992838447e+03
+
+Gurobi 7.5.2 (linux64) logging started Fri May  4 02:10:44 2018
+
+Academic license - for non-commercial use only
+Warning for adding constraints: zero or small (< 1e-13) coefficients, ignored
+Optimize a model with 125 rows, 40 columns and 309 nonzeros
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [2e+01, 3e+03]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 88 rows and 12 columns
+Presolve time: 0.00s
+Presolved: 37 rows, 28 columns, 184 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.0968612e+04   6.387500e+01   0.000000e+00      0s
+      22    5.4479899e+03   0.000000e+00   0.000000e+00      0s
+
+Solved in 22 iterations and 0.00 seconds
+Optimal objective  5.447989898e+03

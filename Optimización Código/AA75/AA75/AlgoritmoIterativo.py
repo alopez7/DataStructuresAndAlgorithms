@@ -1,8 +1,5 @@
 import os
 from codigo_Main import *
-#from AA15.codigoInicio import*
-#from AA20.codigoInicio import*
-#from AA30.codigoInicio import*
 
 TotalInstancias = 4
 e = 4
@@ -31,13 +28,13 @@ while (e <= TotalInstancias): #Iteracion entre las diferentes instancias: AA10, 
 	tpo = 0 #contador de tiempos #No desactivar este contador
 	i = 1 #contador de iteraciones
 	j = 0 #contador de no mejoras
-	
+
 	mejorFO = 0 #Activarlo si se considera el criterio: Num_no_mejoras
 
 	Resumen = list()
 	Resumen.append(["Corrida", "Tiempo (seg)", "Utilidad Relajada (US$)", "Utilidad Final (US$)"])
 	dirBase = os.getcwd()
-	
+
 	while(i<=Num_Iteraciones_Max and j<Num_no_mejoras and tpo < TpoEjecucion):
 	#while(j<Num_no_mejoras):
 	#while(tpo < TpoEjecucion):
@@ -45,11 +42,11 @@ while (e <= TotalInstancias): #Iteracion entre las diferentes instancias: AA10, 
 		print "INICIO CORRIDA ", i
 		print ""
 		##########################################################################
-		
+
 		dir = dirBase + "/Corrida_ "+str(i) #Directorio de Corrida
 		os.mkdir(dir) #Creo directorio donde se guarda los resultados de la Corrida
 		os.chdir(dir) #Entro al directorio creado
-		
+
 		##########################################################################
 		if e == 1:
 			m = Main_AA10()
@@ -59,30 +56,30 @@ while (e <= TotalInstancias): #Iteracion entre las diferentes instancias: AA10, 
 			m = Main_AA20()
 		elif e == 4:
 			m = Main_AA75()
-			
+
 		m.Iniciar() #Ejecutamos algoritmo de Generacion de Columnas Hibrido
-		
+
 		tpo = tpo + m.TpoCorrida
 		Resumen.append([i, m.TpoCorrida, m.U_relajada, m.U_final]) #Guardamos tiempo de corrida actual FALTAAAAAAAAAAAAAAAAAA
-		
+
 		#Activar estas lineas si se considera el criterio de parada: Num_no_mejoras
 		if mejorFO >= m.U_final:
 			j += 1 #contador de no mejoras
 		else:
 			mejorFO = m.U_final
 			j=0
-		
+
 
 
 		print "-----------------------------------"
 		print "CORRIDA ", str(i), " FINALIZADA - TIEMPO: ", str(m.TpoCorrida/60), " min", " TIEMPO TRANSCURRIDO: ", str(tpo/60)
 		print "-----------------------------------"
-		
+
 		i = i+1
 		##########################################################################
-		
+
 		os.chdir(dirBase) #Vuelvo al directorio base
-		
+
 		##########################################################################
 	print "ALGORITMO FINALIZADO EN ", str(tpo/60), " minutos"
 

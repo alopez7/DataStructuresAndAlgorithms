@@ -199,7 +199,7 @@ void generate_initial_routes(ANS* ans, int airplane_id, Route* initial_route)
   int position = 0;
 
   // R1
-  printf("R1\n");
+  printf("\t\tR1\n");
 
   // La primera ruta es copia de la planificacion base eliminando pedidos de costo 0
   Route* r1 = route_copy(ans -> bp -> routes[airplane_id], ans -> map);
@@ -223,34 +223,98 @@ void generate_initial_routes(ANS* ans, int airplane_id, Route* initial_route)
     }
   }
 
-  // Agrego esta ruta
-  routes[position] = r1;
-  position++;
-  route_print(r1);
+  // Si es una ruta valida
+  bool destroy_r1 = false;
+  if (assign_time(r1) && assign_weights(r1))
+  {
+    // Agrego esta ruta
+    routes[position] = r1;
+    position++;
+    r1 -> valid = true;
+  }
+  else
+  {
+    destroy_r1 = true;
+  }
 
-  // R2 y R3
-  printf("R2 y R3\n");
 
-  // Tomo la ruta anterior y le hago drop_and_add y luego swap
+  // R2
+  printf("\t\tR2\n");
+
+  // Tomo la ruta anterior y le hago drop_and_add
   Route* r2 = initial_drop_and_add(r1, ans);
+
+
+  // Si es una ruta valida
+  bool destroy_r2 = false;
+  if (assign_time(r2) && assign_weights(r2))
+  {
+    bool repeated = false;
+    // Si no tiene valores iguales a una anterior
+    for (int i = 0; i < position; i++)
+    {
+      if (r2 -> objective_function == routes[i] -> objective_function)
+      {
+        repeated = true;
+        break;
+      }
+    }
+    if (!repeated)
+    {
+      routes[position] = r2;
+      position++;
+      r2 -> valid = true;
+    }
+    else
+    {
+      destroy_r2 = true;
+    }
+  }
+  else
+  {
+    destroy_r2 = true;
+  }
+
+  // R3
+  printf("\t\tR3\n");
+
+  // Le hago swap (especial)
   Route* r3 = initial_swap(r2, ans);
 
-  // Agrego las rutas si no son copia de alguna otra
-  if (r2 -> objective_function != r1 -> objective_function)
+  // Si es una ruta valida
+  if (assign_time(r3) && assign_weights(r3))
   {
-    routes[position] = r2;
-    position++;
-    route_print(r2);
+    bool repeated = false;
+    // Si no tiene valores iguales a una anterior
+    for (int i = 0; i < position; i++)
+    {
+      if (r3 -> objective_function == routes[i] -> objective_function)
+      {
+        repeated = true;
+        break;
+      }
+    }
+    if (!repeated)
+    {
+      routes[position] = r3;
+      position++;
+      r3 -> valid = true;
+    }
+    else
+    {
+      route_destroy(r3);
+    }
   }
-  if (r3 -> objective_function != r1 -> objective_function && r3 -> objective_function != r2 -> objective_function)
+  else
   {
-    routes[position] = r3;
-    position++;
-    route_print(r3);
+    route_destroy(r3);
   }
 
+  if (destroy_r1) route_destroy(r1);
+  if (destroy_r2) route_destroy(r2);
+
   // R4
-  printf("R4\n");
+  printf("\t\tR4\n");
 
   // Tomo la ruta vacia (solo inicio y fin)
   Route* r4 = route_copy(ans -> bp -> routes[airplane_id], ans -> map);
@@ -264,48 +328,142 @@ void generate_initial_routes(ANS* ans, int airplane_id, Route* initial_route)
   r4 -> objective_function = objective_function(r4, ans -> map);
   r4 -> fast_of = fast_of(r4, ans -> map);
 
-  // Si no esta repetida, la agrego
-  if (r4 -> objective_function != r3 -> objective_function && r4 -> objective_function != r2 -> objective_function && r4 -> objective_function != r1 -> objective_function)
+  // Si es una ruta valida
+  if (assign_time(r4) && assign_weights(r4))
   {
-    routes[position] = r4;
-    position++;
-    route_print(r4);
+    bool repeated = false;
+    // Si no tiene valores iguales a una anterior
+    for (int i = 0; i < position; i++)
+    {
+      if (r4 -> objective_function == routes[i] -> objective_function)
+      {
+        repeated = true;
+        break;
+      }
+    }
+    if (!repeated)
+    {
+      routes[position] = r4;
+      position++;
+      r4 -> valid = true;
+    }
+    else
+    {
+      route_destroy(r4);
+    }
+  }
+  else
+  {
+    route_destroy(r4);
   }
 
   // R5
-  printf("R5\n");
+  printf("\t\tR5\n");
 
   // Ocupo la ruta generada aleatoria de la funcion create_initial_routes
-  Route* r5 = initial_route;
+  Route* r5 = route_copy(initial_route, ans -> map);
 
-  // Si no esta repetida, la agrego
-  if (r5 -> objective_function != r4 -> objective_function && r5 -> objective_function != r3 -> objective_function && r5 -> objective_function != r2 -> objective_function && r5 -> objective_function != r1 -> objective_function)
+  // Si es una ruta valida
+  bool destroy_r5 = false;
+  if (assign_time(r5) && assign_weights(r5))
   {
-    routes[position] = r5;
-    position++;
-    route_print(r5);
+    bool repeated = false;
+    // Si no tiene valores iguales a una anterior
+    for (int i = 0; i < position; i++)
+    {
+      if (r5 -> objective_function == routes[i] -> objective_function)
+      {
+        repeated = true;
+        break;
+      }
+    }
+    if (!repeated)
+    {
+      routes[position] = r5;
+      position++;
+      r5 -> valid = true;
+    }
+    else
+    {
+      destroy_r5 = true;
+    }
+  }
+  else
+  {
+    destroy_r5 = true;
   }
 
-  // R6 y R7
-  printf("R6 y R7\n");
+  // R6
+  printf("\t\tR6\n");
 
   // Tomo la ruta anterior y le hago drop_and_add y luego swap
   Route* r6 = initial_drop_and_add(r5, ans);
+
+  // Si es una ruta valida
+  bool destroy_r6 = false;
+  if (assign_time(r6) && assign_weights(r6))
+  {
+    bool repeated = false;
+    // Si no tiene valores iguales a una anterior
+    for (int i = 0; i < position; i++)
+    {
+      if (r6 -> objective_function == routes[i] -> objective_function)
+      {
+        repeated = true;
+        break;
+      }
+    }
+    if (!repeated)
+    {
+      routes[position] = r6;
+      position++;
+      r6 -> valid = true;
+    }
+    else
+    {
+      destroy_r6 = true;
+    }
+  }
+  else
+  {
+    destroy_r6 = true;
+  }
+
+  // R7
+  printf("\t\tR7\n");
   Route* r7 = initial_swap(r6, ans);
 
-  // Agrego las rutas si no son copia de alguna otra
-  if (r6 -> objective_function != r5 -> objective_function && r6 -> objective_function != r4 -> objective_function && r6 -> objective_function != r3 -> objective_function && r6 -> objective_function != r2 -> objective_function && r6 -> objective_function != r1 -> objective_function)
+  // Si es una ruta valida
+  if (assign_time(r7) && assign_weights(r7))
   {
-    routes[position] = r6;
-    position++;
-    route_print(r6);
+    bool repeated = false;
+    // Si no tiene valores iguales a una anterior
+    for (int i = 0; i < position; i++)
+    {
+      if (r7 -> objective_function == routes[i] -> objective_function)
+      {
+        repeated = true;
+        break;
+      }
+    }
+    if (!repeated)
+    {
+      routes[position] = r7;
+      position++;
+      r7 -> valid = true;
+    }
+    else
+    {
+      route_destroy(r7);
+    }
   }
-  if (r7 -> objective_function != r6 -> objective_function && r7 -> objective_function != r5 -> objective_function && r7 -> objective_function != r4 -> objective_function && r7 -> objective_function != r3 -> objective_function && r7 -> objective_function != r2 -> objective_function && r7 -> objective_function != r1 -> objective_function)
+  else
   {
-    routes[position] = r7;
-    position++;
-    route_print(r7);
+    route_destroy(r7);
   }
+
+  if (destroy_r5) route_destroy(r5);
+  if (destroy_r6) route_destroy(r6);
 
   // Actualizo la cantidad de rutas que tiene el sp del avion actual
   ans -> route_count[airplane_id] = position;
@@ -318,26 +476,65 @@ Route* choose_random(Route** routes, int count)
   return routes[position];
 }
 
+void recalculate_of(ANS* ans)
+{
+  // Itero sobre las avions
+  for (int k = 0; k < airplanes_count; k++)
+  {
+    // Itero por las rutas
+    for (int i = 0; i < ans -> route_count[k]; i++)
+    {
+      ans -> routes[k][i] -> objective_function = objective_function(ans -> routes[k][i], ans -> map);
+      ans -> routes[k][i] -> fast_of = fast_of(ans -> routes[k][i], ans -> map);
+    }
+  }
+}
+
 // Loop principal del programa
 double* solve(ANS* ans)
 {
   // creo las rutas iniciales de cada avion
-  create_initial_routes(ans);
+  printf("\tGenerando rutas\n");
+  Route** routes_initial = create_initial_routes(ans);
 
+  printf("\tGenerando mas columnas para cada avion\n");
+  // Genero mas columnas
+  clock_t start = clock();
+  for (int i = 0; i < airplanes_count; i++)
+  {
+    printf("\t\tAvion %d\n", i);
+    // route_print(routes_initial[i]);
+    generate_initial_routes(ans, i, routes_initial[i]);
+    // Libero memoria
+    route_destroy(routes_initial[i]);
+  }
+  free(routes_initial);
+  clock_t end = clock();
+
+  printf("\tTiempo en generar columnas iniciales: %lf\n", (double)(end - start)/CLOCKS_PER_SEC);
+
+  printf("\tLoop principal:\n");
   // Variable para contar iteraciones
   int iteration = 0;
   // Itero hasta que no genere nuevas columnas buenas
   while (true)
   {
+    printf("\t\tIteracion %d\n", iteration);
     // Resuelvo el problema maestro relajado y actualizo los duales de las rutas
+    printf("\t\tResolviendo problema maestro relajado\n");
     optimize_routes_relaxed(ans -> routes, ans -> route_count, ans -> map);
 
+    // Recalculo la funcion objetivo de todas las rutas
+    printf("\t\tRecalculando funciones objetivo\n");
+    recalculate_of(ans);
 
     // Cuento cuantas rutas con costo reducido mayor a 0 produje
     int improved_count = 0;
     // Para cada avion
+    printf("\t\tEjecutar ANS\n");
     for (int k = 0; k < airplanes_count; k++)
     {
+      printf("\t\t\tAvion %d\n", k);
       // Elijo una ruta aleatoria
       Route* route = choose_random(ans -> routes[k], ans -> route_count[k]);
 
@@ -357,13 +554,17 @@ double* solve(ANS* ans)
     // Agrego 1 a la cuenta de iteraciones
     iteration++;
 
+    printf("\t\tSe produjieron %d rutas con costo reducido positivo\n", improved_count);
+
     // Si no produje ninguna ruta con costo reducido mayor a 0, termino
     if (improved_count == 0) break;
   }
 
+  printf("\tEjecutando problema maestro restringido\n");
   // Resuelvo el problema maestro con variables binarias
   double* solution = optimize_routes(ans -> routes, ans -> route_count, ans -> map);
 
+  printf("\tRetornando solucion\n");
   // Retorno la solucion
   return solution;
 }
@@ -389,22 +590,20 @@ int main(int argc, char *argv[])
   random_seed();
 
   // Inicializo el ans
+  printf("Leyendo archivos\n");
   ANS* ans = ans_init(argv[1], argv[2], argv[3]);
 
-  Route** routes = create_initial_routes(ans);
-
-
-  for (int i = 0; i < airplanes_count; i++)
-  {
-    printf("Airplane: %d\n", routes[i] -> airplane -> id);
-    generate_initial_routes(ans, i, routes[i]);
-  }
 
   ////////////////////////////////////////////////////////////////////////////
   //                                Tests                                   //
   ////////////////////////////////////////////////////////////////////////////
 
-  // double* solution = solve(ans);
+  printf( "Ejecutando iteracion 0\n");
+  clock_t start = clock();
+  double* solution = solve(ans);
+  clock_t end = clock();
+  printf( "Tiempo de solve = %lf\n", (double)(end - start) / CLOCKS_PER_SEC);
+
 
   return 0;
 }

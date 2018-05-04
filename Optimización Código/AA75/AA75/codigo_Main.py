@@ -12,7 +12,7 @@ class Main_AA75():
 		'''utilidad relajada y final'''
 		self.U_relajada = 0
 		self.U_final = 0
-		'''planificación base'''
+		'''planificacion base'''
 		self.PB = [] #Lista que almacena la PB como una secuencia de nodos por cada avion
 		self.PB.append(0) #Esto lo hago solo para que los indices de PB representen el numero del avion
 		self.R = [] #Columna base - Se utiliza como PB cuando esta no existe, de lo contrario, sirve como nuevo punto de partida diferente a la PB
@@ -26,7 +26,7 @@ class Main_AA75():
 
 	def Iniciar(self):
 		'''
-		Generar rutas iniciales (base mas otras con un método)
+		Generar rutas iniciales (base mas otras con un metodo)
 		'''
 		tiempo = time.time()
 		#INICIALIZACION - Construccion de columnas iniciales
@@ -414,14 +414,14 @@ class Main_AA75():
 					Elimino el pedido de los nodos pendientes
 					'''
 					N_global.remove(R_k[0][2])#Eliminamos el pedido respectivo de la lista de nodos pendientes en la red
-				'''
-				Si no pude insertar nada a la ruta
-				'''
 				else:
+					'''
+					Si no pude insertar nada a la ruta
+					'''
+					aux += 1
 					'''
 					Sumo 1
 					'''
-					aux += 1
 
 		aux_exit=0
 		while (len(N_global)) != 0 and aux_exit==0:

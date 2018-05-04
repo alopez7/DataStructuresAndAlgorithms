@@ -357,6 +357,10 @@ void op_drop_and_add(Route* route, ANS* ans)
   // Itero sobre los pedidos insertando uno por uno
   for (int i = 0; i < unassigned_count; i++)
   {
+    if (unassigned[i] -> pickup -> fee + route -> fast_of < best_of)
+    {
+      break;
+    }
     // Relleno el lnode de la orden
     l_node_order_fill(pickup_l_node, unassigned[i]);
 
@@ -795,8 +799,6 @@ void op_delete(Route* route, ANS* ans)
 /** Hace drop and add hasta que no puede mejorar */
 Route* initial_drop_and_add(Route* base, ANS* ans)
 {
-  printf("DOING DAA\n");
-
   // base: es la ruta a copiar y modificar
   // ans: contiene la informacion del mapa y de la planificacion base
 
@@ -807,7 +809,7 @@ Route* initial_drop_and_add(Route* base, ANS* ans)
   double OF = route -> objective_function;
   while (true)
   {
-    printf("OF: %lf\n", OF);
+    printf("\t\t\tDrop And Add\n");
     op_drop_and_add(route, ans);
     route -> objective_function = objective_function(route, ans -> map);
     if (route -> objective_function <= OF) break;
@@ -821,7 +823,6 @@ Route* initial_drop_and_add(Route* base, ANS* ans)
 /** Hace swap hasta que no puede mejorar */
 Route* initial_swap(Route* base, ANS* ans)
 {
-  printf("DOING SWAP\n");
   // base: es la ruta a copiar y modificar
   // ans: contiene la informacion del mapa y de la planificacion base
 
@@ -832,7 +833,6 @@ Route* initial_swap(Route* base, ANS* ans)
   double OF = route -> objective_function;
   while (true)
   {
-    printf("OF: %lf\n", OF);
     op_swap(route, ans);
     route -> objective_function = objective_function(route, ans -> map);
     if (route -> objective_function <= OF) break;
@@ -961,8 +961,8 @@ Route* run(ANS* ans, Route* original_route)
   // Hago las operaciones iniciales sobre la ruta
   Route* route = initialize(ans, original_route);
 
-  printf("Inicializada:\n");
-  route_print(route);
+  // printf("Inicializada:\n");
+  // route_print(route);
 
 
   // Guardo la mejor funcion objetivo
@@ -990,7 +990,7 @@ Route* run(ANS* ans, Route* original_route)
         break;
       }
     }
-    operation_print(operation_id);
+    // operation_print(operation_id);
 
     // Si la operacion no esta bloqueada
     if (bloq[operation_id] == 0)
@@ -1010,18 +1010,18 @@ Route* run(ANS* ans, Route* original_route)
       if (route -> objective_function <= best_of)
       {
         bloq[operation_id] = 1;
-        printf("No mejora\n");
+        // printf("No mejora\n");
       }
       else
       {
         best_of = route -> objective_function;
-        printf("Mejora a %lf\n", route -> objective_function);
+        // printf("Mejora a %lf\n", route -> objective_function);
         route -> valid = true;
       }
     }
     else
     {
-      printf("No se ejecuta\n");
+      // printf("No se ejecuta\n");
     }
   }
 

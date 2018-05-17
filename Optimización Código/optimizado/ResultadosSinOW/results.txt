@@ -1,0 +1,300 @@
+Iteracion = 0
+Tiempo = 3.325757
+Utilidad = 7018.857135
+RutasSolucion = 6
+RutasGeneradas = 543
+
+Iteracion = 1
+Tiempo = 0.103115
+Utilidad = 5743.276169
+RutasSolucion = 6
+RutasGeneradas = 56
+
+Iteracion = 2
+Tiempo = 0.198766
+Utilidad = 6014.338592
+RutasSolucion = 7
+RutasGeneradas = 96
+
+Iteracion = 3
+Tiempo = 0.167511
+Utilidad = 6253.141651
+RutasSolucion = 6
+RutasGeneradas = 69
+
+Iteracion = 4
+Tiempo = 5.045177
+Utilidad = 7015.259747
+RutasSolucion = 7
+RutasGeneradas = 720
+
+Iteracion = 5
+Tiempo = 2.658040
+Utilidad = 7581.675915
+RutasSolucion = 6
+RutasGeneradas = 481
+
+Iteracion = 6
+Tiempo = 0.326066
+Utilidad = 6745.892895
+RutasSolucion = 6
+RutasGeneradas = 204
+
+Iteracion = 7
+Tiempo = 0.069930
+Utilidad = 5301.761312
+RutasSolucion = 5
+RutasGeneradas = 67
+
+Iteracion = 8
+Tiempo = 0.117299
+Utilidad = 6297.239491
+RutasSolucion = 7
+RutasGeneradas = 70
+
+Iteracion = 9
+Tiempo = 0.120167
+Utilidad = 5405.039178
+RutasSolucion = 5
+RutasGeneradas = 54
+
+Iteracion = 10
+Tiempo = 1.094380
+Utilidad = 7446.236251
+RutasSolucion = 6
+RutasGeneradas = 252
+
+Iteracion = 11
+Tiempo = 5.125339
+Utilidad = 7266.796654
+RutasSolucion = 6
+RutasGeneradas = 630
+
+Iteracion = 12
+Tiempo = 0.109868
+Utilidad = 4170.767080
+RutasSolucion = 5
+RutasGeneradas = 65
+
+Iteracion = 13
+Tiempo = 0.174596
+Utilidad = 6095.020875
+RutasSolucion = 6
+RutasGeneradas = 84
+
+Iteracion = 14
+Tiempo = 0.232518
+Utilidad = 6639.957294
+RutasSolucion = 7
+RutasGeneradas = 108
+
+Iteracion = 15
+Tiempo = 0.179733
+Utilidad = 6423.161475
+RutasSolucion = 7
+RutasGeneradas = 82
+
+Iteracion = 16
+Tiempo = 0.553981
+Utilidad = 5177.049110
+RutasSolucion = 4
+RutasGeneradas = 297
+
+Iteracion = 17
+Tiempo = 0.702498
+Utilidad = 7612.458261
+RutasSolucion = 6
+RutasGeneradas = 222
+
+Iteracion = 18
+Tiempo = 129.700341
+Utilidad = 8579.001584
+RutasSolucion = 6
+RutasGeneradas = 2002
+
+Iteracion = 19
+Tiempo = 3.904136
+Utilidad = 7133.385794
+RutasSolucion = 6
+RutasGeneradas = 567
+
+Iteracion = 20
+Tiempo = 77.055892
+Utilidad = 8080.246042
+RutasSolucion = 5
+RutasGeneradas = 1261
+
+Iteracion = 21
+Tiempo = 0.122438
+Utilidad = 5384.391060
+RutasSolucion = 7
+RutasGeneradas = 60
+
+Iteracion = 22
+Tiempo = 0.181308
+Utilidad = 5972.163335
+RutasSolucion = 6
+RutasGeneradas = 72
+
+Iteracion = 23
+Tiempo = 0.135157
+Utilidad = 5887.640582
+RutasSolucion = 6
+RutasGeneradas = 65
+
+Iteracion = 24
+Tiempo = 1.574692
+Utilidad = 7408.129346
+RutasSolucion = 7
+RutasGeneradas = 247
+
+Iteracion = 25
+Tiempo = 1.221847
+Utilidad = 6453.809380
+RutasSolucion = 6
+RutasGeneradas = 287
+
+Iteracion = 26
+Tiempo = 0.112613
+Utilidad = 5906.700072
+RutasSolucion = 7
+RutasGeneradas = 62
+
+Iteracion = 27
+Tiempo = 0.187118
+Utilidad = 6311.611530
+RutasSolucion = 7
+RutasGeneradas = 83
+
+Iteracion = 28
+Tiempo = 0.131267
+Utilidad = 5639.782515
+RutasSolucion = 7
+RutasGeneradas = 60
+
+Iteracion = 29
+Tiempo = 0.145793
+Utilidad = 5376.850314
+RutasSolucion = 7
+RutasGeneradas = 78
+
+Iteracion = 30
+Tiempo = 1.622341
+Utilidad = 6894.766783
+RutasSolucion = 6
+RutasGeneradas = 350
+
+Iteracion = 31
+Tiempo = 0.214086
+Utilidad = 5839.053868
+RutasSolucion = 5
+RutasGeneradas = 92
+
+Iteracion = 32
+Tiempo = 0.206272
+Utilidad = 5618.779969
+RutasSolucion = 7
+RutasGeneradas = 81
+
+Iteracion = 33
+Tiempo = 5.683742
+Utilidad = 7120.543494
+RutasSolucion = 6
+RutasGeneradas = 531
+
+Iteracion = 34
+Tiempo = 0.113744
+Utilidad = 5393.872221
+RutasSolucion = 7
+RutasGeneradas = 60
+
+Iteracion = 35
+Tiempo = 0.115552
+Utilidad = 5051.456812
+RutasSolucion = 7
+RutasGeneradas = 62
+
+Iteracion = 36
+Tiempo = 0.137617
+Utilidad = 6202.550302
+RutasSolucion = 6
+RutasGeneradas = 74
+
+Iteracion = 37
+Tiempo = 0.222768
+Utilidad = 5538.581555
+RutasSolucion = 6
+RutasGeneradas = 106
+
+Iteracion = 38
+Tiempo = 1.298204
+Utilidad = 7125.697912
+RutasSolucion = 7
+RutasGeneradas = 251
+
+Iteracion = 39
+Tiempo = 0.152022
+Utilidad = 5073.114970
+RutasSolucion = 5
+RutasGeneradas = 78
+
+Iteracion = 40
+Tiempo = 0.061888
+Utilidad = 5116.651242
+RutasSolucion = 5
+RutasGeneradas = 43
+
+Iteracion = 41
+Tiempo = 0.156357
+Utilidad = 5163.153872
+RutasSolucion = 6
+RutasGeneradas = 67
+
+Iteracion = 42
+Tiempo = 0.154716
+Utilidad = 6352.035579
+RutasSolucion = 6
+RutasGeneradas = 79
+
+Iteracion = 43
+Tiempo = 0.168602
+Utilidad = 5665.680383
+RutasSolucion = 7
+RutasGeneradas = 80
+
+Iteracion = 44
+Tiempo = 1.992390
+Utilidad = 6858.755081
+RutasSolucion = 6
+RutasGeneradas = 356
+
+Iteracion = 45
+Tiempo = 0.160115
+Utilidad = 5818.713579
+RutasSolucion = 5
+RutasGeneradas = 68
+
+Iteracion = 46
+Tiempo = 0.144339
+Utilidad = 6243.872239
+RutasSolucion = 6
+RutasGeneradas = 68
+
+Iteracion = 47
+Tiempo = 0.110924
+Utilidad = 6195.019615
+RutasSolucion = 6
+RutasGeneradas = 58
+
+Iteracion = 48
+Tiempo = 0.081508
+Utilidad = 5118.687811
+RutasSolucion = 7
+RutasGeneradas = 52
+
+Iteracion = 49
+Tiempo = 5.299749
+Utilidad = 7418.131504
+RutasSolucion = 5
+RutasGeneradas = 601
+

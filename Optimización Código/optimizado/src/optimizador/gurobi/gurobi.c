@@ -702,12 +702,24 @@ double* optimize_routes(Route*** separated_routes, int* counts, Map* map)
   // Si hay error, termino
   if (error) goto QUIT2;
 
+  printf("FUNCION OBJETIVO: %lf\n", fo_val);
+
+  final_utility = fo_val;
+
   // Obtengo la solucion:
   // le paso un rango de las variables cullos resultados quiero y el arreglo
   // donde los quiero guardar
   error = GRBgetdblattrarray(model, GRB_DBL_ATTR_X, 0, count, solution);
   // Si hay error, termino
   if (error) goto QUIT2;
+
+  ones = 0;
+  for (int i = 0; i < count; i++)
+  {
+    if (solution[i] > 0) ones += 1;
+  }
+
+  printf("ONES: %d\n", ones);
 
   // Si llegue hasta aca, estoy listo
   if (optimstatus == GRB_INF_OR_UNBD)
@@ -1055,6 +1067,8 @@ double* optimize_routes_relaxed(Route*** separated_routes, int* counts, Map* map
   // Si hay error, termino
   if (error) goto QUIT3;
 
+  printf("\t\tFO: %lf\n", fo_val);
+
   // Obtengo la solucion:
   // le paso un rango de las variables cullos resultados quiero y el arreglo
   // donde los quiero guardar
@@ -1066,7 +1080,7 @@ double* optimize_routes_relaxed(Route*** separated_routes, int* counts, Map* map
   double* duals = malloc(sizeof(double) * constrain_count);
   error = GRBgetdblattrarray(model, GRB_DBL_ATTR_PI, 0, constrain_count, duals);
 
-  printf("Duales\n");
+  // printf("Duales\n");
   for (int i = 0; i < constrain_count; i++)
   {
     if (i < count)
@@ -1077,13 +1091,13 @@ double* optimize_routes_relaxed(Route*** separated_routes, int* counts, Map* map
     {
       int air_id = i - count;
       map -> airplanes[air_id] -> dual_gamma = duals[i];
-      printf("Dual gamma avion %d: %lf\n", air_id, duals[i]);
+      // printf("Dual gamma avion %d: %lf\n", air_id, duals[i]);
     }
     else
     {
       int order_id = i - count - airplanes_count;
       map -> orders[order_id] -> pickup -> dual_pi = duals[i];
-      printf("Dual pi pedido %d: %lf\n", order_id, duals[i]);
+      // printf("Dual pi pedido %d: %lf\n", order_id, duals[i]);
     }
   }
 

@@ -7,8 +7,8 @@ SRC=src
 OBJ=obj
 
 # Nivel de optimización del compilador
-# OPT=-g # Guardar toda la información para poder debugear. No optimiza
-OPT=-O3 # Optimiza al máximo, descarta toda la información de debug.
+OPT=-g # Guardar toda la información para poder debugear. No optimiza
+# OPT=-O3 # Optimiza al máximo, descarta toda la información de debug.
 
 ###############################################################################
 # PARÁMETROS                                                                  #

@@ -2,6 +2,7 @@
 
 #include "map.h"
 #include "dictionary.h"
+#include <stdio.h>
 
 /** Nodo de la lista */
 struct l_node
@@ -84,7 +85,7 @@ typedef struct bp BP;
 Route* route_init(Airplane* airplane);
 
 /** Imprime la ruta */
-void route_print(Route* route);
+void route_print(Route* route, FILE* file);
 
 /** Copia una ruta */
 Route* route_copy(Route* route, Map* map);

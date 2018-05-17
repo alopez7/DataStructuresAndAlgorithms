@@ -255,23 +255,17 @@ Route* route_init(Airplane* airplane)
 }
 
 /** Imprime la ruta */
-void route_print(Route* route)
+void route_print(Route* route, FILE* file)
 {
-  printf("FO: %lf\n", route -> objective_function);
-  printf("Válida: %c\n", route -> valid ? 't' : 'f');
+  // fprintf(file, "FO: %lf\n", route -> objective_function);
+  // fprintf(file, "Válida: %c\n", route -> valid ? 't' : 'f');
   for (LNode* ln = route -> nodes -> start; ln -> next; ln = ln -> next)
   {
-    // Version verbosa
-    // printf("ID:%d, Tarifa:%lf Tipo:%d\n", ln -> node -> id, ln -> node -> fee, ln -> node -> node_type);
-    // printf("Distance: %lf\n", distance(ln -> node -> father, ln -> next -> node -> father));
-
-    // Version simple
-    printf("%d ", ln -> node -> id);
+    fprintf(file, "%d ", ln -> node -> id);
   }
   Node* end = route -> nodes -> end -> node;
-  // printf("ID:%d, Tarifa:%lf Tipo:%d\n", end -> id, end -> fee, end -> node_type);
 
-  printf("%d\n\n", end -> id);
+  fprintf(file, "%d\n", end -> id);
 
 }
 
@@ -975,6 +969,8 @@ double objective_function(Route* route, Map* map)
   double duals = 0;
   double cancellation_cost = 0;
 
+  // route_print(route);
+
   // Sumo las tarifas y resto los costos de viaje y los duales
   for (LNode* ln = route -> nodes -> start; ln -> next; ln = ln -> next)
   {
@@ -1182,6 +1178,8 @@ bool assign_time(Route* route)
 /** Asigna las cargas de manera greedy, y si no se puede optimiza */
 bool assign_weights(Route* route)
 {
+  // route_print(route);
+
   // Capacidad total
   double capacity = route -> airplane -> total_capacity;
 

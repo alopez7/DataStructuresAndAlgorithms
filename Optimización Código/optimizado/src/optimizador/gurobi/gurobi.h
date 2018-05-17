@@ -3,6 +3,9 @@
 #include "../modelamiento/route.h"
 #include "gurobi_c.h"
 
+double final_utility;
+int ones;
+
 bool optimizing_weights;
 
 /** Optimiza las cargas de un avion */

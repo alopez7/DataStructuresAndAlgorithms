@@ -96,6 +96,9 @@ void insert_route(ANS* ans, Route* new_route, int k)
 
     // Actualizo el tamanio del arreglo
     ans -> route_array_size[k] *= 2;
+    // Cambio el arreglo por el nuevo
+    free(ans -> routes[k]);
+    ans -> routes[k] = new_array;
   }
 
   // Inserto la ruta
@@ -120,11 +123,11 @@ void operation_print(int i)
 //               Funciones usadas en las heuristicas                    //
 //////////////////////////////////////////////////////////////////////////
 
-/** Funcion comparadora para ordenar segun ganancia unitaria */
+/** Funcion comparadora para ordenar segun el fee * weight */
 static int compare(const void* a, const void* b)
 {
-  int fee1 = (*((Order**) a)) -> pickup -> fee;
-  int fee2 = (*((Order**) b)) -> pickup -> fee;
+  int fee1 = (*((Order**) a)) -> pickup -> fee * (*((Order**) a)) -> pickup -> total_weight;
+  int fee2 = (*((Order**) b)) -> pickup -> fee * (*((Order**) b)) -> pickup -> total_weight;
   return fee1 - fee2;
 }
 
@@ -158,6 +161,22 @@ static bool improved(Route* route, ANS* ans, double best_of)
   return false;
 }
 
+static bool is_time_consistent(LNode* ln1, LNode* ln2)
+{
+  // Compruebo que al insertar ln2 a la derecha de ln1 puedan calzar los tiempos
+  double start = ln1 -> node -> start_time;
+  double dist = distance(ln1 -> node -> father, ln2 -> node -> father);
+  double end = ln2 -> node -> end_time;
+
+  // Optimistamente puedo partir justo cuando comienza el start del primer nodo
+  if (start + dist > end)
+  {
+    // Si se cumple este desigualdad quiere decir que no se puede
+    return false;
+  }
+  return true;
+}
+
 /** Busca la mejor insercion y retorna la funcion objetivo de un pedido */
 static double single_insert(Route* route, LNode* pickup_l_node, double best_of, ANS* ans)
 {
@@ -172,30 +191,37 @@ static double single_insert(Route* route, LNode* pickup_l_node, double best_of, 
   // Itero sobre los nodos de la ruta
   for (LNode* ln = route -> nodes -> start; ln -> next; ln = ln -> next)
   {
-
-    // Inserto el pickup
-    l_node_insert_next(route, ln, pickup_l_node);
-
-    // Itero sobre los nodos restantes desde el recien insertado
-    for (LNode* ln2 = pickup_l_node; ln2 -> next; ln2 = ln2 -> next)
+    // Compruebo si voy a tener una problema de tiempo antes de insertar
+    if (is_time_consistent(ln, pickup_l_node) && is_time_consistent(pickup_l_node, ln -> next))
     {
-      // Inserto el delivery
-      l_node_insert_next(route, ln2, delivery_l_node);
+      // Inserto el pickup
+      l_node_insert_next(route, ln, pickup_l_node);
 
-      // Comparo
-      if (improved(route, ans, best_of))
+      // Itero sobre los nodos restantes desde el recien insertado
+      for (LNode* ln2 = pickup_l_node; ln2 -> next; ln2 = ln2 -> next)
       {
-        best_of = route -> objective_function;
-        best_start = pickup_l_node -> last;
-        best_end = delivery_l_node -> last;
+        // Compruebo consistencia de tiempos
+        if (is_time_consistent(ln2, delivery_l_node) && is_time_consistent(delivery_l_node, ln2 -> next))
+        {
+          // Inserto el delivery
+          l_node_insert_next(route, ln2, delivery_l_node);
+
+          // Comparo
+          if (improved(route, ans, best_of))
+          {
+            best_of = route -> objective_function;
+            best_start = pickup_l_node -> last;
+            best_end = delivery_l_node -> last;
+          }
+
+          // Deshago la asignacion del delivery
+          l_node_pop(route, delivery_l_node);
+        }
       }
 
-      // Deshago la asignacion del delivery
-      l_node_pop(route, delivery_l_node);
+      // Deshago la asignacion del pickup
+      l_node_pop(route, pickup_l_node);
     }
-
-    // Deshago la asignacion del pickup
-    l_node_pop(route, pickup_l_node);
   }
 
   // Dejo en los lnodos de pickup y delivery las mejores asignaciones
@@ -296,7 +322,7 @@ static int unassigned_orders(Route* route, Order** all_orders, Order** unassigne
     }
   }
 
-  // Ordeno las ordenes segun su ganancia unitaria
+  // Ordeno las ordenes segun su ganancia
   qsort(unassigned, unassigned_count, sizeof(Order*), compare);
 
   // Retorno el contador
@@ -357,7 +383,10 @@ void op_drop_and_add(Route* route, ANS* ans)
   // Itero sobre los pedidos insertando uno por uno
   for (int i = 0; i < unassigned_count; i++)
   {
-    if (unassigned[i] -> pickup -> fee + route -> fast_of < best_of)
+    // Podo de inmediato si no puedo ganar mas que el best_of
+    int fee = unassigned[i] -> pickup -> fee;
+    int total_weight = unassigned[i] -> pickup -> total_weight;
+    if (fee * total_weight + route -> fast_of < best_of)
     {
       break;
     }
@@ -809,7 +838,7 @@ Route* initial_drop_and_add(Route* base, ANS* ans)
   double OF = route -> objective_function;
   while (true)
   {
-    printf("\t\t\tDrop And Add\n");
+    // printf("\t\t\tDrop And Add\n");
     op_drop_and_add(route, ans);
     route -> objective_function = objective_function(route, ans -> map);
     if (route -> objective_function <= OF) break;

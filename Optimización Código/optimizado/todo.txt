@@ -1,4 +1,3 @@
-Optimizar drop and add con poda (Importante)
 Checkear rutas invalidas iniciales
 Liberar memoria
 Calibrar probabilidades

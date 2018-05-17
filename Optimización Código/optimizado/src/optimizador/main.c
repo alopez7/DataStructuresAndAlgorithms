@@ -5,6 +5,7 @@
 #include "random/pcg_basic.h"
 #include <time.h>
 #include <math.h>
+#include <string.h>
 
 // Le da una semilla random al generador de números aleatorios
 void random_seed()
@@ -199,7 +200,6 @@ void generate_initial_routes(ANS* ans, int airplane_id, Route* initial_route)
   int position = 0;
 
   // R1
-  printf("\t\tR1\n");
 
   // La primera ruta es copia de la planificacion base eliminando pedidos de costo 0
   Route* r1 = route_copy(ans -> bp -> routes[airplane_id], ans -> map);
@@ -239,7 +239,6 @@ void generate_initial_routes(ANS* ans, int airplane_id, Route* initial_route)
 
 
   // R2
-  printf("\t\tR2\n");
 
   // Tomo la ruta anterior y le hago drop_and_add
   Route* r2 = initial_drop_and_add(r1, ans);
@@ -276,7 +275,6 @@ void generate_initial_routes(ANS* ans, int airplane_id, Route* initial_route)
   }
 
   // R3
-  printf("\t\tR3\n");
 
   // Le hago swap (especial)
   Route* r3 = initial_swap(r2, ans);
@@ -314,7 +312,6 @@ void generate_initial_routes(ANS* ans, int airplane_id, Route* initial_route)
   if (destroy_r2) route_destroy(r2);
 
   // R4
-  printf("\t\tR4\n");
 
   // Tomo la ruta vacia (solo inicio y fin)
   Route* r4 = route_copy(ans -> bp -> routes[airplane_id], ans -> map);
@@ -358,7 +355,6 @@ void generate_initial_routes(ANS* ans, int airplane_id, Route* initial_route)
   }
 
   // R5
-  printf("\t\tR5\n");
 
   // Ocupo la ruta generada aleatoria de la funcion create_initial_routes
   Route* r5 = route_copy(initial_route, ans -> map);
@@ -394,7 +390,6 @@ void generate_initial_routes(ANS* ans, int airplane_id, Route* initial_route)
   }
 
   // R6
-  printf("\t\tR6\n");
 
   // Tomo la ruta anterior y le hago drop_and_add y luego swap
   Route* r6 = initial_drop_and_add(r5, ans);
@@ -430,7 +425,6 @@ void generate_initial_routes(ANS* ans, int airplane_id, Route* initial_route)
   }
 
   // R7
-  printf("\t\tR7\n");
   Route* r7 = initial_swap(r6, ans);
 
   // Si es una ruta valida
@@ -476,6 +470,7 @@ Route* choose_random(Route** routes, int count)
   return routes[position];
 }
 
+// Para cada ruta recalcula su funcion objetivo (ya que cambia con los costos duales)
 void recalculate_of(ANS* ans)
 {
   // Itero sobre las avions
@@ -493,7 +488,7 @@ void recalculate_of(ANS* ans)
 // Loop principal del programa
 double* solve(ANS* ans)
 {
-  // creo las rutas iniciales de cada avion
+  // Creo las rutas iniciales de cada avion
   printf("\tGenerando rutas\n");
   Route** routes_initial = create_initial_routes(ans);
 
@@ -502,7 +497,7 @@ double* solve(ANS* ans)
   clock_t start = clock();
   for (int i = 0; i < airplanes_count; i++)
   {
-    printf("\t\tAvion %d\n", i);
+    // printf("\t\tAvion %d\n", i);
     // route_print(routes_initial[i]);
     generate_initial_routes(ans, i, routes_initial[i]);
     // Libero memoria
@@ -511,30 +506,36 @@ double* solve(ANS* ans)
   free(routes_initial);
   clock_t end = clock();
 
+  //getchar();
+
   printf("\tTiempo en generar columnas iniciales: %lf\n", (double)(end - start)/CLOCKS_PER_SEC);
 
-  printf("\tLoop principal:\n");
+  // printf("\tLoop principal:\n");
   // Variable para contar iteraciones
   int iteration = 0;
   // Itero hasta que no genere nuevas columnas buenas
   while (true)
   {
     printf("\t\tIteracion %d\n", iteration);
+    for (int i = 0; i < airplanes_count; i++)
+    {
+      printf("\t\t\tHay %d rutas para el avion %d\n", ans -> route_count[i], i);
+    }
     // Resuelvo el problema maestro relajado y actualizo los duales de las rutas
     printf("\t\tResolviendo problema maestro relajado\n");
     optimize_routes_relaxed(ans -> routes, ans -> route_count, ans -> map);
 
     // Recalculo la funcion objetivo de todas las rutas
-    printf("\t\tRecalculando funciones objetivo\n");
+    // printf("\t\tRecalculando funciones objetivo\n");
     recalculate_of(ans);
 
     // Cuento cuantas rutas con costo reducido mayor a 0 produje
     int improved_count = 0;
     // Para cada avion
-    printf("\t\tEjecutar ANS\n");
+    // printf("\t\tEjecutar ANS\n");
     for (int k = 0; k < airplanes_count; k++)
     {
-      printf("\t\t\tAvion %d\n", k);
+      // printf("\t\t\tAvion %d\n", k);
       // Elijo una ruta aleatoria
       Route* route = choose_random(ans -> routes[k], ans -> route_count[k]);
 
@@ -545,16 +546,16 @@ double* solve(ANS* ans)
       if (new_route -> objective_function > 0)
       {
         insert_route(ans, new_route, k);
+        // Cuento una ruta con costo reducido mayor a 0
+        improved_count++;
       }
-
-      // Cuento una ruta con costo reducido mayor a 0
-      improved_count++;
     }
 
     // Agrego 1 a la cuenta de iteraciones
     iteration++;
 
     printf("\t\tSe produjieron %d rutas con costo reducido positivo\n", improved_count);
+    //getchar();
 
     // Si no produje ninguna ruta con costo reducido mayor a 0, termino
     if (improved_count == 0) break;
@@ -589,20 +590,56 @@ int main(int argc, char *argv[])
   // Pongo una seed aleatoria al random del programa
   random_seed();
 
-  // Inicializo el ans
-  printf("Leyendo archivos\n");
-  ANS* ans = ans_init(argv[1], argv[2], argv[3]);
+  // Algoritmo iterativo
+  for (int iteration = 0; iteration < 50; iteration++)
+  {
+    // Inicializo el ans
+    printf("Leyendo archivos\n");
+    ANS* ans = ans_init(argv[1], argv[2], argv[3]);
 
 
-  ////////////////////////////////////////////////////////////////////////////
-  //                                Tests                                   //
-  ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    //                                Tests                                   //
+    ////////////////////////////////////////////////////////////////////////////
 
-  printf( "Ejecutando iteracion 0\n");
-  clock_t start = clock();
-  double* solution = solve(ans);
-  clock_t end = clock();
-  printf( "Tiempo de solve = %lf\n", (double)(end - start) / CLOCKS_PER_SEC);
+
+    printf( "Ejecutando iteracion %d\n", iteration);
+    clock_t start = clock();
+    double* solution = solve(ans);
+    clock_t end = clock();
+
+    char name[25];
+    sprintf(name, "details%d.txt", iteration);
+
+    FILE* detail_output = fopen(name, "w");
+
+    int pos = 0;
+    for (int i = 0; i < airplanes_count; i++)
+    {
+      fprintf(detail_output, "Airplane %d\n", i);
+      for (int j = 0; j < ans -> route_count[i]; j++)
+      {
+        if (solution[pos] > 0)
+        {
+          route_print(ans -> routes[i][j], detail_output);
+          fprintf(detail_output, "Utility: %lf\n", utility(ans -> routes[i][j]));
+        }
+        pos += 1;
+      }
+      fprintf(detail_output, "\n");
+    }
+
+    fclose(detail_output);
+
+    FILE* scores = fopen("results.txt", "a");
+    fprintf(scores, "Iteracion = %d\n", iteration);
+    fprintf(scores, "Tiempo = %lf\n", (double)(end - start) / CLOCKS_PER_SEC);
+    fprintf(scores, "Utilidad = %lf\n", final_utility);
+    fprintf(scores, "RutasSolucion = %d\n", ones);
+    fprintf(scores, "RutasGeneradas = %d\n\n", pos);
+
+    fclose(scores);
+  }
 
 
   return 0;

@@ -2,6 +2,7 @@
 
 #include "../modelamiento/route.h"
 
+double prob_weight;
 struct ans;
 typedef struct ans ANS;
 

@@ -572,26 +572,30 @@ double* solve(ANS* ans)
 
 int main(int argc, char *argv[])
 {
-  if (argc == 4)
+  if (argc == 6)
   {
     optimizing_weights = false;
   }
-  else if (argc == 5)
+  else if (argc == 7)
   {
     optimizing_weights = true;
   }
   else
   {
     printf("Modo de uso:\n");
-    printf("[./optimizador] [map_file] [airplanes_file] [BP_file] (-ow)\n");
+    printf("[./optimizador] [map_file] [airplanes_file] [BP_file] [prob_weight] [max_iterations] (-ow)\n");
     exit(0);
   }
 
   // Pongo una seed aleatoria al random del programa
   random_seed();
 
+  prob_weight = atof(argv[4]);
+  int total_iterations = atof(argv[5]);
+
   // Algoritmo iterativo
-  for (int iteration = 0; iteration < 50; iteration++)
+  actual_iteration = 0;
+  while (actual_iteration < total_iterations)
   {
     // Inicializo el ans
     printf("Leyendo archivos\n");
@@ -603,13 +607,13 @@ int main(int argc, char *argv[])
     ////////////////////////////////////////////////////////////////////////////
 
 
-    printf( "Ejecutando iteracion %d\n", iteration);
+    printf( "Ejecutando iteracion %d\n", actual_iteration);
     clock_t start = clock();
     double* solution = solve(ans);
     clock_t end = clock();
 
     char name[25];
-    sprintf(name, "details%d.txt", iteration);
+    sprintf(name, "details%d.txt", actual_iteration);
 
     FILE* detail_output = fopen(name, "w");
 
@@ -632,13 +636,21 @@ int main(int argc, char *argv[])
     fclose(detail_output);
 
     FILE* scores = fopen("results.txt", "a");
-    fprintf(scores, "Iteracion = %d\n", iteration);
+    fprintf(scores, "Iteracion = %d\n", actual_iteration);
     fprintf(scores, "Tiempo = %lf\n", (double)(end - start) / CLOCKS_PER_SEC);
     fprintf(scores, "Utilidad = %lf\n", final_utility);
     fprintf(scores, "RutasSolucion = %d\n", ones);
-    fprintf(scores, "RutasGeneradas = %d\n\n", pos);
+    fprintf(scores, "RutasGeneradas = %d\n", pos);
+    fprintf(scores, "Probabilidades = [");
+    for (int p = 0; p < 7; p++)
+    {
+      if (p != 6) fprintf(scores, "%lf, ", ans -> prob_weights[p]);
+      else fprintf(scores, " %lf]\n\n", ans -> prob_weights[p]);
+    }
 
     fclose(scores);
+
+    actual_iteration++;
   }
 
 

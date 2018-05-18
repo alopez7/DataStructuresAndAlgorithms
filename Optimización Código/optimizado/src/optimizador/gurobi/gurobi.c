@@ -470,11 +470,16 @@ double* optimize_routes(Route*** separated_routes, int* counts, Map* map)
   }
   // Arreglo con los nombres de las variables
   char** var_names = malloc(sizeof(char*) * count);
-  for (int i = 0; i < count; i++)
+  int var_id = 0;
+  for (int i = 0; i < airplanes_count; i++)
   {
-    // Creo los nombres de las variables
-    var_names[i] = calloc(8, sizeof(char));
-    sprintf(var_names[i], "x_%d", i);
+    for (int j = 0; j < counts[i]; j++)
+    {
+      // Creo los nombres de las variables
+      var_names[var_id] = calloc(8, sizeof(char));
+      sprintf(var_names[var_id], "R{%d,%d}", i, j);
+      var_id += 1;
+    }
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -813,11 +818,16 @@ double* optimize_routes_relaxed(Route*** separated_routes, int* counts, Map* map
   }
   // Arreglo con los nombres de las variables
   char** var_names = malloc(sizeof(char*) * count);
-  for (int i = 0; i < count; i++)
+  int var_id = 0;
+  for (int i = 0; i < airplanes_count; i++)
   {
-    // Creo los nombres de las variables
-    var_names[i] = calloc(8, sizeof(char));
-    sprintf(var_names[i], "x%d", i);
+    for (int j = 0; j < counts[i]; j++)
+    {
+      // Creo los nombres de las variables
+      var_names[var_id] = calloc(8, sizeof(char));
+      sprintf(var_names[var_id], "R{%d,%d}", i, j);
+      var_id += 1;
+    }
   }
   int constrain_count = airplanes_count + count + order_count;
 
@@ -828,7 +838,7 @@ double* optimize_routes_relaxed(Route*** separated_routes, int* counts, Map* map
   // Creo la variable de ambiente de gurobi y la completo con la funcion GRBloadenv
   GRBenv *env = NULL;
   // El segundo argumento de la funcion es el archivo donde se guarda el log (puede ser NULL)
-  error = GRBloadenv(&env, "ERRORES.txt");
+  error = GRBloadenv(&env, "LOGS.txt");
   // Si retorna un error, no sigo
   if (error) goto QUIT3;
   error = GRBsetintparam(env, "LogToConsole", 0);
@@ -1045,8 +1055,9 @@ double* optimize_routes_relaxed(Route*** separated_routes, int* counts, Map* map
   ///////////////////////////////////////////////////////////////////////////
   //                     Escribir modelo en archivo                        //
   ///////////////////////////////////////////////////////////////////////////
-
-  error = GRBwrite(model, "maestro.lp");
+  char filename[32];
+  sprintf(filename, "maestro_relajado_%d.lp", actual_iteration);
+  error = GRBwrite(model, filename);
   if (error) goto QUIT3;
 
 

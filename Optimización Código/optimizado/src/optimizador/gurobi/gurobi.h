@@ -6,6 +6,8 @@
 double final_utility;
 int ones;
 
+int actual_iteration;
+
 bool optimizing_weights;
 
 /** Optimiza las cargas de un avion */

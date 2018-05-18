@@ -884,7 +884,7 @@ void refresh_probabilities(ANS* ans, int operation_id, double old_of, double new
   double epsilon = 0.001;
 
   // Peso de la nueva mejora con respecto a la vieja
-  double prob_weight = 0.7;
+  // prob_weight = 0.7;
 
   // Calculo la mejora
   double M_i;

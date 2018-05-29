@@ -79,6 +79,9 @@ Route* initial_drop_and_add(Route* base, ANS* ans);
 /** Version especial de swap para rutas iniciales */
 Route* initial_swap(Route* base, ANS* ans);
 
+/** Inserta los pedidos que pueda y retorna la cantidad que no pudo insertar */
+int initial_insert(Route* route, int unnasigned, Order** unassigned_orders, ANS* ans);
+
 /////////////////////////////////////////////////////////////////////////
 //                          Optimizaciones                             //
 /////////////////////////////////////////////////////////////////////////

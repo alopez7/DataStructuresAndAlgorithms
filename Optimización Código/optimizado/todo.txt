@@ -1,3 +1,2 @@
-Checkear rutas invalidas iniciales
 Liberar memoria
 Calibrar probabilidades

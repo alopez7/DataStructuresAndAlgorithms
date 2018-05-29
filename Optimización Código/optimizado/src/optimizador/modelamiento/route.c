@@ -257,8 +257,9 @@ Route* route_init(Airplane* airplane)
 /** Imprime la ruta */
 void route_print(Route* route, FILE* file)
 {
-  // fprintf(file, "FO: %lf\n", route -> objective_function);
-  // fprintf(file, "Válida: %c\n", route -> valid ? 't' : 'f');
+  fprintf(file, "FO: %lf\n", route -> objective_function);
+  fprintf(file, "fast_of: %lf\n", route -> fast_of);
+  fprintf(file, "Válida: %c\n", route -> valid ? 't' : 'f');
   for (LNode* ln = route -> nodes -> start; ln -> next; ln = ln -> next)
   {
     fprintf(file, "%d ", ln -> node -> id);
@@ -306,8 +307,6 @@ void route_destroy(Route* route)
   list_destroy(route -> nodes);
   free(route);
 }
-
-
 
 // FUNCIONES DE LA PLANIFICACION BASE
 
@@ -956,8 +955,6 @@ void l_node_order_fill(LNode* pickup, Order* order)
   delivery -> open_orders_count = 0;
 }
 
-
-
 // FUNCIONES SOBRE LAS RUTAS USADAS EN EL CODIGO ANS
 
 /** Calcula la funcion objetivo de la ruta iterando sobre ella */
@@ -1022,8 +1019,8 @@ double fast_of(Route* route, Map* map)
   // Sumo las tarifas y resto los costos de viaje y los duales
   for (LNode* ln = route -> nodes -> start; ln -> next; ln = ln -> next)
   {
-    // Si es pickup y la tarifa es superior al costo dual
-    if (ln -> node -> node_type == PICKUP && ln -> node -> fee > ln -> node -> dual_pi)
+    // Si el costo reducido es mayor, no lo sumo
+    if (ln -> node -> dual_pi < ln -> node -> fee)
     {
       // sumo la carga completa
       fees += ln -> node -> fee * ln -> node -> total_weight;
@@ -1033,6 +1030,7 @@ double fast_of(Route* route, Map* map)
     // Resto distancias
     distances += distance(ln -> node -> father, ln -> next -> node -> father);
   }
+
   // agrego el dual gamma
   duals += route -> airplane -> dual_gamma;
 
@@ -1193,27 +1191,62 @@ bool assign_weights(Route* route)
     // Si es pickup
     if (ln -> node -> node_type == PICKUP)
     {
-      // Si su fee es menor o igual al dual_pi
-      if (ln -> node -> fee <= ln -> node -> dual_pi)
+      // Si puedo cargar todo, lo cargo
+      if (ln -> last -> actual_weight + ln -> node -> total_weight <= capacity)
       {
-        // No agrego peso
-        ln -> delta_weight = 0;
-        ln -> actual_weight = ln -> last -> actual_weight;
+        ln -> delta_weight = ln -> node -> total_weight;
+        ln -> actual_weight = ln -> last -> actual_weight + ln -> delta_weight;
       }
+      // Si no puedo, llamo al optimizador de cargas
       else
       {
-        // Si puedo cargar todo, lo cargo
-        if (ln -> last -> actual_weight + ln -> node -> total_weight <= capacity)
-        {
-          ln -> delta_weight = ln -> node -> total_weight;
-          ln -> actual_weight = ln -> last -> actual_weight + ln -> delta_weight;
-        }
-        // Si no puedo, llamo al optimizador de cargas
-        else
-        {
-          optimize_weight(route);
-          return route -> valid;
-        }
+        optimize_weight(route);
+        return route -> valid;
+      }
+    }
+    // Si es delivery
+    else if (ln -> node -> node_type == DELIVERY)
+    {
+      // Dejo lo que el pickup recogio
+      ln -> delta_weight = -ln -> pair -> delta_weight;
+      ln -> actual_weight = ln -> last -> actual_weight + ln -> delta_weight;
+    }
+  }
+  // El nodo final debe tener delta weight 0 y actual weight 0
+  route -> nodes -> end -> actual_weight = 0;
+  route -> nodes -> end -> delta_weight = 0;
+
+  route -> valid = true;
+  return true;
+}
+
+/** Asigna las cargas de manera greedy maximizando utilidad, y si no se puede optimiza */
+bool utility_assign_weights(Route* route)
+{
+  // Capacidad total
+  double capacity = route -> airplane -> total_capacity;
+
+  // Asigno peso 0 inicial
+  route -> nodes -> start -> delta_weight = 0;
+  route -> nodes -> start -> actual_weight = 0;
+
+  // Para el resto de los nodos los actualizo de manera greedy
+  for (LNode* ln = route -> nodes -> start -> next; ln -> next; ln = ln -> next)
+  {
+    // Si es pickup
+    if (ln -> node -> node_type == PICKUP)
+    {
+      // Si puedo cargar todo, lo cargo
+      if (ln -> last -> actual_weight + ln -> node -> total_weight <= capacity)
+      {
+        ln -> delta_weight = ln -> node -> total_weight;
+        ln -> actual_weight = ln -> last -> actual_weight + ln -> delta_weight;
+      }
+      // Si no puedo, llamo al optimizador de cargas
+      else
+      {
+        utility_optimize_weight(route);
+        return route -> valid;
       }
     }
     // Si es delivery

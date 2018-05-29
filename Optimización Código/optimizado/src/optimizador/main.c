@@ -94,7 +94,7 @@ Route** create_initial_routes(ANS* ans)
 
       // Creo el l_nodo a insertar en la ruta
       LNode* pickup = l_node_init();
-      // Ontengo el delivery
+      // Obtengo el delivery
       LNode* delivery = pickup -> pair;
 
       // itero sobre los pedidos
@@ -163,7 +163,7 @@ Route** create_initial_routes(ANS* ans)
       }
     }
 
-    // Si no me quedan pedidos por asignar o no pude asirgnar pedidos a ninguna
+    // Si no me quedan pedidos por asignar o no pude asignar pedidos a ninguna
     // ruta, termino de iterar
     if (fails == airplanes_count || unnasigned == 0)
     {
@@ -178,6 +178,21 @@ Route** create_initial_routes(ANS* ans)
     assign_weights(routes[i]);
     routes[i] -> objective_function = objective_function(routes[i], ans -> map);
     routes[i] -> fast_of = fast_of(routes[i], ans -> map);
+  }
+
+  // Ahora intento insertar las orders que me quedan en las rutas
+  while (true)
+  {
+    int last_unnasigned = unnasigned;
+    // Itero sobre las rutas
+    for (int k = 0; k < airplanes_count; k++)
+    {
+      // Trato de insertar todos los pedido que pueda
+      unnasigned = initial_insert(routes[k], unnasigned, unassigned_orders, ans);
+    }
+
+    // Si no inserte nada, termino
+    if (unnasigned == last_unnasigned) break;
   }
 
   Route** sorted = malloc(sizeof(Route*) * airplanes_count);
@@ -479,6 +494,7 @@ void recalculate_of(ANS* ans)
     // Itero por las rutas
     for (int i = 0; i < ans -> route_count[k]; i++)
     {
+      assign_weights(ans -> routes[k][i]);
       ans -> routes[k][i] -> objective_function = objective_function(ans -> routes[k][i], ans -> map);
       ans -> routes[k][i] -> fast_of = fast_of(ans -> routes[k][i], ans -> map);
     }
@@ -526,16 +542,13 @@ double* solve(ANS* ans)
     optimize_routes_relaxed(ans -> routes, ans -> route_count, ans -> map);
 
     // Recalculo la funcion objetivo de todas las rutas
-    // printf("\t\tRecalculando funciones objetivo\n");
     recalculate_of(ans);
 
     // Cuento cuantas rutas con costo reducido mayor a 0 produje
     int improved_count = 0;
     // Para cada avion
-    // printf("\t\tEjecutar ANS\n");
     for (int k = 0; k < airplanes_count; k++)
     {
-      // printf("\t\t\tAvion %d\n", k);
       // Elijo una ruta aleatoria
       Route* route = choose_random(ans -> routes[k], ans -> route_count[k]);
 
@@ -556,6 +569,7 @@ double* solve(ANS* ans)
 
     printf("\t\tSe produjieron %d rutas con costo reducido positivo\n", improved_count);
     //getchar();
+
 
     // Si no produje ninguna ruta con costo reducido mayor a 0, termino
     if (improved_count == 0) break;
@@ -597,6 +611,7 @@ int main(int argc, char *argv[])
   actual_iteration = 0;
   while (actual_iteration < total_iterations)
   {
+    printf("INICIANDO ITERACION %d\n", actual_iteration);
     // Inicializo el ans
     printf("Leyendo archivos\n");
     ANS* ans = ans_init(argv[1], argv[2], argv[3]);
@@ -650,6 +665,7 @@ int main(int argc, char *argv[])
 
     fclose(scores);
 
+    printf("TERMINADA ITERACION %d\n", actual_iteration);
     actual_iteration++;
   }
 

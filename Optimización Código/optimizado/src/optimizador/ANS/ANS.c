@@ -872,6 +872,109 @@ Route* initial_swap(Route* base, ANS* ans)
   return route;
 }
 
+/** Inserta los pedidos que pueda y retorna la cantidad que no pudo insertar */
+int initial_insert(Route* route, int unnasigned, Order** unassigned_orders, ANS* ans)
+{
+  // Primero calculo la utilidad de la ruta
+  double best_utility = utility(route);
+
+  // Itero sobre los pedidos
+  int i = 0;
+  while (i < unnasigned)
+  {
+    // Tomo el pedido a insertar
+    Order* order = unassigned_orders[i];
+
+    // Creo los lnodos para el pickup y el delivery y los relleno con la orden
+    LNode* pickup = l_node_init();
+    LNode* delivery = pickup -> pair;
+    l_node_order_fill(pickup, order);
+
+    // Guardo la mejor posicion hasta ahora del pickup y delivery
+    LNode* best_p = NULL;
+    LNode* best_d = NULL;
+
+    // Itero sobre la ruta para insertar el pickup
+    for (LNode* ln = route -> nodes -> start; ln -> next; ln = ln -> next)
+    {
+      // Si es consistente con los tiempos
+      if (is_time_consistent(ln, pickup) && is_time_consistent(pickup, ln -> next))
+      {
+        // Inserto el pickup
+        l_node_insert_next(route, ln, pickup);
+
+        // Ahora itero sobre el resto de la ruta para insertar el delivery
+        for (LNode* ln2 = pickup; ln2 -> next; ln2 = ln2 -> next)
+        {
+          // Si es consistente en tiempos
+          if (is_time_consistent(ln2, delivery) && is_time_consistent(delivery, ln2 -> next))
+          {
+            // Inserto el delivery
+            l_node_insert_next(route, ln2, delivery);
+
+            // Si la ruta obtenida es valida en tiempos y en pesos
+            if (assign_time(route) && assign_weights(route))
+            {
+              // Calculo su utilidad
+              int util = utility(route);
+
+              // Si su utilidad es mayor a la anterior
+              if (util > best_utility)
+              {
+                // Actualizo la mejor utilidad
+                best_utility = util;
+
+                // Guardo las posiciones donde los inserte
+                best_p = ln;
+                best_d = ln2;
+              }
+            }
+
+            // Saco el delivery
+            l_node_pop(route, delivery);
+          }
+        }
+
+        // Saco el pickup
+        l_node_pop(route, pickup);
+      }
+    }
+
+    // Si encontre una posicion para insertalos
+    if (best_p)
+    {
+      // Los pongo en sus posiciones
+      l_node_insert_next(route, best_p, pickup);
+      l_node_insert_next(route, best_d, delivery);
+
+      // Elimino la orden del arreglo
+      for (int j = i + 1; j < unnasigned; j++)
+      {
+        unassigned_orders[j - 1] = unassigned_orders[j];
+      }
+
+      // No hago avanzar el i ya que movi los pedidos
+      unnasigned--;
+    }
+    // Si no encontre una posicion para insertarlo
+    else
+    {
+      // Libero los l_nodos
+      free(pickup);
+      free(delivery);
+
+      // Prosigo a la siguiente order
+      i++;
+    }
+  }
+
+  // Dejo como valida a la ruta
+  route -> valid = true;
+
+  // Retorno la cantidad de pedidos no asignados
+  return unnasigned;
+}
+
 /////////////////////////////////////////////////////////////////////////
 //                    Funciones propias del ans                        //
 /////////////////////////////////////////////////////////////////////////
@@ -880,30 +983,40 @@ Route* initial_swap(Route* base, ANS* ans)
 /** Actualiza las probabilidades dada una operacion */
 void refresh_probabilities(ANS* ans, int operation_id, double old_of, double new_of, double op_time)
 {
-  // Epsilon de peso
-  double epsilon = 0.001;
+  int old_e = ans -> prob_weights[operation_id];
+  if (old_of < new_of) ans -> prob_weights[operation_id] += 1;
+  else ans -> prob_weights[operation_id] -= 1;
+  if (ans -> prob_weights[operation_id] > 10) ans -> prob_weights[operation_id] = 10;
+  else if (ans -> prob_weights[operation_id] < 1) ans -> prob_weights[operation_id] = 1;
+  ans -> total_weight = ans -> total_weight - old_e + ans -> prob_weights[operation_id];
+  return;
 
-  // Peso de la nueva mejora con respecto a la vieja
-  // prob_weight = 0.7;
-
-  // Calculo la mejora
-  double M_i;
-  if (old_of == 0 && new_of != 0) M_i = fabs(new_of - 1);
-  else if (old_of == 0 && new_of == 0) M_i = 0;
-  else M_i = fabs(new_of - old_of)/fabs(old_of);
-
-  // Eficiencia antigua
-  double old_e = ans -> prob_weights[operation_id];
-
-  // Eficiencia nueva
-  double new_e = fmax(M_i / op_time, epsilon);
-
-  // Actualizo la eficiencia de la operacion
-  new_e = new_e * prob_weight + old_e * (1 - prob_weight);
-  ans -> prob_weights[operation_id] = new_e;
-
-  // Actualizo el peso total
-  ans -> total_weight = ans -> total_weight - old_e + new_e;
+  // // Epsilon de peso
+  // double epsilon = 0.001;
+  //
+  // // Peso de la nueva mejora con respecto a la vieja
+  // // prob_weight = 0.7;
+  //
+  // // Calculo la mejora
+  // double M_i;
+  // if (old_of == 0 && new_of != 0) M_i = fabs(new_of - 1);
+  // else if (old_of == 0 && new_of == 0) M_i = 0;
+  // else M_i = fabs(new_of - old_of)/fabs(old_of);
+  //
+  // // Eficiencia antigua
+  // double old_e = ans -> prob_weights[operation_id];
+  //
+  // // Eficiencia nueva
+  // double new_e = fmax(M_i / op_time, epsilon);
+  //
+  // // Actualizo la eficiencia de la operacion
+  // new_e = new_e * prob_weight + old_e * (1 - prob_weight);
+  // if (new_e > 10) new_e = 10;
+  // else if (new_e < 1) new_e = 1;
+  // ans -> prob_weights[operation_id] = new_e;
+  //
+  // // Actualizo el peso total
+  // ans -> total_weight = ans -> total_weight - old_e + new_e;
 }
 
 /** Inicializa una ruta de la planificacion base eliminando pedidos */

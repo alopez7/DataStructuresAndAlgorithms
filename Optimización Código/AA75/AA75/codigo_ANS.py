@@ -837,7 +837,7 @@ class ANS():
 		r.CostoRuta = maxUtilidad
 		return r
 
-	def Insercion_inicial (self, r, pendientes): #Insercion de pedidos
+	def Insercion_inicial(self, r, pendientes): #Insercion de pedidos
 		rCopia = self.Copiar(r)
 		rOriginal = self.Copiar(r)
 		maxUtilidad = self.Utilidad(r)

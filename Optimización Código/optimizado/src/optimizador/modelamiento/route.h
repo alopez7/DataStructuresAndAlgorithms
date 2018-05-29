@@ -153,3 +153,6 @@ bool assign_time(Route* route);
 
 /** Asigna las cargas de manera greedy, y si no se puede optimiza */
 bool assign_weights(Route* route);
+
+/** Asigna las cargas de manera greedy maximizando utilidad, y si no se puede optimiza */
+bool utility_assign_weights(Route* route);

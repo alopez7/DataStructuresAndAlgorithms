@@ -1,0 +1,34 @@
+Airplane 0
+
+Airplane 1
+
+Airplane 2
+FO: -4.129068
+fast_of: 3.115405
+Válida: t
+72 8 43 23 58 10 45 2 37 17 52 33 68 7 32 42 67 3 26 61 1 38 36 79
+Utility: 1772.067656
+
+Airplane 3
+FO: -22.244663
+fast_of: -22.244663
+Válida: t
+73 31 66 25 60 27 62 24 59 12 47 80
+Utility: 686.564489
+
+Airplane 4
+FO: -119.790230
+fast_of: -119.790230
+Válida: t
+74 15 50 16 51 29 64 13 48 0 35 34 69 22 57 21 56 30 65 18 53 20 55 81
+Utility: 2851.146573
+
+Airplane 5
+FO: -63.894620
+fast_of: -63.894620
+Válida: t
+75 28 63 82
+Utility: 187.997758
+
+Airplane 6
+

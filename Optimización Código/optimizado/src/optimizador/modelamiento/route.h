@@ -25,6 +25,10 @@ struct l_node
   double utility;
   /** Indice del nodo dentro de la ruta (se usa al optimizar con gurobi) */
   int route_index;
+  /** Momento en que llega el avion */
+  double arrive_time;
+  /** Momento en que se va el avion */
+  double leave_time;
 };
 /** Nodo de la lista */
 typedef struct l_node LNode;
@@ -142,11 +146,16 @@ void l_node_order_fill(LNode* pickup, Order* order);
 /** Calcula la funcion objetivo de una ruta */
 double objective_function(Route* route, Map* map);
 
+void print_objective_function(Route* route, Map* map);
+
 /** Calcula la funcion objetivo de manera optimista (sin costos duales pi y asumiendo carga completa) */
 double fast_of(Route* route, Map* map);
 
 /** Calcula la utilidad de la ruta */
 double utility(Route* route);
+
+/** Calcula la utilidad de la ruta */
+void print_utility(Route* route);
 
 /** Ajusta los tiempos de una ruta y determina si es factible */
 bool assign_time(Route* route);

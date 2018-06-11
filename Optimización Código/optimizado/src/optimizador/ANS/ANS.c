@@ -990,33 +990,6 @@ void refresh_probabilities(ANS* ans, int operation_id, double old_of, double new
   else if (ans -> prob_weights[operation_id] < 1) ans -> prob_weights[operation_id] = 1;
   ans -> total_weight = ans -> total_weight - old_e + ans -> prob_weights[operation_id];
   return;
-
-  // // Epsilon de peso
-  // double epsilon = 0.001;
-  //
-  // // Peso de la nueva mejora con respecto a la vieja
-  // // prob_weight = 0.7;
-  //
-  // // Calculo la mejora
-  // double M_i;
-  // if (old_of == 0 && new_of != 0) M_i = fabs(new_of - 1);
-  // else if (old_of == 0 && new_of == 0) M_i = 0;
-  // else M_i = fabs(new_of - old_of)/fabs(old_of);
-  //
-  // // Eficiencia antigua
-  // double old_e = ans -> prob_weights[operation_id];
-  //
-  // // Eficiencia nueva
-  // double new_e = fmax(M_i / op_time, epsilon);
-  //
-  // // Actualizo la eficiencia de la operacion
-  // new_e = new_e * prob_weight + old_e * (1 - prob_weight);
-  // if (new_e > 10) new_e = 10;
-  // else if (new_e < 1) new_e = 1;
-  // ans -> prob_weights[operation_id] = new_e;
-  //
-  // // Actualizo el peso total
-  // ans -> total_weight = ans -> total_weight - old_e + new_e;
 }
 
 /** Inicializa una ruta de la planificacion base eliminando pedidos */

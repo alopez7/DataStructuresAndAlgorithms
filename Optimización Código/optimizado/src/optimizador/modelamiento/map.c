@@ -303,3 +303,10 @@ double distance(Macronode* macro1, Macronode* macro2)
 {
   return sqrt(pow(macro2 -> X - macro1 -> X, 2) + pow(macro2 -> Y - macro1 -> Y, 2));
 }
+
+double print_distance(Macronode* macro1, Macronode* macro2)
+{
+  double d = sqrt(pow(macro2 -> X - macro1 -> X, 2) + pow(macro2 -> Y - macro1 -> Y, 2));
+  printf("Distancia de (%lf, %lf) a (%lf, %lf) = %lf\n", macro1 -> X, macro1 -> Y, macro2 -> X, macro2 -> Y, d);
+  return d;
+}

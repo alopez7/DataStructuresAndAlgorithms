@@ -65,10 +65,6 @@ struct node
   double start_time;
   /** hora fin */
   double end_time;
-  /** Momento en que llega el avion */
-  double arrive_time;
-  /** Momento en que se va el avion */
-  double leave_time;
   /** tarifa ganada por hacer la ruta */
   double fee;
   /** nodo "padre" de este (macronodo)*/
@@ -143,3 +139,6 @@ void map_destroy(Map* map);
 
 /** distancia euclideana de un macro nodo a otro */
 double distance(Macronode* macro1, Macronode* macro2);
+
+/** distancia euclideana de un macro nodo a otro */
+double print_distance(Macronode* macro1, Macronode* macro2);

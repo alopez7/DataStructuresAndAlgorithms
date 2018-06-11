@@ -1,7 +1,7 @@
 #include "route.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include "../gurobi/gurobi.h"
+#include "../optimizacion/optimizacion.h"
 
 /////////////////////////////////////////////////////////////////////////
 //                     Funciones privadas                              //
@@ -257,9 +257,6 @@ Route* route_init(Airplane* airplane)
 /** Imprime la ruta */
 void route_print(Route* route, FILE* file)
 {
-  fprintf(file, "FO: %lf\n", route -> objective_function);
-  fprintf(file, "fast_of: %lf\n", route -> fast_of);
-  fprintf(file, "Válida: %c\n", route -> valid ? 't' : 'f');
   for (LNode* ln = route -> nodes -> start; ln -> next; ln = ln -> next)
   {
     fprintf(file, "%d ", ln -> node -> id);
@@ -268,6 +265,13 @@ void route_print(Route* route, FILE* file)
 
   fprintf(file, "%d\n", end -> id);
 
+  // Imprimo los tiempos
+  fprintf(file, "Tiempos:\n");
+  for (LNode* ln = route -> nodes -> start; ln; ln = ln -> next)
+  {
+    fprintf(file ,"(%lf, %lf) ", ln -> arrive_time, ln -> leave_time);
+  }
+  fprintf(file, "\n");
 }
 
 /** Copia una ruta */
@@ -1006,6 +1010,50 @@ double objective_function(Route* route, Map* map)
   return total;
 }
 
+/** Calcula la funcion objetivo de la ruta iterando sobre ella */
+void print_objective_function(Route* route, Map* map)
+{
+  // Partes de la funcion objetivo
+  double fees = 0;
+  double distances = 0;
+  double duals = 0;
+  double cancellation_cost = 0;
+
+  // route_print(route);
+
+  // Sumo las tarifas y resto los costos de viaje y los duales
+  for (LNode* ln = route -> nodes -> start; ln -> next; ln = ln -> next)
+  {
+    // Si es pickup
+    if (ln -> node -> node_type == PICKUP)
+    {
+      // sumo la parte de la carga que se cargo
+      fees += ln -> node -> fee * ln -> delta_weight;
+      duals += ln -> node -> dual_pi * ln -> delta_weight;
+    }
+
+    // Resto distancias
+    distances += distance(ln -> node -> father, ln -> next -> node -> father);
+  }
+  // agrego el dual gamma
+  duals += route -> airplane -> dual_gamma;
+
+
+  // Costo de cancelacion
+  cancellation_cost = get_cancellation_cost(route);
+
+  // Calculo el total y lo retorno
+  double total = fees - distances - duals - cancellation_cost;
+
+  // Imprimo cada uno de los elementos
+  printf("Fees: %lf\n", fees);
+  printf("Distances: %lf\n", distances);
+  printf("Duals: %lf\n", duals);
+  printf("DualGamma: %lf\n", route -> airplane -> dual_gamma);
+  printf("Costo de cancelacion: %lf\n", cancellation_cost);
+  printf("Total: %lf\n\n", total);
+}
+
 /** Calcula la funcion objetivo de manera optimista (asuminedo carga completa) */
 double fast_of(Route* route, Map* map)
 {
@@ -1081,95 +1129,98 @@ double utility(Route* route)
   return total;
 }
 
+/** Calcula la utilidad de la ruta */
+void print_utility(Route* route)
+{
+  // Partes de la utilidad
+  double fees = 0;
+  double distances = 0;
+  double cancellation_cost = 0;
+
+  // Sumo las tarifas y resto los costos de viaje
+  for (LNode* ln = route -> nodes -> start; ln -> next; ln = ln -> next)
+  {
+    // Si es pickup
+    if (ln -> node -> node_type == PICKUP)
+    {
+      // sumo la parte de la carga que se cargo
+      fees += ln -> node -> fee * ln -> delta_weight;
+    }
+
+    // Resto distancias
+    distances += distance(ln -> node -> father, ln -> next -> node -> father);
+  }
+
+  // Costo de cancelacion
+  cancellation_cost = get_cancellation_cost(route);
+
+  // Calculo el total y lo retorno
+  double total = fees - distances - cancellation_cost;
+
+  printf("Fees: %lf\n", fees);
+  printf("Distances: %lf\n", distances);
+  printf("Costo de cancelacion: %lf\n", cancellation_cost);
+  printf("Total: %lf\n\n", total);
+}
+
 /** Ajusta los tiempos de una ruta y determina si es factible */
 bool assign_time(Route* route)
 {
   // route: ruta a ajustar sus tiempos
 
-  // Para el primer nodo, parto lo antes posible
-  Node* start_n = route -> nodes -> start -> node;
-  start_n -> arrive_time = start_n -> start_time;
-  start_n -> leave_time = start_n -> arrive_time + start_n -> delay_time;
-  // printf("Hola llegada = %lf\n", start_n -> arrive_time);
-  // printf("Hola salida = %lf\n", start_n -> leave_time);
-  // printf("Salida mas temprana = %lf\n", start_n -> leave_time);
+  // Cuento cuantos nodos hay
+  int count = 0;
+  for (LNode* ln = route -> nodes -> start; ln; ln = ln -> next) count ++;
 
-  // Pongo como hora de llegada a cada nodo como la más temprana posible
-  double earliest_leave = start_n -> leave_time;
-  for (LNode* ln = route -> nodes -> start -> next; ln; ln = ln -> next)
+  // Creo un arreglo con los tiempos de llegada iniciales (al principio lo mas temprano posible)
+  double* B = malloc(sizeof(double) * count);
+  int i = 0;
+  for (LNode* ln = route -> nodes -> start; ln; ln = ln -> next)
   {
-    // printf("ID = %d\n", ln -> node -> id);
-    // Tiempo de vieaje desde el nodo anterior al acutual
-    double travel_time = distance(ln -> last -> node -> father, ln -> node -> father);
-    double earliest_arrive = earliest_leave + travel_time;
-
-    // printf("Vuelo = %lf\n", travel_time);
-
-    // printf("Llegada mas temprana = %lf\n", earliest_arrive);
-    // printf("Start = %lf\n", ln -> node -> start_time);
-    // printf("End = %lf\n", ln -> node -> end_time);
-
-    // Si llego antes veo si puedo esperar
-    if (earliest_arrive < ln -> node -> start_time)
-    {
-      // printf("Llegue antes\n");
-      // Si puedo esperar, atraso al anterior
-      double delta = ln -> node -> start_time - earliest_arrive;
-      if (earliest_leave + delta <= ln -> last -> node -> end_time)
-      {
-        // printf("Puedo esperar\n");
-        // Atraso al anterior
-        ln -> last -> node -> leave_time = earliest_leave + delta;
-        // Pongo como tiempo de llegada al minimo
-        ln -> node -> arrive_time = ln -> node -> start_time;
-        // Pongo el tiempo de salida lo mas temprano posible
-        ln -> node -> leave_time = ln -> node -> start_time + ln -> node -> delay_time;
-      }
-      // Si no puedo esperar tanto, la ruta es invalida
-      else
-      {
-        // printf("No puedo esperar (%lf > %lf)\n", earliest_leave + delta, ln -> last -> node -> end_time);
-        route -> valid = false;
-        return false;
-      }
-    }
-    // Si llego entre el start y el end, calculo el tiempo de salida
-    else if (earliest_arrive <= ln -> node -> end_time)
-    {
-      // printf("Llego bien de hora (%lf)\n", earliest_arrive);
-      // printf("Delay = %lf\n", ln -> node -> delay_time);
-      // Si puedo irme a tiempo, actualizo los tiempos
-      if (earliest_arrive + ln -> node -> delay_time <= ln -> node -> end_time)
-      {
-        // printf("Puedo irme a tiempo (%lf)\n", earliest_arrive + ln -> node -> delay_time);
-        // Actualizo el tiempo de llegada lo antes posible
-        ln -> node -> arrive_time = earliest_arrive;
-        // Actualizo el tiempo de salida como el mas temprano posible
-        ln -> node -> leave_time = ln -> node -> arrive_time + ln -> node -> delay_time;
-      }
-      // Si no me da el tiempo, la ruta es invalida
-      else
-      {
-        // printf("No me da el tiempo para llegar e irme\n");
-        route -> valid = false;
-        return false;
-      }
-    }
-    // Si llego despues, la ruta es instantaneamente invalida
-    else
-    {
-      // printf("Llego despues de la hora limite\n");
-      route -> valid = false;
-      return false;
-    }
-
-    // Acutalizo el earliest_leave para la siguiente ronda
-    earliest_leave = ln -> node -> leave_time;
+    B[i] = ln -> node -> start_time;
+    ln -> arrive_time = ln -> node -> start_time;
+    i++;
   }
 
-  // printf("Ruta valida\n");
-  // Si llego aca, la ruta es valida
+  // Itero sobre la ruta
+  i = 0;
+  for (LNode* ln = route -> nodes -> start; ln -> next; ln = ln -> next)
+  {
+    double dist = distance(ln -> node -> father, ln -> next -> node -> father);
+    double delay = ln -> node -> delay_time;
+    double end_i = ln -> node -> end_time;
+    double start_j = ln -> next -> node -> start_time;
+    double end_j = ln -> next -> node -> end_time;
+    if (B[i] > end_i || B[i] + delay + dist > end_j)
+    {
+      route -> valid = false;
+      free(B);
+      return false;
+    }
+    else if (B[i] + delay + dist >= start_j && B[i] + delay + dist <= end_j)
+    {
+      B[i + 1] = B[i] + delay + dist;
+      ln -> next -> arrive_time = B[i + 1];
+    }
+    else if (B[i] + delay + dist < start_j)
+    {
+      B[i + 1] = start_j;
+      ln -> next -> arrive_time = start_j;
+    }
+    i++;
+  }
+
+  // Asigno los tiempos de salida
+  for (LNode* ln = route -> nodes -> end; ln -> last; ln = ln -> last)
+  {
+    double dist = distance(ln -> last -> node -> father, ln -> node -> father);
+    ln -> last -> leave_time = ln -> arrive_time - dist;
+  }
+  LNode* end = route -> nodes -> end;
+  end -> leave_time = end -> arrive_time + end -> node -> delay_time;
+
   route -> valid = true;
+  free(B);
   return true;
 }
 

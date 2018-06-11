@@ -1,140 +1,348 @@
 Iteracion = 0
-Tiempo = 232.196659
-Utilidad = 6675.338212
-RutasSolucion = 5
-RutasGeneradas = 253
+Utilidad = 5880.914281
+RutasSolucion = 6
+RutasGeneradas = 204
 Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
 
-Iteracion = 1
-Tiempo = 150.387421
-Utilidad = 6854.720074
-RutasSolucion = 5
-RutasGeneradas = 240
-Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
-
-Iteracion = 2
-Tiempo = 116.713390
-Utilidad = 6586.075917
-RutasSolucion = 5
-RutasGeneradas = 196
-Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
-
-Iteracion = 3
-Tiempo = 112.009669
-Utilidad = 6619.182583
-RutasSolucion = 5
-RutasGeneradas = 168
-Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
-
-Iteracion = 4
-Tiempo = 240.578806
-Utilidad = 6517.396824
-RutasSolucion = 4
-RutasGeneradas = 276
+Iteracion = 0
+Utilidad = 5906.033997
+RutasSolucion = 7
+RutasGeneradas = 206
 Probabilidades = [1.000000, 1.000000, 2.000000, 1.000000, 1.000000, 1.000000,  1.000000]
 
-Iteracion = 5
-Tiempo = 257.478101
-Utilidad = 6723.863425
-RutasSolucion = 4
-RutasGeneradas = 291
-Probabilidades = [1.000000, 1.000000, 2.000000, 1.000000, 2.000000, 1.000000,  1.000000]
-
-Iteracion = 6
-Tiempo = 207.977221
-Utilidad = 6596.469802
-RutasSolucion = 4
-RutasGeneradas = 249
+Iteracion = 0
+Utilidad = 5812.156215
+RutasSolucion = 7
+RutasGeneradas = 173
 Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
 
-Iteracion = 7
-Tiempo = 303.471670
-Utilidad = 6834.102469
-RutasSolucion = 3
-RutasGeneradas = 336
+Iteracion = 0
+Utilidad = 5846.424499
+RutasSolucion = 7
+RutasGeneradas = 159
+Probabilidades = [1.000000, 1.000000, 1.000000, 2.000000, 1.000000, 1.000000,  1.000000]
+
+Iteracion = 0
+Utilidad = 5649.674185
+RutasSolucion = 7
+RutasGeneradas = 150
 Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
 
-Iteracion = 8
-Tiempo = 148.134974
-Utilidad = 6753.910241
-RutasSolucion = 5
-RutasGeneradas = 218
-Probabilidades = [1.000000, 1.000000, 2.000000, 1.000000, 1.000000, 1.000000,  1.000000]
-
-Iteracion = 9
-Tiempo = 295.953824
-Utilidad = 6579.904665
-RutasSolucion = 4
-RutasGeneradas = 280
+Iteracion = 0
+Utilidad = 5719.158918
+RutasSolucion = 7
+RutasGeneradas = 144
 Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
 
-Iteracion = 10
-Tiempo = 194.083768
-Utilidad = 7133.399595
-RutasSolucion = 3
-RutasGeneradas = 232
-Probabilidades = [3.000000, 1.000000, 2.000000, 1.000000, 1.000000, 1.000000,  2.000000]
+Iteracion = 0
+Utilidad = 5684.279933
+RutasSolucion = 7
+RutasGeneradas = 119
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
 
-Iteracion = 11
-Tiempo = 175.923423
-Utilidad = 6277.975349
+Iteracion = 0
+Utilidad = 5980.411257
 RutasSolucion = 6
-RutasGeneradas = 212
-Probabilidades = [1.000000, 1.000000, 2.000000, 1.000000, 2.000000, 1.000000,  1.000000]
-
-Iteracion = 12
-Tiempo = 255.593473
-Utilidad = 6698.970624
-RutasSolucion = 6
-RutasGeneradas = 246
-Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
-
-Iteracion = 13
-Tiempo = 239.344038
-Utilidad = 6655.769271
-RutasSolucion = 5
-RutasGeneradas = 197
-Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
-
-Iteracion = 14
-Tiempo = 106.836346
-Utilidad = 6701.660574
-RutasSolucion = 5
 RutasGeneradas = 195
 Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
 
-Iteracion = 15
-Tiempo = 117.736635
-Utilidad = 6679.704786
-RutasSolucion = 4
-RutasGeneradas = 190
+Iteracion = 0
+Utilidad = 5821.484516
+RutasSolucion = 6
+RutasGeneradas = 118
 Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
 
-Iteracion = 16
-Tiempo = 311.515859
-Utilidad = 6759.211839
-RutasSolucion = 3
-RutasGeneradas = 283
+Iteracion = 0
+Utilidad = 5822.760701
+RutasSolucion = 6
+RutasGeneradas = 164
 Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
 
-Iteracion = 17
-Tiempo = 207.400121
-Utilidad = 6531.004307
+Iteracion = 0
+Utilidad = 5639.247626
+RutasSolucion = 7
+RutasGeneradas = 147
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Iteracion = 0
+Utilidad = 6908.619772
+RutasSolucion = 7
+RutasGeneradas = 175
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Iteracion = 0
+Utilidad = 9513.684126
+RutasSolucion = 7
+RutasGeneradas = 355
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9642.232247
+RutasSolucion = 6
+RutasGeneradas = 343
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9451.536082
+RutasSolucion = 6
+RutasGeneradas = 442
+Probabilidades = [2.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9595.366244
+RutasSolucion = 6
+RutasGeneradas = 314
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9679.811993
+RutasSolucion = 6
+RutasGeneradas = 290
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9630.409893
+RutasSolucion = 6
+RutasGeneradas = 423
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9543.908755
+RutasSolucion = 5
+RutasGeneradas = 333
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9299.080605
 RutasSolucion = 6
 RutasGeneradas = 229
 Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
 
-Iteracion = 18
-Tiempo = 196.155686
-Utilidad = 6398.664035
+Utilidad = 9530.842309
+RutasSolucion = 6
+RutasGeneradas = 292
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9386.937096
+RutasSolucion = 6
+RutasGeneradas = 237
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9218.475908
 RutasSolucion = 7
-RutasGeneradas = 219
+RutasGeneradas = 353
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9418.471904
+RutasSolucion = 6
+RutasGeneradas = 410
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9322.482867
+RutasSolucion = 6
+RutasGeneradas = 413
+Probabilidades = [2.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9883.682001
+RutasSolucion = 5
+RutasGeneradas = 422
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9497.296908
+RutasSolucion = 7
+RutasGeneradas = 385
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9515.690730
+RutasSolucion = 7
+RutasGeneradas = 372
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9314.010803
+RutasSolucion = 5
+RutasGeneradas = 450
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9426.446759
+RutasSolucion = 7
+RutasGeneradas = 387
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9363.145694
+RutasSolucion = 6
+RutasGeneradas = 257
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 2.000000,  1.000000]
+
+Utilidad = 9429.889962
+RutasSolucion = 6
+RutasGeneradas = 429
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9535.083410
+RutasSolucion = 6
+RutasGeneradas = 401
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9592.179307
+RutasSolucion = 5
+RutasGeneradas = 317
+Probabilidades = [1.000000, 1.000000, 1.000000, 2.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9455.136448
+RutasSolucion = 6
+RutasGeneradas = 411
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9491.511129
+RutasSolucion = 5
+RutasGeneradas = 320
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9482.885593
+RutasSolucion = 7
+RutasGeneradas = 257
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9849.567590
+RutasSolucion = 6
+RutasGeneradas = 382
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9809.331157
+RutasSolucion = 5
+RutasGeneradas = 433
+Probabilidades = [4.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9330.601570
+RutasSolucion = 5
+RutasGeneradas = 279
+Probabilidades = [1.000000, 1.000000, 1.000000, 2.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9714.328660
+RutasSolucion = 4
+RutasGeneradas = 420
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9615.509167
+RutasSolucion = 6
+RutasGeneradas = 503
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9936.367049
+RutasSolucion = 4
+RutasGeneradas = 353
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9400.524723
+RutasSolucion = 7
+RutasGeneradas = 249
 Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  2.000000]
 
-Iteracion = 19
-Tiempo = 240.550708
-Utilidad = 6458.050705
+Utilidad = 9623.184223
+RutasSolucion = 4
+RutasGeneradas = 330
+Probabilidades = [2.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9795.312315
+RutasSolucion = 6
+RutasGeneradas = 345
+Probabilidades = [1.000000, 1.000000, 1.000000, 2.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9806.579738
+RutasSolucion = 6
+RutasGeneradas = 366
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9696.932355
+RutasSolucion = 6
+RutasGeneradas = 360
+Probabilidades = [1.000000, 1.000000, 2.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9733.577028
 RutasSolucion = 5
-RutasGeneradas = 232
+RutasGeneradas = 493
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9829.581026
+RutasSolucion = 6
+RutasGeneradas = 422
+Probabilidades = [5.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9573.130385
+RutasSolucion = 6
+RutasGeneradas = 345
+Probabilidades = [1.000000, 1.000000, 1.000000, 2.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9534.777472
+RutasSolucion = 5
+RutasGeneradas = 391
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9624.603815
+RutasSolucion = 6
+RutasGeneradas = 328
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9574.481366
+RutasSolucion = 5
+RutasGeneradas = 347
+Probabilidades = [1.000000, 1.000000, 2.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9297.202471
+RutasSolucion = 7
+RutasGeneradas = 385
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9572.978966
+RutasSolucion = 6
+RutasGeneradas = 388
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9338.955698
+RutasSolucion = 7
+RutasGeneradas = 342
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9704.343302
+RutasSolucion = 5
+RutasGeneradas = 445
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9409.365424
+RutasSolucion = 6
+RutasGeneradas = 317
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9604.158307
+RutasSolucion = 6
+RutasGeneradas = 321
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9986.844496
+RutasSolucion = 5
+RutasGeneradas = 364
+Probabilidades = [4.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9570.470471
+RutasSolucion = 6
+RutasGeneradas = 371
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9924.203707
+RutasSolucion = 6
+RutasGeneradas = 436
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9514.245414
+RutasSolucion = 7
+RutasGeneradas = 393
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9838.435363
+RutasSolucion = 6
+RutasGeneradas = 328
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9660.057987
+RutasSolucion = 5
+RutasGeneradas = 327
+Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
+
+Utilidad = 9670.252952
+RutasSolucion = 6
+RutasGeneradas = 400
 Probabilidades = [1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000,  1.000000]
 

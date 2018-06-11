@@ -250,9 +250,6 @@ Map* map_init(char* map_path, char* airplanes_path)
   return map;
 }
 
-/**  Imprime el mapa en macro nodos y luego las distancias */
-void map_print(Map* map);
-
 /** Metodo que libera toda la memoria asociada el mapa */
 void map_destroy(Map* map)
 {

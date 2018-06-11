@@ -131,9 +131,6 @@ typedef struct map Map;
 /** Metodo que parsea el input y crea el mapa completo */
 Map* map_init(char* file_path, char* airplanes_path);
 
-/**  Imprime el mapa en macro nodos y luego las distancias */
-void map_print(Map* map);
-
 /** Metodo que libera toda la memoria asociada el mapa */
 void map_destroy(Map* map);
 

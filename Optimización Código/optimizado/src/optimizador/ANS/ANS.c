@@ -47,6 +47,7 @@ ANS* ans_init(char* orders_filepath, char* airplanes_filepath, char* bp_filepath
   for (int i = 0; i < ans -> op_count; i++)
   {
     ans -> prob_weights[i] = initial_weight;
+    ans -> operation_count[i] = 0;
   }
   ans -> total_weight = 7;
 
@@ -74,6 +75,19 @@ void ans_destroy(ANS* ans)
 
   // Libera la planificacion base
   bp_destroy(ans -> bp);
+
+  // Libero las rutas
+  for (int k = 0; k < airplanes_count; k++)
+  {
+    for (int i = 0; i < ans -> route_count[k]; i++)
+    {
+      route_destroy(ans -> routes[k][i]);
+    }
+    free(ans -> routes[k]);
+  }
+  free(ans -> routes);
+  free(ans -> route_array_size);
+  free(ans -> route_count);
 
   // Libera el ans
   free(ans);
@@ -161,6 +175,7 @@ static bool improved(Route* route, ANS* ans, double best_of)
   return false;
 }
 
+/** Revisa que la asignacion del nodo puede hacerse en el tiempo dado */
 static bool is_time_consistent(LNode* ln1, LNode* ln2)
 {
   // Compruebo que al insertar ln2 a la derecha de ln1 puedan calzar los tiempos
@@ -984,9 +999,9 @@ int initial_insert(Route* route, int unnasigned, Order** unassigned_orders, ANS*
 void refresh_probabilities(ANS* ans, int operation_id, double old_of, double new_of, double op_time)
 {
   int old_e = ans -> prob_weights[operation_id];
-  if (old_of < new_of) ans -> prob_weights[operation_id] += 1;
+  if (old_of < new_of) ans -> prob_weights[operation_id] *= 2;
   else ans -> prob_weights[operation_id] -= 1;
-  if (ans -> prob_weights[operation_id] > 10) ans -> prob_weights[operation_id] = 10;
+  if (ans -> prob_weights[operation_id] > 50) ans -> prob_weights[operation_id] = 50;
   else if (ans -> prob_weights[operation_id] < 1) ans -> prob_weights[operation_id] = 1;
   ans -> total_weight = ans -> total_weight - old_e + ans -> prob_weights[operation_id];
   return;
@@ -1076,10 +1091,6 @@ Route* run(ANS* ans, Route* original_route)
   // Hago las operaciones iniciales sobre la ruta
   Route* route = initialize(ans, original_route);
 
-  // printf("Inicializada:\n");
-  // route_print(route);
-
-
   // Guardo la mejor funcion objetivo
   double best_of = route -> objective_function;
 
@@ -1105,7 +1116,6 @@ Route* run(ANS* ans, Route* original_route)
         break;
       }
     }
-    // operation_print(operation_id);
 
     // Si la operacion no esta bloqueada
     if (bloq[operation_id] == 0)
@@ -1121,22 +1131,19 @@ Route* run(ANS* ans, Route* original_route)
       // Actualizo las probablidades
       refresh_probabilities(ans, operation_id, best_of, route -> objective_function, op_time);
 
+      // Cuento uno para la operacion
+      ans -> operation_count[operation_id]++;
+
       // Si no mejore, bloqueo la operacion
       if (route -> objective_function <= best_of)
       {
         bloq[operation_id] = 1;
-        // printf("No mejora\n");
       }
       else
       {
         best_of = route -> objective_function;
-        // printf("Mejora a %lf\n", route -> objective_function);
         route -> valid = true;
       }
-    }
-    else
-    {
-      // printf("No se ejecuta\n");
     }
   }
 

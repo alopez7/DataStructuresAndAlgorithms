@@ -188,6 +188,7 @@ Route** create_initial_routes(ANS* ans)
   }
 
   free(routes);
+  free(unassigned_orders);
 
   return sorted;
 }
@@ -216,6 +217,8 @@ void generate_initial_routes(ANS* ans, int airplane_id, Route* initial_route)
     {
       l_node_pop(r1, next);
       l_node_pop(r1, next -> pair);
+      free(next -> pair);
+      free(next);
     }
     else
     {

@@ -45,30 +45,42 @@ int main(int argc, char *argv[])
     // Ejecuto el solver
     double* solution = solve(ans);
 
-    // Creo un archivo con los detalles
-    FILE* detail_output = fopen("details.txt", "w");
+    // Si mejore con respecto a la mejor corrida escribo los detalles
+    if (final_utility > best_result)
+    {
+      // Creo un archivo con los detalles
+      FILE* detail_output = fopen("details.txt", "w");
 
-    // Escribo los detalles de la corrida
+      // Escribo los detalles de la corrida
+      int pos = 0;
+      for (int i = 0; i < airplanes_count; i++)
+      {
+        fprintf(detail_output, "Airplane %d\n", i);
+        for (int j = 0; j < ans -> route_count[i]; j++)
+        {
+          if (solution[pos] > 0)
+          {
+            route_print(ans -> routes[i][j], detail_output);
+            fprintf(detail_output, "Utility: %lf\n", utility(ans -> routes[i][j]));
+          }
+          pos += 1;
+        }
+        fprintf(detail_output, "\n");
+      }
+      fprintf(detail_output, "Total utility: %lf\n", final_utility);
+
+      // Cierro el archivo
+      fclose(detail_output);
+    }
+
+    // Cuento las rutas hasta ahora
     int pos = 0;
     for (int i = 0; i < airplanes_count; i++)
     {
-      fprintf(detail_output, "Airplane %d\n", i);
-      for (int j = 0; j < ans -> route_count[i]; j++)
-      {
-        if (solution[pos] > 0)
-        {
-          route_print(ans -> routes[i][j], detail_output);
-          fprintf(detail_output, "Utility: %lf\n", utility(ans -> routes[i][j]));
-        }
-        pos += 1;
-      }
-      fprintf(detail_output, "\n");
+      pos += ans -> route_count[i];
     }
 
-    // Cierro el archivo
-    fclose(detail_output);
-
-    // Escribo el archivo con los detalles totales
+    // Escribo el archivo con la informacion de esta corrida
     FILE* scores = fopen("results.txt", "a");
     fprintf(scores, "Utilidad = %lf\n", final_utility);
     fprintf(scores, "RutasSolucion = %d\n", ones);
@@ -76,10 +88,19 @@ int main(int argc, char *argv[])
     fprintf(scores, "Probabilidades = [");
     for (int p = 0; p < 7; p++)
     {
-      if (p != 6) fprintf(scores, "%lf, ", ans -> prob_weights[p]);
-      else fprintf(scores, " %lf]\n\n", ans -> prob_weights[p]);
+      if (p != 6) fprintf(scores, "%lf, ", ans -> prob_weights[p] / ans -> total_weight);
+      else fprintf(scores, " %lf]\n", ans -> prob_weights[p] / ans -> total_weight);
+    }
+    fprintf(scores, "Veces ejecutado = [");
+    for (int p = 0; p < 7; p++)
+    {
+      if (p != 6) fprintf(scores, "%d, ", ans -> operation_count[p]);
+      else fprintf(scores, " %d]\n\n", ans -> operation_count[p]);
     }
     fclose(scores);
+
+    // Libero la solucion
+    free(solution);
 
     // Libero el ans
     ans_destroy(ans);
@@ -105,6 +126,11 @@ int main(int argc, char *argv[])
 
   }
 
+  // Escribo tiempo final
+  FILE* detail_output = fopen("details.txt", "a");
+  fprintf(detail_output, "Tiempo total: %lfs\n", total_time);
+  fprintf(detail_output, "Corridas internas: %d\n", iteration);
+  fclose(detail_output);
 
   return 0;
 }

@@ -375,9 +375,14 @@ BP* bp_init(char* bp_file_path, Map* map)
 }
 
 /** Libera la memoria asociada a la planificacion base */
-void bp_destroy(BP* bp_destroy)
+void bp_destroy(BP* bp)
 {
-  printf("DOING NOTHIG\n");
+  for (int k = 0; k < airplanes_count; k++)
+  {
+    route_destroy(bp -> routes[k]);
+  }
+  free(bp -> routes);
+  free(bp);
 }
 
 // FUNCIONES QUE ALTERAN LAS RUTAS Y CAMBIAN LA FUNCION OBJETIVO RAPIDA

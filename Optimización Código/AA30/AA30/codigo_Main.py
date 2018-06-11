@@ -47,7 +47,13 @@ class Main_AA30():
 					arc = (self.PB[k][pos],self.PB[k][pos+1])
 					self.vuelos[k].append(arc)
 
+		# sp = ANS(1)
+		# for k in aviones:
+		# 	print(self.R[k-1])
+		# 	sp.ImprimirUtilidad(self.R[k-1])
+
 		for k in aviones:
+			print("generando columnas inciales para avion {}".format(k))
 			sp = ANS(k)
 			sp.vuelos = self.vuelos[k]
 			#for i in range(0,1+num_nodos/2):
@@ -65,7 +71,10 @@ class Main_AA30():
 			'''
 		#GENERACION DE COLUMNAS (GC):
 		fin = 0
+		it = 0
 		while fin==0:
+			print("Iteracion {}".format(it))
+			it += 1
 			PM.It = PM.It + 1
 			duales = PM.OptimizarMaestro()
 			dual_pi = duales[0]

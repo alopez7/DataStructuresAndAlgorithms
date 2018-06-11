@@ -3,16 +3,16 @@ import random
 from gurobipy import*
 from Datos import*
 from codigo_Main import*
-#import math 
+#import math
 
-class ANS():		
+class ANS():
 	def __init__(self, k):
 		self.inicio = 1
 		self.pendientes = []
 		self.k = k
 		self.vuelos = [] #Lo seteamos desde codigo_Main posterior a la creacion de la variable
 		self.Iter = 0
-		self.It = 0 
+		self.It = 0
 		self.costos = costos #Todos los aviones tienen el mismo costo
 		self.tviaje = tviaje #Todos los aviones tienen la misma velocidad de viaje
 		self.rutas = []
@@ -61,7 +61,7 @@ class ANS():
  		#Inicio LocalSearch
  			aleatorio = random.random()
  			if (0 <= aleatorio <= P[0]) and bloq[0] == 0:
-	 			##print "Paso 1: Drop and Add" 
+	 			##print "Paso 1: Drop and Add"
 	 			fo_inicial = self.FuncionObjetivo(r)
 	 			count = time.time()
 	 			r = self.Drop_and_Add(r)
@@ -76,7 +76,7 @@ class ANS():
 	 			##print "Paso 2: Swap"
 	 			fo_inicial = self.FuncionObjetivo(r)
 	 			count = time.time()
-	 			r = self.Swap(r)	
+	 			r = self.Swap(r)
 	 			tpo_rutina = time.time()-count
 	 			fo_nueva = self.FuncionObjetivo(r)
 	 			#tiempos.append("Swap	"+str(tpo_rutina)+"	"+str(fo_inicial)+"	"+str(fo_nueva)+"	"+str(fo_nueva-fo_inicial))
@@ -132,7 +132,7 @@ class ANS():
 	 			fo_nueva = self.FuncionObjetivo(r)
 	 			#tiempos.append("Delete	"+str(tpo_rutina)+"	"+str(fo_inicial)+"	"+str(fo_nueva)+"	"+str(fo_nueva-fo_inicial))
 	 			self.Actualizar_Probabilidades(5, fo_inicial, fo_nueva, tpo_rutina)
-	 			bloq[5] = 1	
+	 			bloq[5] = 1
  			else:
  				if bloq[6] == 0:
 		 			##print "Paso 6: I-R-R-E"
@@ -148,7 +148,7 @@ class ANS():
 		 			bloq[6] = 1
 		 			#if self.k == 1:
 	 				#	#print "Ruta I-R-R-E: ",r.nodos
-	 			
+
  			LocalUtility = self.FuncionObjetivo(r) #podria ser fo_nueva, pero en caso de que no entre a ninguno de los if este valor seria 0 y no es cierto.
 
 	 		if LocalUtility > BestUtility:
@@ -164,7 +164,7 @@ class ANS():
 		BestSolution = self.GuardarCargas(BestSolution)
 		BestSolution.NumRuta = len(self.rutas)+1
 		BestSolution.CostoRuta = self.Utilidad(BestSolution) #Guarda la utilidad de la ruta y no su valor de funcion objetivo
-		
+
 		self.CostoReducido = BestUtility
 
 		#Guardar #Tiempos
@@ -204,10 +204,10 @@ class ANS():
 			rCopia = self.Copiar(r) #Copiamos la ultima mejor alternativa de ruta guardada
 		r.FO = maxUtilidad
 		return r
-		
+
 	#Heuristicas Local Search:
 	def Intra_route_request_exchange(self, r): #, Temperatura
-		#cooling=0.5 #factor en la cual descrece la temperatura 
+		#cooling=0.5 #factor en la cual descrece la temperatura
 		rCopia = self.Copiar(r)
 		rOriginal = self.Copiar(r)
 		maxUtilidad = r.FO
@@ -245,7 +245,7 @@ class ANS():
 								#Temperatura=Temperatura*cooling
 								##print "Temperatura", Temperatura, "U actual", U, "maxutilidad", maxUtilidad
 								#probabilidad=math.exp((U-maxUtilidad)/Temperatura)
-								#aleatorio_1=random.random()	
+								#aleatorio_1=random.random()
 								#if probabilidad>=aleatorio_1: #se acepta una solucion peor
 							#	r = self.Copiar(rCopia)
 							#	r.FO = U
@@ -312,9 +312,9 @@ class ANS():
 							while j < pos_p1+len(ruta_p1):
 								rCopia.nodos.remove(ruta_p1[i]) #Remueve la primera aparcion en la ruta.
 								i = i+1
-								j = j+1 
+								j = j+1
 							#Paso 3: Eliminar ruta_p2
-							j=pos_p2 
+							j=pos_p2
 							i=0
 							while j < pos_p2 + len(ruta_p2):
 								rCopia.nodos.remove(ruta_p2[i])
@@ -350,7 +350,7 @@ class ANS():
 			while j < pos_p1 + len(ruta_p1):
 				rCopia.nodos.remove(ruta_p1[i]) #Remueve la primera aparicion en la ruta.
 				i = i+1
-				j = j+1 
+				j = j+1
 			#Paso 2: Insertar en nueva posicion
 			for posInicial in range(1,len(rCopia.nodos)-1): # Habia: range(1,len(rOriginal.nodos)-1)
 				j = posInicial
@@ -375,7 +375,7 @@ class ANS():
 		rCopia = self.Copiar(r)
 		rOriginal = self.Copiar(r)
 		pendientes = []
-		for p in nodos_pickup[self.k]: 
+		for p in nodos_pickup[self.k]:
 			if (p in r.nodos) == False:
 				pendientes.append([tarifa[p]-self.dual_pi[p-1],p])
 		pendientes.sort(reverse = True)
@@ -397,7 +397,7 @@ class ANS():
 						if maxUtilidad < U:
 							maxUtilidad = U
 							r=self.Copiar(rCopia2)
-					pos_p_new = pos_p_new + 1	
+					pos_p_new = pos_p_new + 1
 				rCopia= self.Copiar(rOriginal)
 				pos_d_new = pos_d_new + 1
 		r.FO = maxUtilidad
@@ -408,7 +408,7 @@ class ANS():
 		rOriginal = self.Copiar(r)
 		pendientes = []
 		#Guardamos todos los pedidos sin asignar
-		for p in nodos_pickup[self.k]: 
+		for p in nodos_pickup[self.k]:
 			if (p in r.nodos) == False:
 				pendientes.append([tarifa[p]-self.dual_pi[p-1],p])
 		pendientes.sort(reverse = True)
@@ -434,7 +434,7 @@ class ANS():
 					rCopia = self.Copiar(rOriginal)
 		r.FO = maxUtilidad
 		return r
-				
+
 	def Delete(self,r):
 		rCopia = self.Copiar(r)
 		rOriginal = self.Copiar(r)
@@ -442,7 +442,7 @@ class ANS():
 		mejoro = 1
 		while mejoro == 1: #Probamos con la mejor ruta encontrada hasta el momento
 			mejoro = 0
-			for i in rOriginal.nodos: #Probamos eliminando diferentes pedidos de la misma ruta 
+			for i in rOriginal.nodos: #Probamos eliminando diferentes pedidos de la misma ruta
 				if (i in nodos_pickup[self.k]) == True:
 					rCopia = self.EliminarPedido(i,rCopia)
 					rCopia = self.AsignarTiempos(rCopia)
@@ -455,7 +455,7 @@ class ANS():
 							r = self.Copiar(rCopia)
 							mejoro = 1
 					rCopia = self.Copiar(rOriginal)
-			
+
 			rOriginal = self.Copiar(r)
 
 		return r
@@ -494,7 +494,7 @@ class ANS():
 				r.B[i+1] = earliest[ruta[i+1]]
 				i=i+1
 		return r
-	
+
 	def AsignarCargas(self, r):
 		ruta = r.nodos
 		r.q = range(len(ruta))
@@ -507,7 +507,7 @@ class ANS():
 		for j in range(1,len(ruta)-1):
 			if (ruta[j] in nodos_pickup[self.k]) == True:
 				if peso[ruta[j]] <= capacidad[self.k] - r.Q[j-1]:
-					r.q[j] = peso[ruta[j]] 
+					r.q[j] = peso[ruta[j]]
 				else:
 					optimizar = 1
 					break
@@ -536,7 +536,7 @@ class ANS():
 				P.append(i)
 		m1.update()
 		m1.setObjective(quicksum((tarifa[p] -self.dual_pi[nodos_pickup[self.k].index(p)])*q[p] for p in P), GRB.MAXIMIZE)
-	
+
 		m1.addConstr(q[d_0[self.k]] == 0)
 		m1.addConstr(q[d_f[self.k]] == 0)
 		for p in P:
@@ -555,7 +555,7 @@ class ANS():
 		 	r.Q.append(Q[i].x)
 
 		return r
-	
+
 	def GuardarCargas(self, r):
 		r.Cargas = [] #Cargas guarda todos los pesos asignados a los nodospickup de la red completa
 		#print "nodos :", r.nodos
@@ -563,12 +563,12 @@ class ANS():
 			r.Cargas.append(0)
 		for i in range(1,num_nodos/2+1): #Cargas es una lista ordenada de todos los posibles nodos de la red
 			#print "nodos :",r.nodos
-			if (i in r.nodos) == True: 
+			if (i in r.nodos) == True:
 				pos_i = r.nodos.index(i) #Vemos la posicion que tiene el nodo pickup i dentro de la ruta y guardamos su carga
 				#print "i :", i, " pos_i :", pos_i, "r.q[pos_i] :", r.q[pos_i]
 				r.Cargas[i-1] = r.q[pos_i]
 		return r
-	
+
 	def EliminarPedido(self,p,r):
 		pos_p = r.nodos.index(p)
 		pos_d = r.nodos.index(p+num_nodos/2)
@@ -586,7 +586,7 @@ class ANS():
 		r.Q.remove("Eliminar")
 		r.B.remove("Eliminar")
 		r.B.remove("Eliminar")
-		return r	
+		return r
 
 	def Crea_Ruta_Truncada(self,r,p):
 		ruta = r.nodos
@@ -610,7 +610,7 @@ class ANS():
 			M_i = 0
 		else:
 			M_i = float(abs(fo_nueva-fo_inicial))/float(abs(fo_inicial))
-		E_antigua=self.E[h] #Eficiencia antigua en la iteracion pasada	
+		E_antigua=self.E[h] #Eficiencia antigua en la iteracion pasada
 		#self.E[h] = max(float(M_i)/float(tpo_rutina),epsilon) #sin tomar eficiencia hostorica
 		E_nueva = max(float(M_i)/float(tpo_rutina),epsilon) #eficiencia de esta corrida
 		self.E[h]=(1-peso_prob)*E_antigua+peso_prob*E_nueva #nueva eficiencia calculada como una ponderacion de nueva mas antigua.
@@ -621,12 +621,51 @@ class ANS():
 			else:
 				self.P[h] = float(self.E[h])/float(sum_E) # En casos donde no haya mejora en la funcion objetivo, entre mas chico sea el epsilon mas chica sera la probabilidad de elegir esta heuristica
 
+	def ImprimirFuncionObjetivo(self, r): #Funcion Objetivo del Problema Satelite/ r = Ruta()
+		ruta = r.nodos
+		k=self.k
+		Ingresos = 0
+		for i in range(1, len(ruta)-1):
+			print("Sumando {} * {} = {}", tarifa[ruta[i]], r.q[i], tarifa[ruta[i]]*r.q[i])
+			Ingresos = Ingresos + tarifa[ruta[i]]*r.q[i] #tarifa de nodos delivery es 0
+		print("Ingresos = {}".format(Ingresos))
+		CostosOps = 0
+		for i in range(1, len(ruta)):
+			CostosOps = CostosOps + self.costos[ruta[i-1],ruta[i]] #self.costos[ruta[i-1],ruta[i],self.k]
+		print("CostosOps = {}".format(CostosOps))
+		CostosCanc = 0
+		for nm in PB_vuelos[k]: #Vuelo: (nm[0], nm[1])
+			Cancelado = 1
+			for i in range(0,len(ruta)-1): #No estan el nodo d_0 y d_f dentro de listmacronodos
+				#print "nodo", ruta[i], "vuelo", nm, "macronodo1", listmacronodos[nm[0]],"macronodo2", listmacronodos[nm[1]]
+				#print ruta
+				#print " "
+				if ((ruta[i] in listmacronodos[nm[0]]) == True) and ((ruta[i+1] in listmacronodos[nm[1]]) == True): #encontramos un arco que es tramo de vuelo de planif base.
+					#print "nodo", ruta[i], "macronodo", listmacronodos[nm[0]]
+					#print ruta
+					Cancelado = 0
+					break
+			if Cancelado == 1:
+				CostosCanc = CostosCanc + costos_penalizacion #costos_penalizacion[nm]
+				#print "Costos cancelacion", CostosCanc
+		print("CostosCanc = {}".format(CostosCanc))
+		CostosDual = self.dual_gamma
+		for i in range(0,len(ruta)-1):
+			if (ruta[i] in nodos_pickup[self.k]) == True:
+				pos_i = nodos_pickup[self.k].index(ruta[i])
+				CostosDual = CostosDual + self.dual_pi[pos_i]*r.q[i]
+
+		print("CostosDual = {}".format(CostosDual))
+		utilidad = Ingresos - CostosOps - CostosCanc - CostosDual
+
+		print("FO = {}".format(utilidad))
+
 	def FuncionObjetivo(self, r): #Funcion Objetivo del Problema Satelite/ r = Ruta()
 		ruta = r.nodos
 		k=self.k
 		Ingresos = 0
 		for i in range(1, len(ruta)-1):
-			Ingresos = Ingresos + tarifa[ruta[i]]*r.q[i] #tarifa de nodos delivery es 0 
+			Ingresos = Ingresos + tarifa[ruta[i]]*r.q[i] #tarifa de nodos delivery es 0
 		CostosOps = 0
 		for i in range(1, len(ruta)):
 			CostosOps = CostosOps + self.costos[ruta[i-1],ruta[i]] #self.costos[ruta[i-1],ruta[i],self.k]
@@ -655,6 +694,40 @@ class ANS():
 
 		return utilidad
 
+	def ImprimirUtilidad(self, r): #Funcion de utilidad (objetivo) del problema original (convencional)
+		ruta = r.nodos
+		#print "ruta utilidad", ruta
+		k=self.k
+
+		Ingresos = 0
+		for i in range(1, len(ruta)-1):
+			Ingresos = Ingresos + tarifa[ruta[i]]*r.q[i] #tarifa de nodos delivery es 0
+			print("Sumando {} * {} = {}".format(tarifa[ruta[i]], r.q[i], tarifa[ruta[i]]*r.q[i]))
+		print("Ingresos = {}".format(Ingresos))
+		r.Ingresos = Ingresos
+		CostosOps = 0
+		for i in range(1, len(ruta)):
+			CostosOps = CostosOps + self.costos[ruta[i-1],ruta[i]] #self.costos[ruta[i-1],ruta[i],self.k]
+			print("Restando costo({}, {}) = {}".format(ruta[i-1], ruta[i], self.costos[ruta[i-1],ruta[i]]))
+		print("CostosOps = {}".format(CostosOps))
+		CostosCanc = 0
+		#print "self.vuelos", self.vuelos
+		for nm in PB_vuelos[k]: #Vuelo: (nm[0], nm[1])
+			#print "nm :", nm[0], "nm1", nm[1]
+			Cancelado = 1
+			for i in range(0,len(ruta)-1): #No estan el nodo d_0 y d_f dentro de listmacronodos
+				if ((ruta[i] in listmacronodos[nm[0]]) == True) and ((ruta[i+1] in listmacronodos[nm[1]]) == True): #encontramos un arco que es tramo de vuelo de planif base.
+					Cancelado = 0
+					break
+			if Cancelado == 1:
+				CostosCanc = CostosCanc + costos_penalizacion#costos_penalizacion[nm]
+				#print "penalizacion :",  CostosCanc
+		print("CostosCanc = {}".format(CostosCanc))
+		r.Costos = CostosOps + CostosCanc
+		utilidad = Ingresos - CostosOps - CostosCanc
+		print("Utilidad = {}".format(utilidad))
+
+
 	def Utilidad(self, r): #Funcion de utilidad (objetivo) del problema original (convencional)
 		ruta = r.nodos
 		#print "ruta utilidad", ruta
@@ -662,7 +735,7 @@ class ANS():
 
 		Ingresos = 0
 		for i in range(1, len(ruta)-1):
-			Ingresos = Ingresos + tarifa[ruta[i]]*r.q[i] #tarifa de nodos delivery es 0 
+			Ingresos = Ingresos + tarifa[ruta[i]]*r.q[i] #tarifa de nodos delivery es 0
 		r.Ingresos = Ingresos
 		CostosOps = 0
 		for i in range(1, len(ruta)):
@@ -670,7 +743,7 @@ class ANS():
 		CostosCanc = 0
 		#print "self.vuelos", self.vuelos
 		for nm in PB_vuelos[k]: #Vuelo: (nm[0], nm[1])
-			#print "nm :", nm[0], "nm1", nm[1] 
+			#print "nm :", nm[0], "nm1", nm[1]
 			Cancelado = 1
 			for i in range(0,len(ruta)-1): #No estan el nodo d_0 y d_f dentro de listmacronodos
 				if ((ruta[i] in listmacronodos[nm[0]]) == True) and ((ruta[i+1] in listmacronodos[nm[1]]) == True): #encontramos un arco que es tramo de vuelo de planif base.
@@ -682,8 +755,8 @@ class ANS():
 		r.Costos = CostosOps + CostosCanc
 		utilidad = Ingresos - CostosOps - CostosCanc
 		#print ruta
-		#print "Ingresos :",Ingresos, " Costos Op :", CostosOps, " CostosCanc :", CostosCanc 
-		return utilidad		
+		#print "Ingresos :",Ingresos, " Costos Op :", CostosOps, " CostosCanc :", CostosCanc
+		return utilidad
 
 	def Copiar(self,r):
 		rCopia = Ruta()
@@ -700,13 +773,13 @@ class ANS():
 		rCopia.Costos = r.Costos
 		#rCopia.pond = r.pond Sirve solo para el proceso de Mezcl
 		return rCopia
-	
+
 	#Metodos para columnas iniciales
 	def Drop_and_Add_v(self, r): #Insercion de pedidos
 		rCopia = self.Copiar(r)
 		rOriginal = self.Copiar(r)
 		pendientes = []
-		for p in nodos_pickup[self.k]: 
+		for p in nodos_pickup[self.k]:
 			if (p in r.nodos) == False:
 				pendientes.append([tarifa[p]-self.dual_pi[p-1],p])
 		pendientes.sort(reverse = True)
@@ -728,7 +801,7 @@ class ANS():
 						if maxUtilidad < U:
 							maxUtilidad = U
 							r=self.Copiar(rCopia2)
-					pos_p_new = pos_p_new + 1	
+					pos_p_new = pos_p_new + 1
 				rCopia= self.Copiar(rOriginal)
 				pos_d_new = pos_d_new + 1
 		r.CostoRuta = maxUtilidad
@@ -759,21 +832,21 @@ class ANS():
 							pendientes_aux=i
 							r=self.Copiar(rCopia2)
 							#pendientes_aux.remove(i)
-					pos_p_new = pos_p_new + 1	
+					pos_p_new = pos_p_new + 1
 				rCopia= self.Copiar(rOriginal)
 				pos_d_new = pos_d_new + 1
 		try:
 			pendientes.remove(pendientes_aux)
-		except:		
-			pass		
-		return (r, pendientes)	
+		except:
+			pass
+		return (r, pendientes)
 
 	def Swap_v(self, r):
 		rCopia = self.Copiar(r)
 		rOriginal = self.Copiar(r)
 		pendientes = []
 		#Guardamos todos los pedidos sin asignar
-		for p in nodos_pickup[self.k]: 
+		for p in nodos_pickup[self.k]:
 			if (p in r.nodos) == False:
 				pendientes.append([tarifa[p]-self.dual_pi[p-1],p])
 		pendientes.sort(reverse = True)
@@ -799,4 +872,3 @@ class ANS():
 					rCopia = self.Copiar(rOriginal)
 		r.CostoRuta = maxUtilidad
 		return r
-	

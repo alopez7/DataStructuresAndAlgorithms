@@ -186,6 +186,7 @@ void dictionary_destroy(Dictionary* dict)
       free(dict -> cells[i]);
     }
   }
+  free(dict -> cells);
 
   // Elimino el diccionario
   free(dict);

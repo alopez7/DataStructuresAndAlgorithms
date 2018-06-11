@@ -27,8 +27,10 @@ struct ans
   Route*** routes;
   /** Cantidad de rutas que tengo actualmente para cada avion*/
   int* route_count;
-  /** tamanio del arreglo de rutas actualemnte para cada avion*/
+  /** Tamanio del arreglo de rutas actualemnte para cada avion*/
   int* route_array_size;
+  /** Cantidad de veces que se ha ejecutado cada operacion */
+  int operation_count[7];
 };
 
 //////////////////////////////////////////////////////////////////////////

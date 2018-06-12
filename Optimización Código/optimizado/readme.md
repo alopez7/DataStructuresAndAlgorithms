@@ -1,5 +1,9 @@
 # Como ejecutar el programa
 
+## Pasos previos
+
+Para poder hacer funcionar gurobi con el programa hay que crear una carpeta llamada "lib" en la carpeta "optimizado" que contenga los archivos compilados de gurobi para el sistema operativo correspondiente: libgurobi.so.7.5.2 y libgurobi75.so (la version puede variar). 
+
 ## Compilar
 
 Para compilar hay que estar en la carpeta "optimizado" con la consola y escribir

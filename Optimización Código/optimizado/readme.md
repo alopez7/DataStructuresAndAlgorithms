@@ -110,3 +110,23 @@ Al ejecutar el programa se generarán dos archivos con resultados: results.txt y
 results.txt contiene los resultados de cada corrida dentro de la iteración: Utilidad, rutas en la solución, probabilidades de las operaciones y cantidad de veces que se ejecutó cada iteración.
 
 details.txt contiene los detalles de la solución final: Utilidad, tiempo total, rutas finales con asignaciones de tiempos y utilidad de cada una.
+
+El orden de las operaciones es: 
+
+```
+Drop and Add
+Swap
+IRRR
+IRRE
+IRMRR
+IRMRE
+Delete
+```
+
+## Cálculo de probabilidades
+
+Para calcular las probabilidades de usó la siguiente técnica:
+
+Cada operación parte con 1 punto. Si al utilizar la operación esta mejora, se multiplica sus puntos por 2. Si no mejora, se resta 1 a sus puntos. Cada operación puede tener mínimo 1 punto y máximo 50.
+
+La probabilidad de ejecutar una operación es su cantidad de puntos dividido en los puntos totales

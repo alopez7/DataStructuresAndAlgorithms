@@ -272,6 +272,14 @@ void route_print(Route* route, FILE* file)
     fprintf(file ,"(%lf, %lf) ", ln -> arrive_time, ln -> leave_time);
   }
   fprintf(file, "\n");
+
+  // Imprimo los pesos
+  fprintf(file, "Pesos:\n");
+  for (LNode* ln = route -> nodes -> start; ln; ln = ln -> next)
+  {
+    fprintf(file ,"(q: %lf, Q: %lf)", ln -> delta_weight, ln -> actual_weight);
+  }
+  fprintf(file, "\n");
 }
 
 /** Copia una ruta */
@@ -1177,18 +1185,15 @@ bool assign_time(Route* route)
   int count = 0;
   for (LNode* ln = route -> nodes -> start; ln; ln = ln -> next) count ++;
 
-  // Creo un arreglo con los tiempos de llegada iniciales (al principio lo mas temprano posible)
-  double* B = malloc(sizeof(double) * count);
+  // Asigno los tiempos de llegada lo mas temprano posible
   int i = 0;
   for (LNode* ln = route -> nodes -> start; ln; ln = ln -> next)
   {
-    B[i] = ln -> node -> start_time;
     ln -> arrive_time = ln -> node -> start_time;
     i++;
   }
 
   // Itero sobre la ruta
-  i = 0;
   for (LNode* ln = route -> nodes -> start; ln -> next; ln = ln -> next)
   {
     double dist = distance(ln -> node -> father, ln -> next -> node -> father);
@@ -1196,23 +1201,15 @@ bool assign_time(Route* route)
     double end_i = ln -> node -> end_time;
     double start_j = ln -> next -> node -> start_time;
     double end_j = ln -> next -> node -> end_time;
-    if (B[i] > end_i || B[i] + delay + dist > end_j)
+    if (ln -> arrive_time > end_i || ln -> arrive_time + delay + dist > end_j)
     {
       route -> valid = false;
-      free(B);
       return false;
     }
-    else if (B[i] + delay + dist >= start_j && B[i] + delay + dist <= end_j)
+    else if (ln -> arrive_time + delay + dist >= start_j && ln -> arrive_time + delay + dist <= end_j)
     {
-      B[i + 1] = B[i] + delay + dist;
-      ln -> next -> arrive_time = B[i + 1];
+      ln -> next -> arrive_time = ln -> arrive_time + delay + dist;
     }
-    else if (B[i] + delay + dist < start_j)
-    {
-      B[i + 1] = start_j;
-      ln -> next -> arrive_time = start_j;
-    }
-    i++;
   }
 
   // Asigno los tiempos de salida
@@ -1225,15 +1222,12 @@ bool assign_time(Route* route)
   end -> leave_time = end -> arrive_time + end -> node -> delay_time;
 
   route -> valid = true;
-  free(B);
   return true;
 }
 
 /** Asigna las cargas de manera greedy, y si no se puede optimiza */
 bool assign_weights(Route* route)
 {
-  // route_print(route);
-
   // Capacidad total
   double capacity = route -> airplane -> total_capacity;
 

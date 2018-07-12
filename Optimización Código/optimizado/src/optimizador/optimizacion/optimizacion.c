@@ -324,8 +324,8 @@ void optimize_weight(Route* route)
     //                     Escribir modelo en archivo                        //
     ///////////////////////////////////////////////////////////////////////////
 
-    error = GRBwrite(model, "model.lp");
-    if (error) goto QUIT1;
+    // error = GRBwrite(model, "model.lp");
+    // if (error) goto QUIT1;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -894,7 +894,7 @@ double* optimize_routes(Route*** separated_routes, int* counts, Map* map)
   // Creo la variable de ambiente de gurobi y la completo con la funcion GRBloadenv
   GRBenv *env = NULL;
   // El segundo argumento de la funcion es el archivo donde se guarda el log (puede ser NULL)
-  error = GRBloadenv(&env, "logs.txt");
+  error = GRBloadenv(&env, NULL);
   // Si retorna un error, no sigo
   if (error) goto QUIT2;
   error = GRBsetintparam(env, "LogToConsole", 0);
@@ -945,7 +945,7 @@ double* optimize_routes(Route*** separated_routes, int* counts, Map* map)
   // otro lado de la ecuacion
   // al final le doy nombre a la restriccion
 
-  //////// R1: suma x_i_k <= 1, para todo k en aviones ////////
+  //////// R1: suma x_i_k = 1, para todo k en aviones ////////
 
   // Creo un arreglo que indica cuantas rutas hay para cada avion
   int* count_array = calloc(airplanes_count, sizeof(int));
@@ -981,7 +981,7 @@ double* optimize_routes(Route*** separated_routes, int* counts, Map* map)
     // Creo el nombre de la restriccion
     sprintf(r_name, "R1_%d", k);
     // Creo la restriccion
-    error = GRBaddconstr(model, count_array[k], r1_ind, r1_val, GRB_LESS_EQUAL, 1.0, r_name);
+    error = GRBaddconstr(model, count_array[k], r1_ind, r1_val, GRB_EQUAL, 1.0, r_name);
     // Si da error, termino
     if (error) goto QUIT2;
     // Libero la memoria usada
@@ -1090,8 +1090,8 @@ double* optimize_routes(Route*** separated_routes, int* counts, Map* map)
   ///////////////////////////////////////////////////////////////////////////
   //                     Escribir modelo en archivo                        //
   ///////////////////////////////////////////////////////////////////////////
-  error = GRBwrite(model, "maestro_restringido.lp");
-  if (error) goto QUIT2;
+  // error = GRBwrite(model, "maestro_restringido.lp");
+  // if (error) goto QUIT2;
 
 
   ///////////////////////////////////////////////////////////////////////////
@@ -1242,7 +1242,7 @@ double optimize_routes_relaxed(Route*** separated_routes, int* counts, Map* map)
   // Creo la variable de ambiente de gurobi y la completo con la funcion GRBloadenv
   GRBenv *env = NULL;
   // El segundo argumento de la funcion es el archivo donde se guarda el log (puede ser NULL)
-  error = GRBloadenv(&env, "LOGS.txt");
+  error = GRBloadenv(&env, NULL);
   // Si retorna un error, no sigo
   if (error) goto QUIT3;
   error = GRBsetintparam(env, "LogToConsole", 0);
@@ -1350,7 +1350,7 @@ double optimize_routes_relaxed(Route*** separated_routes, int* counts, Map* map)
     // Creo el nombre de la restriccion
     sprintf(r_name, "R1_%d", k);
     // Creo la restriccion
-    error = GRBaddconstr(model, count_array[k], r1_ind, r1_val, GRB_LESS_EQUAL, 1.0, r_name);
+    error = GRBaddconstr(model, count_array[k], r1_ind, r1_val, GRB_EQUAL, 1.0, r_name);
     // Si da error, termino
     if (error) goto QUIT3;
     // Libero la memoria usada
@@ -1459,10 +1459,10 @@ double optimize_routes_relaxed(Route*** separated_routes, int* counts, Map* map)
   ///////////////////////////////////////////////////////////////////////////
   //                     Escribir modelo en archivo                        //
   ///////////////////////////////////////////////////////////////////////////
-  char model_name[32];
-  sprintf(model_name, "maestro_relajado.lp");
-  error = GRBwrite(model, model_name);
-  if (error) goto QUIT3;
+  // char model_name[32];
+  // sprintf(model_name, "maestro_relajado.lp");
+  // error = GRBwrite(model, model_name);
+  // if (error) goto QUIT3;
 
 
   ///////////////////////////////////////////////////////////////////////////

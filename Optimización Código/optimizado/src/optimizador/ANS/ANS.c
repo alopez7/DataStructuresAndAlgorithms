@@ -1147,6 +1147,9 @@ Route* run(ANS* ans, Route* original_route)
     }
   }
 
+  assign_time(route);
+  assign_weights(route);
+  route -> objective_function = objective_function(route, ans -> map);
   // Retorno la ruta final
   return route;
 }
